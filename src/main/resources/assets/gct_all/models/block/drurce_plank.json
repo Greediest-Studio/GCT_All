@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/drurce_plank",
+    "up": "gct_all:blocks/drurce_plank",
+    "north": "gct_all:blocks/drurce_plank",
+    "east": "gct_all:blocks/drurce_plank",
+    "south": "gct_all:blocks/drurce_plank",
+    "west": "gct_all:blocks/drurce_plank",
+    "particle": "gct_all:blocks/drurce_plank"
+  }
+}

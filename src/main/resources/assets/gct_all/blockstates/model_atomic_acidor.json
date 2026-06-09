@@ -1,0 +1,22 @@
+﻿{
+  "variants": {
+    "normal": {
+      "model": "gct_all:model_atomic_acidor"
+    },
+    "facing=north": {
+      "model": "gct_all:model_atomic_acidor"
+    },
+    "facing=east": {
+      "model": "gct_all:model_atomic_acidor",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "gct_all:model_atomic_acidor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gct_all:model_atomic_acidor",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/elven_sand",
+    "up": "gct_all:blocks/elven_sand",
+    "north": "gct_all:blocks/elven_sand",
+    "east": "gct_all:blocks/elven_sand",
+    "south": "gct_all:blocks/elven_sand",
+    "west": "gct_all:blocks/elven_sand",
+    "particle": "gct_all:blocks/elven_sand"
+  }
+}

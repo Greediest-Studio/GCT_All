@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/sanal_down",
+    "up": "gct_all:blocks/sanal_top",
+    "north": "gct_all:blocks/aby_sanite_block",
+    "east": "gct_all:blocks/aby_sanite_block",
+    "south": "gct_all:blocks/aby_sanite_block",
+    "west": "gct_all:blocks/aby_sanite_block",
+    "particle": "gct_all:blocks/sanal_down"
+  }
+}

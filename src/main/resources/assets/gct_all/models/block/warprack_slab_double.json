@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "gct_all:blocks/warprack",
+    "particle": "gct_all:blocks/warprack"
+  }
+}

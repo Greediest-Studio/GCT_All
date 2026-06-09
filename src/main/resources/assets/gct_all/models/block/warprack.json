@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/warprack",
+    "up": "gct_all:blocks/warprack",
+    "north": "gct_all:blocks/warprack",
+    "east": "gct_all:blocks/warprack",
+    "south": "gct_all:blocks/warprack",
+    "west": "gct_all:blocks/warprack",
+    "particle": "gct_all:blocks/warprack"
+  }
+}

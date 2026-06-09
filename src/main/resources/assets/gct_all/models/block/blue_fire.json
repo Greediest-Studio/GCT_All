@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "gct_all:blocks/blue_fire",
+    "particle": "gct_all:blocks/blue_fire"
+  }
+}

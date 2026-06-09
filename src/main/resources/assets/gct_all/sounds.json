@@ -1,0 +1,217 @@
+﻿{
+    "remnant_ambient":  {
+                            "category":  "master",
+                            "sounds":  [
+                                           {
+                                               "name":  "gct_all:remnant_scream",
+                                               "stream":  false
+                                           }
+                                       ]
+                        },
+    "zjarugoth_roar":  {
+                           "category":  "master",
+                           "sounds":  [
+                                          {
+                                              "name":  "gct_all:zjarugoth_roar",
+                                              "stream":  false
+                                          }
+                                      ]
+                       },
+    "shoggoth_ambient":  {
+                             "category":  "master",
+                             "sounds":  [
+                                            {
+                                                "name":  "gct_all:idle1",
+                                                "stream":  false
+                                            },
+                                            {
+                                                "name":  "gct_all:idle2",
+                                                "stream":  false
+                                            },
+                                            {
+                                                "name":  "gct_all:idle3",
+                                                "stream":  false
+                                            },
+                                            {
+                                                "name":  "gct_all:idle4",
+                                                "stream":  false
+                                            },
+                                            {
+                                                "name":  "gct_all:idle5",
+                                                "stream":  false
+                                            }
+                                        ]
+                         },
+    "chant_abyss":  {
+                        "category":  "master",
+                        "sounds":  [
+                                       {
+                                           "name":  "gct_all:chant",
+                                           "stream":  false
+                                       }
+                                   ]
+                    },
+    "shoggoth_death":  {
+                           "category":  "master",
+                           "sounds":  [
+                                          {
+                                              "name":  "gct_all:aby_death",
+                                              "stream":  false
+                                          }
+                                      ]
+                       },
+    "shoggoth_hurt":  {
+                          "category":  "master",
+                          "sounds":  [
+                                         {
+                                             "name":  "gct_all:aby_hurt1",
+                                             "stream":  false
+                                         },
+                                         {
+                                             "name":  "gct_all:aby_hurt2",
+                                             "stream":  false
+                                         },
+                                         {
+                                             "name":  "gct_all:aby_hurt3",
+                                             "stream":  false
+                                         },
+                                         {
+                                             "name":  "gct_all:hurt4",
+                                             "stream":  false
+                                         },
+                                         {
+                                             "name":  "gct_all:hurt5",
+                                             "stream":  false
+                                         }
+                                     ]
+                      },
+    "bligtz_br":  {
+                      "category":  "master",
+                      "subtitle":  "subtitles.bligtz_br",
+                      "sounds":  [
+                                     {
+                                         "name":  "gct_all:breathe1",
+                                         "stream":  false
+                                     }
+                                 ]
+                  },
+    "bninz_br":  {
+                     "category":  "master",
+                     "subtitle":  "subtitles.bninz_br",
+                     "sounds":  [
+                                    {
+                                        "name":  "gct_all:breathe1",
+                                        "stream":  false
+                                    }
+                                ]
+                 },
+    "bninz_ht":  {
+                     "category":  "master",
+                     "subtitle":  "subtitles.bninz_ht",
+                     "sounds":  [
+                                    {
+                                        "name":  "gct_all:hurt1",
+                                        "stream":  false
+                                    }
+                                ]
+                 },
+    "bninz_de":  {
+                     "category":  "master",
+                     "subtitle":  "subtitles.bninz_de",
+                     "sounds":  [
+                                    {
+                                        "name":  "gct_all:death1",
+                                        "stream":  false
+                                    }
+                                ]
+                 },
+    "bligtz_ht":  {
+                      "category":  "master",
+                      "subtitle":  "subtitles.bligtz_ht",
+                      "sounds":  [
+                                     {
+                                         "name":  "gct_all:hit",
+                                         "stream":  false
+                                     }
+                                 ]
+                  },
+    "bligtz_de":  {
+                      "category":  "master",
+                      "subtitle":  "subtitles.bligtz_de",
+                      "sounds":  [
+                                     {
+                                         "name":  "gct_all:death",
+                                         "stream":  false
+                                     }
+                                 ]
+                  },
+    "bnatuz_br":  {
+                      "category":  "master",
+                      "subtitle":  "subtitles.bnatuz_br",
+                      "sounds":  [
+                                     {
+                                         "name":  "gct_all:breathe3",
+                                         "stream":  false
+                                     }
+                                 ]
+                  },
+    "bnatuz_ht":  {
+                      "category":  "master",
+                      "subtitle":  "subtitles.bnatuz_ht",
+                      "sounds":  [
+                                     {
+                                         "name":  "gct_all:hurt3",
+                                         "stream":  false
+                                     }
+                                 ]
+                  },
+    "bnatuz_de":  {
+                      "category":  "master",
+                      "subtitle":  "subtitles.bnatuz_de",
+                      "sounds":  [
+                                     {
+                                         "name":  "gct_all:death3",
+                                         "stream":  false
+                                     }
+                                 ]
+                  },
+    "bthdz_br":  {
+                     "category":  "master",
+                     "subtitle":  "subtitles.bthdz_br",
+                     "sounds":  [
+                                    {
+                                        "name":  "gct_all:breathe2",
+                                        "stream":  false
+                                    }
+                                ]
+                 },
+    "bthdz_ht":  {
+                     "category":  "master",
+                     "subtitle":  "subtitles.bthdz_ht",
+                     "sounds":  [
+                                    {
+                                        "name":  "gct_all:hurt2",
+                                        "stream":  false
+                                    }
+                                ]
+                 },
+    "bthdz_de":  {
+                     "category":  "master",
+                     "subtitle":  "subtitles.bthdz_de",
+                     "sounds":  [
+                                    {
+                                        "name":  "gct_all:death2",
+                                        "stream":  false
+                                    }
+                                ]
+                 },
+    "reversedlands":  {
+                          "category":  "ambient",
+                          "sounds":  [
+                                         {
+                                             "name":  "gct_all:joseph-bishara-asserted-presence",
+                                             "stream":  false
+                                         }
+                                     ]
+                      }
+}

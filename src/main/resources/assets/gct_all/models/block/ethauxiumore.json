@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/darker_ethaxium_ore",
+    "up": "gct_all:blocks/darker_ethaxium_ore",
+    "north": "gct_all:blocks/darker_ethaxium_ore",
+    "east": "gct_all:blocks/darker_ethaxium_ore",
+    "south": "gct_all:blocks/darker_ethaxium_ore",
+    "west": "gct_all:blocks/darker_ethaxium_ore",
+    "particle": "gct_all:blocks/darker_ethaxium_ore"
+  }
+}

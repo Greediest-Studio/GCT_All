@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/nyarlathotepium_ore",
+    "up": "gct_all:blocks/nyarlathotepium_ore",
+    "north": "gct_all:blocks/nyarlathotepium_ore",
+    "east": "gct_all:blocks/nyarlathotepium_ore",
+    "south": "gct_all:blocks/nyarlathotepium_ore",
+    "west": "gct_all:blocks/nyarlathotepium_ore",
+    "particle": "gct_all:blocks/nyarlathotepium_ore"
+  }
+}

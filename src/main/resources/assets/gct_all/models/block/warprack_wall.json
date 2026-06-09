@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/wall_side",
+  "textures": {
+    "wall": "gct_all:blocks/warprack",
+    "particle": "gct_all:blocks/warprack"
+  }
+}

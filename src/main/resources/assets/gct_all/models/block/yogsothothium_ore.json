@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/shubniggurathium_ore",
+    "up": "gct_all:blocks/shubniggurathium_ore",
+    "north": "gct_all:blocks/shubniggurathium_ore",
+    "east": "gct_all:blocks/shubniggurathium_ore",
+    "south": "gct_all:blocks/shubniggurathium_ore",
+    "west": "gct_all:blocks/shubniggurathium_ore",
+    "particle": "gct_all:blocks/shubniggurathium_ore"
+  }
+}

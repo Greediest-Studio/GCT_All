@@ -1,0 +1,11 @@
+﻿{
+  "parent": "gct_all:custom/earthboundaltar",
+  "textures": {
+    "all": "gct_all:blocks/terra_alloy_block",
+    "particle": "gct_all:blocks/terra_alloy_block",
+    "0": "gct_all:blocks/log",
+    "1": "gct_all:blocks/fusion_matrix_block",
+    "2": "gct_all:blocks/terra_alloy_block",
+    "missing": "gct_all:blocks/terra_alloy_block"
+  }
+}

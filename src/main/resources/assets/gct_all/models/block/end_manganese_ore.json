@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/end_manganese",
+    "up": "gct_all:blocks/end_manganese",
+    "north": "gct_all:blocks/end_manganese",
+    "east": "gct_all:blocks/end_manganese",
+    "south": "gct_all:blocks/end_manganese",
+    "west": "gct_all:blocks/end_manganese",
+    "particle": "gct_all:blocks/end_manganese"
+  }
+}

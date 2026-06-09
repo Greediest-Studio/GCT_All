@@ -1,0 +1,34 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_all:evileye_plank"
+    },
+    "1": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "2": {
+      "item": "gct_all:evileye_plank"
+    },
+    "3": {
+      "item": "gct_all:evileye_plank"
+    },
+    "4": {
+      "type": "forge:ore_dict",
+      "ore": "stickWood"
+    },
+    "5": {
+      "item": "gct_all:evileye_plank"
+    }
+  },
+  "result": {
+    "item": "gct_all:evileye_fence",
+    "count": 3
+  }
+}

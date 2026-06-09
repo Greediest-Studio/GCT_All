@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/crystalsand",
+    "up": "gct_all:blocks/crystalsand",
+    "north": "gct_all:blocks/crystalsand",
+    "east": "gct_all:blocks/crystalsand",
+    "south": "gct_all:blocks/crystalsand",
+    "west": "gct_all:blocks/crystalsand",
+    "particle": "gct_all:blocks/crystalsand"
+  }
+}

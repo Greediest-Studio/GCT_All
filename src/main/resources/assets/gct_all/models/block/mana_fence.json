@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/fence_side",
+  "textures": {
+    "texture": "gct_all:blocks/mana_plank",
+    "particle": "gct_all:blocks/mana_plank"
+  }
+}

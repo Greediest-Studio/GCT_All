@@ -1,0 +1,13 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:apocalypsium_ingot"
+    }
+  ],
+  "result": {
+    "item": "gct_all:apocalypsium_nugget",
+    "count": 9
+  }
+}

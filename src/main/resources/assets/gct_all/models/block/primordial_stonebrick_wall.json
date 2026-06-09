@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/wall_side",
+  "textures": {
+    "wall": "gct_all:blocks/primordial_stonebrick",
+    "particle": "gct_all:blocks/primordial_stonebrick"
+  }
+}

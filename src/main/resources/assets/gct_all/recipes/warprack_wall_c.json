@@ -1,0 +1,32 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_all:warprack"
+    },
+    "1": {
+      "item": "gct_all:warprack"
+    },
+    "2": {
+      "item": "gct_all:warprack"
+    },
+    "3": {
+      "item": "gct_all:warprack"
+    },
+    "4": {
+      "item": "gct_all:warprack"
+    },
+    "5": {
+      "item": "gct_all:warprack"
+    }
+  },
+  "result": {
+    "item": "gct_all:warprack_wall",
+    "count": 6
+  }
+}

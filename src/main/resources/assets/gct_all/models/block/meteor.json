@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/block_meteorolite",
+    "up": "gct_all:blocks/block_meteorolite",
+    "north": "gct_all:blocks/block_meteorolite",
+    "east": "gct_all:blocks/block_meteorolite",
+    "south": "gct_all:blocks/block_meteorolite",
+    "west": "gct_all:blocks/block_meteorolite",
+    "particle": "gct_all:blocks/block_meteorolite"
+  }
+}

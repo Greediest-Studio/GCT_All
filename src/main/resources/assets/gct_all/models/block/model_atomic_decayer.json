@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/machine_bottom",
+    "up": "gct_all:blocks/machine_top",
+    "north": "gct_all:blocks/atomic_decayer_front",
+    "east": "gct_all:blocks/machine_side",
+    "south": "gct_all:blocks/machine_side",
+    "west": "gct_all:blocks/machine_side",
+    "particle": "gct_all:blocks/machine_bottom"
+  }
+}

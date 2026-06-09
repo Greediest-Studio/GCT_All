@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/polarisite",
+    "up": "gct_all:blocks/polarisite",
+    "north": "gct_all:blocks/polarisite",
+    "east": "gct_all:blocks/polarisite",
+    "south": "gct_all:blocks/polarisite",
+    "west": "gct_all:blocks/polarisite",
+    "particle": "gct_all:blocks/polarisite"
+  }
+}

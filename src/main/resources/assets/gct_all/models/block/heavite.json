@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/heavite",
+    "up": "gct_all:blocks/heavite",
+    "north": "gct_all:blocks/heavite",
+    "east": "gct_all:blocks/heavite",
+    "south": "gct_all:blocks/heavite",
+    "west": "gct_all:blocks/heavite",
+    "particle": "gct_all:blocks/heavite"
+  }
+}

@@ -1,0 +1,6 @@
+﻿{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "gct_all:items/botanical_myosotisium_ingot"
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/marble_runed",
+    "up": "gct_all:blocks/marble_runed",
+    "north": "gct_all:blocks/marble_runed",
+    "east": "gct_all:blocks/marble_runed",
+    "south": "gct_all:blocks/marble_runed",
+    "west": "gct_all:blocks/marble_runed",
+    "particle": "gct_all:blocks/marble_runed"
+  }
+}

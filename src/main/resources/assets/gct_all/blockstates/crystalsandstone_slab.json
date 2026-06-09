@@ -1,0 +1,10 @@
+﻿{
+  "variants": {
+    "half=bottom,variant=default": {
+      "model": "gct_all:crystalsandstone_slab"
+    },
+    "half=top,variant=default": {
+      "model": "gct_all:crystalsandstone_slab_top"
+    }
+  }
+}

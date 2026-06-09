@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "gct_all:blocks/mana_plank",
+    "top": "gct_all:blocks/mana_plank",
+    "side": "gct_all:blocks/mana_plank"
+  }
+}

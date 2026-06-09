@@ -1,0 +1,23 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:bligtz_dust"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "sand"
+    },
+    {
+      "item": "minecraft:glowstone_dust"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": {
+    "item": "gct_all:lumixeium_dust",
+    "count": 2
+  }
+}

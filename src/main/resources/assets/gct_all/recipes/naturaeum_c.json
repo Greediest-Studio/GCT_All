@@ -1,0 +1,23 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:bnatuz_dust"
+    },
+    {
+      "item": "minecraft:redstone"
+    },
+    {
+      "item": "minecraft:clay_ball"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dirt"
+    }
+  ],
+  "result": {
+    "item": "gct_all:naturaeum_dust",
+    "count": 2
+  }
+}

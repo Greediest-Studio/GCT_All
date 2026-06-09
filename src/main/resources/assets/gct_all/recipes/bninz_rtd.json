@@ -1,0 +1,13 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:bninz_rod"
+    }
+  ],
+  "result": {
+    "item": "gct_all:bninz_dust",
+    "count": 2
+  }
+}

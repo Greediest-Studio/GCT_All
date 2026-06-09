@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/mana_plank",
+    "up": "gct_all:blocks/mana_plank",
+    "north": "gct_all:blocks/mana_plank",
+    "east": "gct_all:blocks/mana_plank",
+    "south": "gct_all:blocks/mana_plank",
+    "west": "gct_all:blocks/mana_plank",
+    "particle": "gct_all:blocks/mana_plank"
+  }
+}

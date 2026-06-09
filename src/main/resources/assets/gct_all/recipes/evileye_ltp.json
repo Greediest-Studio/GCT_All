@@ -1,0 +1,13 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:evileye_log"
+    }
+  ],
+  "result": {
+    "item": "gct_all:evileye_plank",
+    "count": 4
+  }
+}

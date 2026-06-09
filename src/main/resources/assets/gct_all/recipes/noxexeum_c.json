@@ -1,0 +1,23 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:bninz_dust"
+    },
+    {
+      "item": "minecraft:soul_sand"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustCoal"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": {
+    "item": "gct_all:noxexeum_dust",
+    "count": 2
+  }
+}

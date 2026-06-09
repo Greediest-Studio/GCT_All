@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "gct_all:blocks/primordial_stonebrick",
+    "top": "gct_all:blocks/primordial_stonebrick",
+    "side": "gct_all:blocks/primordial_stonebrick"
+  }
+}

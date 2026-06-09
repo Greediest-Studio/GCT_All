@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/reversed_dreamwood_leaves",
+    "up": "gct_all:blocks/reversed_dreamwood_leaves",
+    "north": "gct_all:blocks/reversed_dreamwood_leaves",
+    "east": "gct_all:blocks/reversed_dreamwood_leaves",
+    "south": "gct_all:blocks/reversed_dreamwood_leaves",
+    "west": "gct_all:blocks/reversed_dreamwood_leaves",
+    "particle": "gct_all:blocks/reversed_dreamwood_leaves"
+  }
+}

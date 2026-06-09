@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/half_slab",
+  "textures": {
+    "bottom": "gct_all:blocks/reversed_dreamwood_plank2",
+    "top": "gct_all:blocks/reversed_dreamwood_plank2",
+    "side": "gct_all:blocks/reversed_dreamwood_plank2"
+  }
+}

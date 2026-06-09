@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/wall_inventory",
+  "textures": {
+    "wall": "gct_all:blocks/polarisite_brick_dark",
+    "particle": "gct_all:blocks/polarisite_brick_dark"
+  }
+}

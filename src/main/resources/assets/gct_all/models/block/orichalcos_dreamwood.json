@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/orichalcos_dreamwood",
+    "up": "gct_all:blocks/orichalcos_dreamwood",
+    "north": "gct_all:blocks/orichalcos_dreamwood",
+    "east": "gct_all:blocks/orichalcos_dreamwood",
+    "south": "gct_all:blocks/orichalcos_dreamwood",
+    "west": "gct_all:blocks/orichalcos_dreamwood",
+    "particle": "gct_all:blocks/orichalcos_dreamwood"
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/drurce_log_top",
+    "up": "gct_all:blocks/drurce_log_top",
+    "north": "gct_all:blocks/drurce_log",
+    "east": "gct_all:blocks/drurce_log_top",
+    "south": "gct_all:blocks/drurce_log_top",
+    "west": "gct_all:blocks/drurce_log_top",
+    "particle": "gct_all:blocks/drurce_log_top"
+  }
+}

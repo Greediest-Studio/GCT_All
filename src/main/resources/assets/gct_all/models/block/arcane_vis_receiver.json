@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/ruinholder1",
+    "up": "gct_all:blocks/arcane_manakeeper",
+    "north": "gct_all:blocks/ruinholder1",
+    "east": "gct_all:blocks/ruinholder1",
+    "south": "gct_all:blocks/ruinholder1",
+    "west": "gct_all:blocks/ruinholder1",
+    "particle": "gct_all:blocks/ruinholder1"
+  }
+}

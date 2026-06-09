@@ -1,0 +1,7 @@
+﻿{
+  "variants": {
+    "variant=default": {
+      "model": "gct_all:reversed_dreamwood_slab_double"
+    }
+  }
+}

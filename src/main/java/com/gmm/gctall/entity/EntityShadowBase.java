@@ -1,0 +1,168 @@
+package com.gmm.gctall.entity;
+
+import java.util.HashMap;
+import java.util.Map;
+import com.gmm.gctall.registry.GctAllContent;
+import com.gmm.gctall.registry.GctAllElement;
+import com.gmm.gctall.registry.GctAllElement.Tag;
+import com.gmm.gctall.item.ItemShadowNuclear;
+import com.gmm.gctall.procedure.ProcedureShadowBaseEntityIsHurt;
+import com.gmm.gctall.procedure.ProcedureShadowBaseOnEntityTickUpdate;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderLiving;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EnumCreatureAttribute;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+@Tag
+public class EntityShadowBase extends GctAllElement {
+  public static final int ENTITYID = 5;
+  
+  public static final int ENTITYID_RANGED = 6;
+  
+  public EntityShadowBase(GctAllContent instance) {
+    super(instance, 25);
+  }
+  
+  public void initElements() {
+    registerEntity(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "shadow_base"), 5).name("shadow_base").tracker(64, 3, true).egg(-16777216, -6750208).build());
+  }
+  
+  public void init(FMLInitializationEvent event) {
+    Biome[] spawnBiomes = { (Biome)Biome.REGISTRY.getObject(new ResourceLocation("gct_all:darkerrealm")) };
+    EntityRegistry.addSpawn(EntityCustom.class, 10, 1, 1, EnumCreatureType.MONSTER, spawnBiomes);
+  }
+  
+  @SideOnly(Side.CLIENT)
+  public void preInit(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelShadowbaseModel(), 0.5F) {
+          protected ResourceLocation getEntityTexture(Entity entity) {
+            return new ResourceLocation("gct_all:textures/modelshadowbase.png");
+          }
+        });
+  }
+  
+  public static class EntityCustom extends EntityCreature {
+    public EntityCustom(World world) {
+      super(world);
+      setSize(0.6F, 1.8F);
+      this.experienceValue = 30;
+      this.isImmuneToFire = false;
+      setNoAI(true);
+    }
+    
+    public EnumCreatureAttribute getCreatureAttribute() {
+      return EnumCreatureAttribute.UNDEFINED;
+    }
+    
+    protected Item getDropItem() {
+      return (new ItemStack(ItemShadowNuclear.block, 1)).getItem();
+    }
+    
+    public SoundEvent getAmbientSound() {
+      return null;
+    }
+    
+    public SoundEvent getHurtSound(DamageSource ds) {
+      return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.shulker.hurt"));
+    }
+    
+    public SoundEvent getDeathSound() {
+      return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.shulker.death"));
+    }
+    
+    protected float getSoundVolume() {
+      return 1.0F;
+    }
+    
+    public void onDeath(DamageSource source) {
+      super.onDeath(source);
+      int x = (int)this.posX;
+      int y = (int)this.posY;
+      int z = (int)this.posZ;
+      Map<String, Object> $_dependencies = new HashMap<>();
+      $_dependencies.put("x", Integer.valueOf(x));
+      $_dependencies.put("y", Integer.valueOf(y));
+      $_dependencies.put("z", Integer.valueOf(z));
+      $_dependencies.put("world", this.world);
+      ProcedureShadowBaseEntityIsHurt.executeProcedure($_dependencies);
+    }
+    
+    public void onEntityUpdate() {
+      super.onEntityUpdate();
+      int x = (int)this.posX;
+      int y = (int)this.posY;
+      int z = (int)this.posZ;
+      Map<String, Object> $_dependencies = new HashMap<>();
+      $_dependencies.put("x", Integer.valueOf(x));
+      $_dependencies.put("y", Integer.valueOf(y));
+      $_dependencies.put("z", Integer.valueOf(z));
+      $_dependencies.put("world", this.world);
+      ProcedureShadowBaseOnEntityTickUpdate.executeProcedure($_dependencies);
+    }
+    
+    protected void applyEntityAttributes() {
+      super.applyEntityAttributes();
+      if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+      if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+      if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(150.0D); 
+      if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D); 
+    }
+  }
+  
+  public static class ModelShadowbaseModel extends ModelBase {
+    private final ModelRenderer bone;
+    
+    public ModelShadowbaseModel() {
+      this.textureWidth = 128;
+      this.textureHeight = 128;
+      this.bone = new ModelRenderer(this);
+      this.bone.setRotationPoint(0.0F, 24.0F, 0.0F);
+      this.bone.cubeList.add(new ModelBox(this.bone, 0, 32, -6.0F, -2.0F, -6.0F, 12, 1, 12, 0.0F, false));
+      this.bone.cubeList.add(new ModelBox(this.bone, 0, 32, -6.0F, -21.0F, -6.0F, 12, 1, 12, 0.0F, false));
+      this.bone.cubeList.add(new ModelBox(this.bone, 0, 45, -5.0F, -1.0F, -5.0F, 10, 1, 10, 0.0F, false));
+      this.bone.cubeList.add(new ModelBox(this.bone, 0, 0, -7.0F, -20.0F, -7.0F, 14, 18, 14, 0.0F, false));
+      this.bone.cubeList.add(new ModelBox(this.bone, 0, 45, -5.0F, -22.0F, -5.0F, 10, 1, 10, 0.0F, false));
+    }
+    
+    public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
+      this.bone.render(f5);
+    }
+    
+    public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+      modelRenderer.rotateAngleX = x;
+      modelRenderer.rotateAngleY = y;
+      modelRenderer.rotateAngleZ = z;
+    }
+    
+    public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
+      super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
+    }
+  }
+}
+

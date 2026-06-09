@@ -1,0 +1,37 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    },
+    {
+      "item": "gct_all:nyarlathotepium_ingot"
+    }
+  ],
+  "result": {
+    "item": "gct_all:nyarlathotepium_block",
+    "count": 1
+  }
+}

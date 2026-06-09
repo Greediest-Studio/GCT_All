@@ -1,0 +1,48 @@
+﻿{
+  "multipart": [
+    {
+      "apply": {
+        "model": "gct_all:evileye_fence_gate_post"
+      }
+    },
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "gct_all:evileye_fence_gate",
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "gct_all:evileye_fence_gate",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "gct_all:evileye_fence_gate",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "gct_all:evileye_fence_gate",
+        "y": 90,
+        "uvlock": true
+      }
+    }
+  ]
+}

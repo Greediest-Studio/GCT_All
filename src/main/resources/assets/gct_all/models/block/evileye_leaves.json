@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/evileye_leaves",
+    "up": "gct_all:blocks/evileye_leaves",
+    "north": "gct_all:blocks/evileye_leaves",
+    "east": "gct_all:blocks/evileye_leaves",
+    "south": "gct_all:blocks/evileye_leaves",
+    "west": "gct_all:blocks/evileye_leaves",
+    "particle": "gct_all:blocks/evileye_leaves"
+  }
+}

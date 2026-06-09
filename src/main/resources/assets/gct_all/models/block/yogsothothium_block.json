@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/yogsothothium_block",
+    "up": "gct_all:blocks/yogsothothium_block",
+    "north": "gct_all:blocks/yogsothothium_block",
+    "east": "gct_all:blocks/yogsothothium_block",
+    "south": "gct_all:blocks/yogsothothium_block",
+    "west": "gct_all:blocks/yogsothothium_block",
+    "particle": "gct_all:blocks/yogsothothium_block"
+  }
+}

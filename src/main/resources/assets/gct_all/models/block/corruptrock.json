@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/corruptrock",
+    "up": "gct_all:blocks/corruptrock",
+    "north": "gct_all:blocks/corruptrock",
+    "east": "gct_all:blocks/corruptrock",
+    "south": "gct_all:blocks/corruptrock",
+    "west": "gct_all:blocks/corruptrock",
+    "particle": "gct_all:blocks/corruptrock"
+  }
+}

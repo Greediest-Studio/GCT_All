@@ -1,0 +1,13 @@
+﻿{
+  "variants": {
+    "axis=z": {
+      "model": "gct_all:dimdarkerrealm_portal_ew"
+    },
+    "axis=x": {
+      "model": "gct_all:dimdarkerrealm_portal_ns"
+    },
+    "inventory": {
+      "model": "gct_all:dimdarkerrealm_portal_ns"
+    }
+  }
+}

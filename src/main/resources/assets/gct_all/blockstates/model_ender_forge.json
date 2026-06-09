@@ -1,0 +1,22 @@
+﻿{
+  "variants": {
+    "normal": {
+      "model": "gct_all:model_ender_forge"
+    },
+    "facing=north": {
+      "model": "gct_all:model_ender_forge"
+    },
+    "facing=east": {
+      "model": "gct_all:model_ender_forge",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "gct_all:model_ender_forge",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gct_all:model_ender_forge",
+      "y": 270
+    }
+  }
+}

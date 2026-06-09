@@ -1,0 +1,23 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_all:bthdz_dust"
+    },
+    {
+      "item": "minecraft:flint"
+    },
+    {
+      "type": "forge:ore_dict",
+      "ore": "dustQuartz"
+    },
+    {
+      "item": "minecraft:redstone"
+    }
+  ],
+  "result": {
+    "item": "gct_all:tonitruium_dust",
+    "count": 2
+  }
+}

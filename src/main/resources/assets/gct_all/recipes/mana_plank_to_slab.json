@@ -1,0 +1,23 @@
+﻿{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_all:mana_plank"
+    },
+    "1": {
+      "item": "gct_all:mana_plank"
+    },
+    "2": {
+      "item": "gct_all:mana_plank"
+    }
+  },
+  "result": {
+    "item": "gct_all:mana_slab",
+    "data": 0,
+    "count": 6
+  }
+}

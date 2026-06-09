@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/botanical_stone",
+    "up": "gct_all:blocks/botanical_stone",
+    "north": "gct_all:blocks/botanical_stone",
+    "east": "gct_all:blocks/botanical_stone",
+    "south": "gct_all:blocks/botanical_stone",
+    "west": "gct_all:blocks/botanical_stone",
+    "particle": "gct_all:blocks/botanical_stone"
+  }
+}

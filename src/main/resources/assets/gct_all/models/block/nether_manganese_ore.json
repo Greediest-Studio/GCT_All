@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/nether_manganese",
+    "up": "gct_all:blocks/nether_manganese",
+    "north": "gct_all:blocks/nether_manganese",
+    "east": "gct_all:blocks/nether_manganese",
+    "south": "gct_all:blocks/nether_manganese",
+    "west": "gct_all:blocks/nether_manganese",
+    "particle": "gct_all:blocks/nether_manganese"
+  }
+}

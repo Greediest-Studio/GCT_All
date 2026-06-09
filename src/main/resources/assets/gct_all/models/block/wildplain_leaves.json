@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/wildplain_leaves",
+    "up": "gct_all:blocks/wildplain_leaves",
+    "north": "gct_all:blocks/wildplain_leaves",
+    "east": "gct_all:blocks/wildplain_leaves",
+    "south": "gct_all:blocks/wildplain_leaves",
+    "west": "gct_all:blocks/wildplain_leaves",
+    "particle": "gct_all:blocks/wildplain_leaves"
+  }
+}

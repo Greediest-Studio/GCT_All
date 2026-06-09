@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/dense_darkstone",
+    "up": "gct_all:blocks/dense_darkstone",
+    "north": "gct_all:blocks/dense_darkstone",
+    "east": "gct_all:blocks/dense_darkstone",
+    "south": "gct_all:blocks/dense_darkstone",
+    "west": "gct_all:blocks/dense_darkstone",
+    "particle": "gct_all:blocks/dense_darkstone"
+  }
+}

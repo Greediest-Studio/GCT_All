@@ -1,0 +1,10 @@
+﻿{
+  "parent": "gct_all:custom/modelruinholder",
+  "textures": {
+    "all": "gct_all:blocks/ruinholder1",
+    "particle": "gct_all:blocks/ruinholder1",
+    "0": "gct_all:blocks/ruinholder1",
+    "1": "gct_all:blocks/ruinholder2",
+    "2": "gct_all:blocks/ruinholder3"
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/crystalsandstone_bottom",
+    "up": "gct_all:blocks/crystalsandstone_top",
+    "north": "gct_all:blocks/crystalsandstone",
+    "east": "gct_all:blocks/crystalsandstone",
+    "south": "gct_all:blocks/crystalsandstone",
+    "west": "gct_all:blocks/crystalsandstone",
+    "particle": "gct_all:blocks/crystalsandstone_bottom"
+  }
+}

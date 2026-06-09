@@ -1,0 +1,22 @@
+﻿{
+  "variants": {
+    "normal": {
+      "model": "gct_all:model_atomic_viberator"
+    },
+    "facing=north": {
+      "model": "gct_all:model_atomic_viberator"
+    },
+    "facing=east": {
+      "model": "gct_all:model_atomic_viberator",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "gct_all:model_atomic_viberator",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "gct_all:model_atomic_viberator",
+      "y": 270
+    }
+  }
+}

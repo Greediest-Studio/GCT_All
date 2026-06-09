@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/nether_chromium",
+    "up": "gct_all:blocks/nether_chromium",
+    "north": "gct_all:blocks/nether_chromium",
+    "east": "gct_all:blocks/nether_chromium",
+    "south": "gct_all:blocks/nether_chromium",
+    "west": "gct_all:blocks/nether_chromium",
+    "particle": "gct_all:blocks/nether_chromium"
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "parent": "gct_all:custom/modelportalholderdown",
+  "textures": {
+    "all": "gct_all:blocks/portalholder_up1",
+    "particle": "gct_all:blocks/portalholder_up1",
+    "0": "gct_all:blocks/portalholder_up1",
+    "1": "gct_all:blocks/portalholder_up2",
+    "2": "gct_all:blocks/portalholder_up3",
+    "3": "gct_all:blocks/portalholder_up4",
+    "4": "gct_all:blocks/portalholder_up5"
+  }
+}

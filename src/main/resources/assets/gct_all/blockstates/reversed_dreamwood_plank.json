@@ -1,0 +1,31 @@
+﻿{
+  "variants": {
+    "normal": {
+      "model": "gct_all:reversed_dreamwood_plank"
+    },
+    "facing=south": {
+      "model": "gct_all:reversed_dreamwood_plank"
+    },
+    "facing=north": {
+      "model": "gct_all:reversed_dreamwood_plank"
+    },
+    "facing=east": {
+      "model": "gct_all:reversed_dreamwood_plank",
+      "x": 90
+    },
+    "facing=west": {
+      "model": "gct_all:reversed_dreamwood_plank",
+      "x": 90
+    },
+    "facing=up": {
+      "model": "gct_all:reversed_dreamwood_plank",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down": {
+      "model": "gct_all:reversed_dreamwood_plank",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/reversed_elven_cobblestone",
+    "up": "gct_all:blocks/reversed_elven_cobblestone",
+    "north": "gct_all:blocks/reversed_elven_cobblestone",
+    "east": "gct_all:blocks/reversed_elven_cobblestone",
+    "south": "gct_all:blocks/reversed_elven_cobblestone",
+    "west": "gct_all:blocks/reversed_elven_cobblestone",
+    "particle": "gct_all:blocks/reversed_elven_cobblestone"
+  }
+}
