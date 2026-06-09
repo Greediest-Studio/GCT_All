@@ -25,7 +25,7 @@ public class ItemShoggothTancaleSoup extends GctAllElement {
   
   public static class ItemFoodCustom extends GctAllFoodItem {
     public ItemFoodCustom() {
-      super("shoggoth_tancale_soup", 12, 0.5F, false);
+      super("shoggoth_tancale_soup", 12, 0.5F, false, -20.0F);
     }
     
     @SideOnly(Side.CLIENT)

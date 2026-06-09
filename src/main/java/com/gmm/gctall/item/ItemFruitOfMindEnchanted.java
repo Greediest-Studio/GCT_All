@@ -25,7 +25,7 @@ public class ItemFruitOfMindEnchanted extends GctAllElement {
   
   public static class ItemFoodCustom extends GctAllFoodItem {
     public ItemFoodCustom() {
-      super("fruit_of_mind_enchanted", 4, 0.8F, false);
+      super("fruit_of_mind_enchanted", 4, 0.8F, false, 200.0F);
     }
     
     @SideOnly(Side.CLIENT)

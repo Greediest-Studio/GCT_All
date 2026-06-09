@@ -4,7 +4,6 @@ import com.gmm.gctall.GctAllGuiHandler;
 import com.gmm.gctall.GctAllMod;
 import com.gmm.gctall.world.gen.ModOreWorldGenerator;
 import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllFoodDiagnostics;
 import com.gmm.gctall.registry.GctAllOreDictionary;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -34,7 +33,6 @@ public class CommonProxy {
     public void init(FMLInitializationEvent event) {
         GctAllOreDictionary.register();
         GctAllContent.INSTANCE.getElements().forEach(element -> element.init(event));
-        GctAllFoodDiagnostics.logFoodRegistrations();
     }
 
     public void postInit(FMLPostInitializationEvent event) {

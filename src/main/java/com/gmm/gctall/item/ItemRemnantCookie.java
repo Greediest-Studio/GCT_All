@@ -25,7 +25,7 @@ public class ItemRemnantCookie extends GctAllElement {
   
   public static class ItemFoodCustom extends GctAllFoodItem {
     public ItemFoodCustom() {
-      super("remnant_cookie", 3, 0.1F, false);
+      super("remnant_cookie", 3, 0.1F, false, -5.0F);
     }
     
     @SideOnly(Side.CLIENT)

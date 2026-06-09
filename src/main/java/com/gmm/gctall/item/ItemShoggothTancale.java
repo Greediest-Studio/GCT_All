@@ -22,7 +22,7 @@ public class ItemShoggothTancale extends GctAllElement {
   
   public static class ItemFoodCustom extends GctAllFoodItem {
     public ItemFoodCustom() {
-      super("shoggothtancale", 3, 0.1F, false);
+      super("shoggothtancale", 3, 0.1F, false, -10.0F);
     }
   }
 }
