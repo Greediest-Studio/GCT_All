@@ -1,8 +1,5 @@
 package com.gmm.gctall.entity;
 
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemWarpedSoul;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -40,43 +37,36 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityBlueFlameBeholder extends GctAllElement {
+public final class EntityBlueFlameBeholder {
   public static final int ENTITYID = 9;
-  
-  public static final int ENTITYID_RANGED = 10;
-  
-  public EntityBlueFlameBeholder(GctAllContent instance) {
-    super(instance, 75);
+
+  public static final int ENTITYID_RANGED = 10;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(BlueFlameBeholderEntity.class).id(new ResourceLocation("gct_all", "blue_flame_beholder"), 9).name("blue_flame_beholder").tracker(64, 3, true).egg(-16777216, -16750951).build());
   }
-  
-  public void initElements() {
-    registerEntity(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "blue_flame_beholder"), 9).name("blue_flame_beholder").tracker(64, 3, true).egg(-16777216, -16750951).build());
-  }
-  
-  public void init(FMLInitializationEvent event) {
+
+  public static void init(FMLInitializationEvent event) {
     Biome[] spawnBiomes = { (Biome)Biome.REGISTRY.getObject(new ResourceLocation("gct_all:warped")) };
-    EntityRegistry.addSpawn(EntityCustom.class, 20, 4, 4, EnumCreatureType.MONSTER, spawnBiomes);
+    EntityRegistry.addSpawn(BlueFlameBeholderEntity.class, 20, 4, 4, EnumCreatureType.MONSTER, spawnBiomes);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelWeatherBeholder(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(BlueFlameBeholderEntity.class, renderManager -> new RenderLiving(renderManager, new ModelWeatherBeholder(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/beholder.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
-    public EntityCustom(World world) {
+
+  public static class BlueFlameBeholderEntity extends EntityMob {
+    public BlueFlameBeholderEntity(World world) {
       super(world);
       setSize(0.6F, 1.8F);
       this.experienceValue = 5;
       this.isImmuneToFire = false;
       setNoAI(false);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
@@ -85,87 +75,87 @@ public class EntityBlueFlameBeholder extends GctAllElement {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected Item getDropItem() {
       return (new ItemStack(ItemWarpedSoul.block, 1)).getItem();
     }
-    
+
     public SoundEvent getAmbientSound() {
       return null;
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return null;
     }
-    
+
     public SoundEvent getDeathSound() {
       return null;
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(40.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(10.0D);
     }
   }
-  
+
   public static class ModelWeatherBeholder extends ModelBase {
     private final ModelRenderer main;
-    
+
     private final ModelRenderer mainChild10;
-    
+
     private final ModelRenderer mainChild0;
-    
+
     private final ModelRenderer mainChild4;
-    
+
     private final ModelRenderer mainChild8;
-    
+
     private final ModelRenderer mainChild2;
-    
+
     private final ModelRenderer mainChild6;
-    
+
     private final ModelRenderer mainChild9;
-    
+
     private final ModelRenderer mainChild;
-    
+
     private final ModelRenderer mainChildChild;
-    
+
     private final ModelRenderer mainChildChild_r1;
-    
+
     private final ModelRenderer mainChild1;
-    
+
     private final ModelRenderer mainChild5;
-    
+
     private final ModelRenderer mainChild7;
-    
+
     private final ModelRenderer mainChild3;
-    
+
     private final ModelRenderer mainChild3_r1;
-    
+
     private final ModelRenderer bb_main;
-    
+
     private final ModelRenderer cube_r1;
-    
+
     private final ModelRenderer cube_r2;
-    
+
     private final ModelRenderer cube_r3;
-    
+
     private final ModelRenderer cube_r4;
-    
+
     public ModelWeatherBeholder() {
       this.textureWidth = 16;
       this.textureHeight = 16;
@@ -278,18 +268,18 @@ public class EntityBlueFlameBeholder extends GctAllElement {
       setRotationAngle(this.cube_r4, 0.1309F, 0.0F, 0.0F);
       this.cube_r4.cubeList.add(new ModelBox(this.cube_r4, 0, 0, -8.0F, -14.0F, -5.0F, 16, 3, 16, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.main.render(f5);
       this.bb_main.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.mainChild3_r1.rotateAngleY = f3 / 57.295776F;

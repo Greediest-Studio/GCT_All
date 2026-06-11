@@ -1,0 +1,16 @@
+{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    }
+  ],
+  "result": {
+    "item": "gct_all:half_lava_glass",
+    "count": 2
+  }
+}

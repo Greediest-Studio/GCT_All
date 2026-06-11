@@ -1,0 +1,10 @@
+﻿{
+  "variants": {
+    "half=bottom,variant=default": {
+      "model": "gct_all:rainboquartz_slab"
+    },
+    "half=top,variant=default": {
+      "model": "gct_all:rainboquartz_slab_top"
+    }
+  }
+}

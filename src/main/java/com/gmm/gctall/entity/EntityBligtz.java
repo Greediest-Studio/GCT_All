@@ -1,12 +1,10 @@
 package com.gmm.gctall.entity;
 
+import com.gmm.gctall.item.ItemBligtzDust;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
-import com.gmm.gctall.item.ItemBligtzDust;
 import javax.annotation.Nullable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -56,45 +54,38 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityBligtz extends GctAllElement {
+public final class EntityBligtz {
   public static final int ENTITYID = 11;
-  
-  public static final int ENTITYID_RANGED = 12;
-  
-  public EntityBligtz(GctAllContent instance) {
-    super(instance, 2);
+
+  public static final int ENTITYID_RANGED = 12;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(BligtzEntity.class).id(new ResourceLocation("gct_all", "bligtz"), 11).name("bligtz").tracker(64, 3, true).egg(-3355648, -205).build());
+    event.getRegistry().register(EntityEntryBuilder.create().entity(BligtzProjectileEntity.class).id(new ResourceLocation("gct_all", "entitybulletbligtz"), 12).name("entitybulletbligtz").tracker(64, 1, true).build());
   }
-  
-  public void initElements() {
-    this.elements.entities.add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "bligtz"), 11).name("bligtz").tracker(64, 3, true).egg(-3355648, -205).build());
-    this.elements.entities.add(() -> EntityEntryBuilder.create().entity(EntityArrowCustom.class).id(new ResourceLocation("gct_all", "entitybulletbligtz"), 12).name("entitybulletbligtz").tracker(64, 1, true).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelBligtz(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(BligtzEntity.class, renderManager -> new RenderLiving(renderManager, new ModelBligtz(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/bligtz.png");
           }
         });
-    RenderingRegistry.registerEntityRenderingHandler(EntityArrowCustom.class, renderManager -> new RenderSnowball<EntityArrowCustom>(renderManager, null, Minecraft.getMinecraft().getRenderItem()) {
-          public ItemStack getStackToRender(EntityBligtz.EntityArrowCustom entity) {
-            return new ItemStack(ItemBligtzDust.block, 1);
+    RenderingRegistry.registerEntityRenderingHandler(BligtzProjectileEntity.class, renderManager -> new RenderSnowball<BligtzProjectileEntity>(renderManager, null, Minecraft.getMinecraft().getRenderItem()) {
+          public ItemStack getStackToRender(EntityBligtz.BligtzProjectileEntity entity) {
+            return new ItemStack(ItemBligtzDust.block);
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob implements IRangedAttackMob {
-    public EntityCustom(World world) {
+
+  public static class BligtzEntity extends EntityMob implements IRangedAttackMob {
+    public BligtzEntity(World world) {
       super(world);
       setSize(0.6F, 1.8F);
       this.experienceValue = 0;
@@ -104,48 +95,48 @@ public class EntityBligtz extends GctAllElement {
       this.navigator = (PathNavigate)new PathNavigateFlying((EntityLiving)this, this.world);
       this.moveHelper = (EntityMoveHelper)new EntityFlyHelper((EntityLiving)this);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, new EntityAIBase() {
             public boolean shouldExecute() {
-              if (EntityBligtz.EntityCustom.this.getAttackTarget() != null && !EntityBligtz.EntityCustom.this.getMoveHelper().isUpdating())
-                return true; 
+              if (EntityBligtz.BligtzEntity.this.getAttackTarget() != null && !EntityBligtz.BligtzEntity.this.getMoveHelper().isUpdating())
+                return true;
               return false;
             }
-            
+
             public boolean shouldContinueExecuting() {
-              return (EntityBligtz.EntityCustom.this.getMoveHelper().isUpdating() && EntityBligtz.EntityCustom.this.getAttackTarget() != null && EntityBligtz.EntityCustom.this
+              return (EntityBligtz.BligtzEntity.this.getMoveHelper().isUpdating() && EntityBligtz.BligtzEntity.this.getAttackTarget() != null && EntityBligtz.BligtzEntity.this
                 .getAttackTarget().isEntityAlive());
             }
-            
+
             public void startExecuting() {
-              EntityLivingBase livingentity = EntityBligtz.EntityCustom.this.getAttackTarget();
+              EntityLivingBase livingentity = EntityBligtz.BligtzEntity.this.getAttackTarget();
               Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-              EntityBligtz.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+              EntityBligtz.BligtzEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
             }
-            
+
             public void updateTask() {
-              EntityLivingBase livingentity = EntityBligtz.EntityCustom.this.getAttackTarget();
-              double d0 = EntityBligtz.EntityCustom.this.getDistanceSq((Entity)livingentity);
+              EntityLivingBase livingentity = EntityBligtz.BligtzEntity.this.getAttackTarget();
+              double d0 = EntityBligtz.BligtzEntity.this.getDistanceSq((Entity)livingentity);
               if (d0 <= getAttackReachSq(livingentity)) {
-                EntityBligtz.EntityCustom.this.attackEntityAsMob((Entity)livingentity);
+                EntityBligtz.BligtzEntity.this.attackEntityAsMob((Entity)livingentity);
               } else if (d0 < 16.0D) {
                 Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-                EntityBligtz.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
-              } 
+                EntityBligtz.BligtzEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 1.0D);
+              }
             }
-            
+
             protected double getAttackReachSq(EntityLivingBase attackTarget) {
-              return EntityBligtz.EntityCustom.this.width * 1.5D * EntityBligtz.EntityCustom.this.height * 1.5D + attackTarget.height;
+              return EntityBligtz.BligtzEntity.this.width * 1.5D * EntityBligtz.BligtzEntity.this.height * 1.5D + attackTarget.height;
             }
           });
       this.tasks.addTask(2, (EntityAIBase)new EntityAIWander((EntityCreature)this, 0.8D, 20) {
             protected Vec3d getPosition() {
-              Random random = EntityBligtz.EntityCustom.this.getRNG();
-              double dir_x = EntityBligtz.EntityCustom.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_y = EntityBligtz.EntityCustom.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_z = EntityBligtz.EntityCustom.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              Random random = EntityBligtz.BligtzEntity.this.getRNG();
+              double dir_x = EntityBligtz.BligtzEntity.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_y = EntityBligtz.BligtzEntity.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_z = EntityBligtz.BligtzEntity.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
               return new Vec3d(dir_x, dir_y, dir_z);
             }
           });
@@ -155,40 +146,40 @@ public class EntityBligtz extends GctAllElement {
       this.targetTasks.addTask(6, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, false, new Class[0]));
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackRanged(this, 1.25D, 20, 10.0F));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:bligtz_br"));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:bligtz_ht"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:bligtz_de"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public void fall(float l, float d) {}
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
     
@@ -196,85 +187,85 @@ public class EntityBligtz extends GctAllElement {
     protected ResourceLocation getLootTable() {
       return new ResourceLocation("gct_all:entities/bligtz");
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
       getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
       getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.3D);
     }
-    
+
     public void setSwingingArms(boolean swingingArms) {}
-    
+
     public void attackEntityWithRangedAttack(EntityLivingBase target, float flval) {
-      EntityBligtz.EntityArrowCustom entityarrow = new EntityBligtz.EntityArrowCustom(this.world, (EntityLivingBase)this);
+      EntityBligtz.BligtzProjectileEntity entityarrow = new EntityBligtz.BligtzProjectileEntity(this.world, (EntityLivingBase)this);
       double d0 = target.posY + target.getEyeHeight() - 1.1D;
       double d1 = target.posX - this.posX;
       double d3 = target.posZ - this.posZ;
       entityarrow.shoot(d1, d0 - entityarrow.posY + MathHelper.sqrt(d1 * d1 + d3 * d3) * 0.20000000298023224D, d3, 1.6F, 12.0F);
       this.world.spawnEntity((Entity)entityarrow);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       setNoGravity(true);
     }
-    
+
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
-    
+
     public void setNoGravity(boolean ignored) {
       super.setNoGravity(true);
     }
   }
-  
-  public static class EntityArrowCustom extends EntityTippedArrow {
-    public EntityArrowCustom(World a) {
+
+  public static class BligtzProjectileEntity extends EntityTippedArrow {
+    public BligtzProjectileEntity(World a) {
       super(a);
     }
-    
-    public EntityArrowCustom(World worldIn, double x, double y, double z) {
+
+    public BligtzProjectileEntity(World worldIn, double x, double y, double z) {
       super(worldIn, x, y, z);
     }
-    
-    public EntityArrowCustom(World worldIn, EntityLivingBase shooter) {
+
+    public BligtzProjectileEntity(World worldIn, EntityLivingBase shooter) {
       super(worldIn, shooter);
     }
   }
-  
+
   public static class ModelBligtz extends ModelBase {
     public ModelRenderer spike11;
-    
+
     public ModelRenderer spike10;
-    
+
     public ModelRenderer spike1;
-    
+
     public ModelRenderer spike2;
-    
+
     public ModelRenderer spike12;
-    
+
     public ModelRenderer blazeHead;
-    
+
     public ModelRenderer spike7;
-    
+
     public ModelRenderer spike8;
-    
+
     public ModelRenderer spike9;
-    
+
     public ModelRenderer spike3;
-    
+
     public ModelRenderer spike4;
-    
+
     public ModelRenderer spike5;
-    
+
     public ModelRenderer spike6;
-    
+
     public ModelBligtz() {
       this.textureWidth = 64;
       this.textureHeight = 32;
@@ -318,7 +309,7 @@ public class EntityBligtz extends GctAllElement {
       this.spike10.setRotationPoint(-2.269867F, 11.893008F, 4.455076F);
       this.spike10.addBox(0.0F, 0.0F, 0.0F, 2, 8, 2, 0.0F);
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.spike6.render(f5);
       this.spike2.render(f5);
@@ -334,13 +325,13 @@ public class EntityBligtz extends GctAllElement {
       this.spike11.render(f5);
       this.spike10.render(f5);
     }
-    
+
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.spike11.rotateAngleY = f2;
@@ -360,4 +351,5 @@ public class EntityBligtz extends GctAllElement {
     }
   }
 }
+
 

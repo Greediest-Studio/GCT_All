@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemFurtherSoul;
 import com.gmm.gctall.procedure.ProcedureZjarugothEntityDies;
 import com.gmm.gctall.procedure.ProcedureZjarugothEntityIsHurt;
@@ -57,41 +54,34 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityZjarugoth extends GctAllElement {
+public final class EntityZjarugoth {
   public static final int ENTITYID = 11;
-  
-  public static final int ENTITYID_RANGED = 12;
-  
-  public EntityZjarugoth(GctAllContent instance) {
-    super(instance, 76);
+
+  public static final int ENTITYID_RANGED = 12;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(ZjarugothEntity.class).id(new ResourceLocation("gct_all", "zjarugoth"), 11).name("zjarugoth").tracker(512, 3, true).egg(-16777216, -16711681).build());
   }
-  
-  public void initElements() {
-    registerEntity(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "zjarugoth"), 11).name("zjarugoth").tracker(512, 3, true).egg(-16777216, -16711681).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelZjarugoth(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(ZjarugothEntity.class, renderManager -> new RenderLiving(renderManager, new ModelZjarugoth(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/zjarugorth.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
+
+  public static class ZjarugothEntity extends EntityMob {
     private final BossInfoServer bossInfo;
-    
-    public EntityCustom(World world) {
+
+    public ZjarugothEntity(World world) {
       super(world);
       this.bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.NOTCHED_6);
       setSize(2.0F, 4.0F);
@@ -102,47 +92,47 @@ public class EntityZjarugoth extends GctAllElement {
       this.navigator = (PathNavigate)new PathNavigateFlying((EntityLiving)this, this.world);
       this.moveHelper = (EntityMoveHelper)new EntityFlyHelper((EntityLiving)this);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, new EntityAIBase() {
             public boolean shouldExecute() {
-              if (EntityZjarugoth.EntityCustom.this.getAttackTarget() != null && !EntityZjarugoth.EntityCustom.this.getMoveHelper().isUpdating())
-                return true; 
+              if (EntityZjarugoth.ZjarugothEntity.this.getAttackTarget() != null && !EntityZjarugoth.ZjarugothEntity.this.getMoveHelper().isUpdating())
+                return true;
               return false;
             }
-            
+
             public boolean shouldContinueExecuting() {
-              return (EntityZjarugoth.EntityCustom.this.getMoveHelper().isUpdating() && EntityZjarugoth.EntityCustom.this.getAttackTarget() != null && EntityZjarugoth.EntityCustom.this.getAttackTarget().isEntityAlive());
+              return (EntityZjarugoth.ZjarugothEntity.this.getMoveHelper().isUpdating() && EntityZjarugoth.ZjarugothEntity.this.getAttackTarget() != null && EntityZjarugoth.ZjarugothEntity.this.getAttackTarget().isEntityAlive());
             }
-            
+
             public void startExecuting() {
-              EntityLivingBase livingentity = EntityZjarugoth.EntityCustom.this.getAttackTarget();
+              EntityLivingBase livingentity = EntityZjarugoth.ZjarugothEntity.this.getAttackTarget();
               Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-              EntityZjarugoth.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.0D);
+              EntityZjarugoth.ZjarugothEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.0D);
             }
-            
+
             public void updateTask() {
-              EntityLivingBase livingentity = EntityZjarugoth.EntityCustom.this.getAttackTarget();
-              double d0 = EntityZjarugoth.EntityCustom.this.getDistanceSq((Entity)livingentity);
+              EntityLivingBase livingentity = EntityZjarugoth.ZjarugothEntity.this.getAttackTarget();
+              double d0 = EntityZjarugoth.ZjarugothEntity.this.getDistanceSq((Entity)livingentity);
               if (d0 <= getAttackReachSq(livingentity)) {
-                EntityZjarugoth.EntityCustom.this.attackEntityAsMob((Entity)livingentity);
+                EntityZjarugoth.ZjarugothEntity.this.attackEntityAsMob((Entity)livingentity);
               } else if (d0 < 256.0D) {
                 Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-                EntityZjarugoth.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.0D);
-              } 
+                EntityZjarugoth.ZjarugothEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.0D);
+              }
             }
-            
+
             protected double getAttackReachSq(EntityLivingBase attackTarget) {
-              return EntityZjarugoth.EntityCustom.this.width * 1.5D * EntityZjarugoth.EntityCustom.this.height * 1.5D + attackTarget.height;
+              return EntityZjarugoth.ZjarugothEntity.this.width * 1.5D * EntityZjarugoth.ZjarugothEntity.this.height * 1.5D + attackTarget.height;
             }
           });
       this.tasks.addTask(2, (EntityAIBase)new EntityAIWander((EntityCreature)this, 3.0D, 20) {
             protected Vec3d getPosition() {
-              Random random = EntityZjarugoth.EntityCustom.this.getRNG();
-              double dir_x = EntityZjarugoth.EntityCustom.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_y = EntityZjarugoth.EntityCustom.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_z = EntityZjarugoth.EntityCustom.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              Random random = EntityZjarugoth.ZjarugothEntity.this.getRNG();
+              double dir_x = EntityZjarugoth.ZjarugothEntity.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_y = EntityZjarugoth.ZjarugothEntity.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_z = EntityZjarugoth.ZjarugothEntity.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
               return new Vec3d(dir_x, dir_y, dir_z);
             }
           });
@@ -151,37 +141,37 @@ public class EntityZjarugoth extends GctAllElement {
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
       this.targetTasks.addTask(6, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, false, new Class[0]));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return (new ItemStack(ItemFurtherSoul.block, 1)).getItem();
     }
-    
+
     public SoundEvent getAmbientSound() {
       return null;
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return null;
     }
-    
+
     public SoundEvent getDeathSound() {
       return null;
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public void fall(float l, float d) {}
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       int x = (int)this.posX;
       int y = (int)this.posY;
@@ -193,18 +183,18 @@ public class EntityZjarugoth extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureZjarugothEntityIsHurt.executeProcedure($_dependencies);
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       if (source == DamageSource.CACTUS)
-        return false; 
+        return false;
       if (source == DamageSource.DROWN)
-        return false; 
+        return false;
       if (source == DamageSource.LIGHTNING_BOLT)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
       int x = (int)this.posX;
@@ -217,7 +207,7 @@ public class EntityZjarugoth extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureZjarugothEntityDies.executeProcedure($_dependencies);
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
@@ -230,107 +220,107 @@ public class EntityZjarugoth extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureZjarugothOnEntityTickUpdate.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(108000.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(108000.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D);
       getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
       getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.4D);
     }
-    
+
     public boolean isNonBoss() {
       return false;
     }
-    
+
     public void addTrackingPlayer(EntityPlayerMP player) {
       super.addTrackingPlayer(player);
       this.bossInfo.addPlayer(player);
     }
-    
+
     public void removeTrackingPlayer(EntityPlayerMP player) {
       super.removeTrackingPlayer(player);
       this.bossInfo.removePlayer(player);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       setNoGravity(true);
       this.bossInfo.setPercent(getHealth() / getMaxHealth());
     }
-    
+
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
-    
+
     public void setNoGravity(boolean ignored) {
       super.setNoGravity(true);
     }
   }
-  
+
   public static class ModelZjarugoth extends ModelBase {
     private final ModelRenderer main;
-    
+
     private final ModelRenderer mainChild10;
-    
+
     private final ModelRenderer mainChild0;
-    
+
     private final ModelRenderer mainChild4;
-    
+
     private final ModelRenderer mainChild8;
-    
+
     private final ModelRenderer mainChild2;
-    
+
     private final ModelRenderer mainChild6;
-    
+
     private final ModelRenderer mainChild9;
-    
+
     private final ModelRenderer mainChild;
-    
+
     private final ModelRenderer mainChild_r1;
-    
+
     private final ModelRenderer mainChildChild_r1;
-    
+
     private final ModelRenderer mainChild_r2;
-    
+
     private final ModelRenderer mainChildChild_r2;
-    
+
     private final ModelRenderer mainChild_r3;
-    
+
     private final ModelRenderer mainChild_r4;
-    
+
     private final ModelRenderer mainChildChild_r3;
-    
+
     private final ModelRenderer mainChild_r5;
-    
+
     private final ModelRenderer mainChildChild;
-    
+
     private final ModelRenderer mainChildChild_r4;
-    
+
     private final ModelRenderer mainChild1;
-    
+
     private final ModelRenderer mainChild5;
-    
+
     private final ModelRenderer mainChild7;
-    
+
     private final ModelRenderer mainChild3;
-    
+
     private final ModelRenderer mainChild3_r1;
-    
+
     private final ModelRenderer bb_main;
-    
+
     private final ModelRenderer cube_r1;
-    
+
     private final ModelRenderer cube_r2;
-    
+
     private final ModelRenderer cube_r3;
-    
+
     private final ModelRenderer cube_r4;
-    
+
     public ModelZjarugoth() {
       this.textureWidth = 32;
       this.textureHeight = 32;
@@ -497,18 +487,18 @@ public class EntityZjarugoth extends GctAllElement {
       setRotationAngle(this.cube_r4, 0.1309F, 0.0F, 0.0F);
       this.cube_r4.cubeList.add(new ModelBox(this.cube_r4, 0, 0, -16.0F, -28.0F, -10.0F, 32, 6, 32, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.main.render(f5);
       this.bb_main.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.mainChild3_r1.rotateAngleY = f3 / 57.295776F;

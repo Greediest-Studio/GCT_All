@@ -3,10 +3,9 @@ package com.gmm.gctall.world.dimension;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.block.BlockBloodyrock;
+import com.gmm.gctall.world.biome.BiomeBloodyplain;
+import com.gmm.gctall.world.biome.BiomeCurruptplain;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
@@ -50,148 +49,141 @@ import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class WorldBesideVoid extends GctAllElement {
+public class WorldBesideVoid {
   public static int DIMID = 41;
-  
+
   public static final boolean NETHER_TYPE = false;
-  
+
   public static DimensionType dtype;
-  
-  public WorldBesideVoid(GctAllContent instance) {
-    super(instance, 78);
-  }
-  
-  public void preInit(FMLPreInitializationEvent event) {
+public static void registerDimension() {
     if (DimensionManager.isDimensionRegistered(DIMID)) {
       DIMID = DimensionManager.getNextFreeDimId();
       System.err.println("Dimension ID for dimension beside_void is already registered. Falling back to ID: " + DIMID);
-    } 
+    }
     dtype = DimensionType.register("beside_void", "_beside_void", DIMID, WorldProviderMod.class, false);
     DimensionManager.registerDimension(DIMID, dtype);
   }
-  
+
   public static class WorldProviderMod extends WorldProvider {
     public void init() {
       this.biomeProvider = new WorldBesideVoid.BiomeProviderCustom(this.world.getSeed());
       this.nether = false;
     }
-    
+
     public void calculateInitialWeather() {}
-    
+
     public void updateWeather() {}
-    
+
     public boolean canDoLightning(Chunk chunk) {
       return false;
     }
-    
+
     public boolean canDoRainSnowIce(Chunk chunk) {
       return false;
     }
-    
+
     public DimensionType getDimensionType() {
       return WorldBesideVoid.dtype;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public Vec3d getFogColor(float par1, float par2) {
       return new Vec3d(0.2D, 0.2D, 0.2D);
     }
-    
+
     public IChunkGenerator createChunkGenerator() {
       return new WorldBesideVoid.ChunkProviderModded(this.world, this.world.getSeed() - WorldBesideVoid.DIMID);
     }
-    
+
     public boolean isSurfaceWorld() {
       return false;
     }
-    
+
     public boolean canRespawnHere() {
       return true;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public boolean doesXZShowFog(int par1, int par2) {
       return true;
     }
-    
+
     public WorldProvider.WorldSleepResult canSleepAt(EntityPlayer player, BlockPos pos) {
       return WorldProvider.WorldSleepResult.DENY;
     }
-    
+
     protected void generateLightBrightnessTable() {
       float f = 0.5F;
       for (int i = 0; i <= 15; i++) {
         float f1 = 1.0F - i / 15.0F;
         this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
-      } 
+      }
     }
-    
+
     public boolean doesWaterVaporize() {
       return false;
     }
   }
-  
+
   public static class ChunkProviderModded implements IChunkGenerator {
     private static final IBlockState STONE = BlockBloodyrock.block.getDefaultState();
-    
+
     private static final IBlockState STONE2 = BlockBloodyrock.block.getDefaultState();
-    
+
     private static final IBlockState FLUID = Blocks.FLOWING_LAVA.getDefaultState();
-    
+
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
-    
+
     private static final IBlockState BEDROCK = Blocks.BEDROCK.getDefaultState();
-    
+
     private static final int SEALEVEL = 63;
-    
+
     private final Random random;
-    
+
     private final NoiseGeneratorOctaves perlin1;
-    
+
     private final NoiseGeneratorOctaves perlin2;
-    
+
     private final NoiseGeneratorOctaves perlin;
-    
+
     private final NoiseGeneratorPerlin height;
-    
+
     private final NoiseGeneratorOctaves depth;
-    
+
     private final World world;
-    
+
     private final WorldType terrainType;
-    
+
     private final MapGenBase caveGenerator;
-    
+
     private final MapGenBase ravineGenerator;
-    
+
     private Biome[] biomesForGeneration;
-    
+
     private double[] heightMap;
-    
+
     private double[] depthbuff = new double[256];
-    
+
     private double[] noiseRegMain;
-    
+
     private double[] limitRegMin;
-    
+
     private double[] limitRegMax;
-    
+
     private double[] depthReg;
-    
+
     private float[] biomeWeights;
-    
+
     public ChunkProviderModded(World worldIn, long seed) {
       worldIn.setSeaLevel(63);
       this.caveGenerator = (MapGenBase)new MapGenCaves() {
           protected boolean canReplaceBlock(IBlockState a, IBlockState b) {
             if (a.getBlock() == WorldBesideVoid.ChunkProviderModded.STONE.getBlock())
-              return true; 
+              return true;
             return super.canReplaceBlock(a, b);
           }
         };
@@ -206,8 +198,8 @@ public class WorldBesideVoid extends GctAllElement {
               } else {
                 data.setBlockState(x, y, z, AIR);
                 if (foundTop && data.getBlockState(x, y - 1, z).getBlock() == biome.fillerBlock.getBlock())
-                  data.setBlockState(x, y - 1, z, biome.topBlock.getBlock().getDefaultState()); 
-              }  
+                  data.setBlockState(x, y - 1, z, biome.topBlock.getBlock().getDefaultState());
+              }
           }
         };
       this.world = worldIn;
@@ -222,10 +214,10 @@ public class WorldBesideVoid extends GctAllElement {
       this.biomeWeights = new float[25];
       for (int i = -2; i <= 2; i++) {
         for (int j = -2; j <= 2; j++)
-          this.biomeWeights[i + 2 + (j + 2) * 5] = 10.0F / MathHelper.sqrt((i * i + j * j) + 0.2F); 
-      } 
+          this.biomeWeights[i + 2 + (j + 2) * 5] = 10.0F / MathHelper.sqrt((i * i + j * j) + 0.2F);
+      }
     }
-    
+
     public Chunk generateChunk(int x, int z) {
       this.random.setSeed(x * 535358712L + z * 347539041L);
       ChunkPrimer chunkprimer = new ChunkPrimer();
@@ -237,11 +229,11 @@ public class WorldBesideVoid extends GctAllElement {
       Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
       byte[] abyte = chunk.getBiomeArray();
       for (int i = 0; i < abyte.length; i++)
-        abyte[i] = (byte)Biome.getIdForBiome(this.biomesForGeneration[i]); 
+        abyte[i] = (byte)Biome.getIdForBiome(this.biomesForGeneration[i]);
       chunk.generateSkylightMap();
       return chunk;
     }
-    
+
     public void populate(int x, int z) {
       BlockFalling.fallInstantly = true;
       int i = x * 16;
@@ -253,42 +245,42 @@ public class WorldBesideVoid extends GctAllElement {
       long l = this.random.nextLong() / 2L * 2L + 1L;
       this.random.setSeed(x * k + z * l ^ this.world.getSeed());
       ForgeEventFactory.onChunkPopulate(true, this, this.world, this.random, x, z, false);
-      if (this.random.nextInt(4) == 0 && 
+      if (this.random.nextInt(4) == 0 &&
         TerrainGen.populate(this, this.world, this.random, x, z, false, PopulateChunkEvent.Populate.EventType.LAKE)) {
         int i1 = this.random.nextInt(16) + 8;
         int j1 = this.random.nextInt(256);
         int k1 = this.random.nextInt(16) + 8;
         (new WorldGenLakes(FLUID.getBlock())).generate(this.world, this.random, blockpos.add(i1, j1, k1));
-      } 
+      }
       MinecraftForge.EVENT_BUS
         .post((Event)new DecorateBiomeEvent.Pre(this.world, this.random, blockpos));
       biome.decorate(this.world, this.random, new BlockPos(i, 0, j));
       MinecraftForge.EVENT_BUS
         .post((Event)new DecorateBiomeEvent.Post(this.world, this.random, blockpos));
       if (TerrainGen.populate(this, this.world, this.random, x, z, false, PopulateChunkEvent.Populate.EventType.ANIMALS))
-        WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.random); 
+        WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.random);
       ForgeEventFactory.onChunkPopulate(false, this, this.world, this.random, x, z, false);
       BlockFalling.fallInstantly = false;
     }
-    
+
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
       return this.world.getBiome(pos).getSpawnableList(creatureType);
     }
-    
+
     public void recreateStructures(Chunk chunkIn, int x, int z) {}
-    
+
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
       return false;
     }
-    
+
     public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
       return null;
     }
-    
+
     public boolean generateStructures(Chunk chunkIn, int x, int z) {
       return false;
     }
-    
+
     public void setBlocksInChunk(int x, int z, ChunkPrimer primer) {
       this.biomesForGeneration = this.world.getBiomeProvider().getBiomesForGeneration(this.biomesForGeneration, x * 4 - 2, z * 4 - 2, 10, 10);
       generateHeightmap(x * 4, 0, z * 4);
@@ -325,21 +317,21 @@ public class WorldBesideVoid extends GctAllElement {
                     primer.setBlockState(i * 4 + k2, i2 * 8 + j2, l * 4 + l2, STONE);
                   } else if (i2 * 8 + j2 < 63) {
                     primer.setBlockState(i * 4 + k2, i2 * 8 + j2, l * 4 + l2, FLUID);
-                  } 
-                } 
+                  }
+                }
                 d10 += d12;
                 d11 += d13;
-              } 
+              }
               d1 += d5;
               d2 += d6;
               d3 += d7;
               d4 += d8;
-            } 
-          } 
-        } 
-      } 
+            }
+          }
+        }
+      }
     }
-    
+
     private void generateHeightmap(int p_185978_1_, int p_185978_2_, int p_185978_3_) {
       this.depthReg = this.depth.generateNoiseOctaves(this.depthReg, p_185978_1_, p_185978_3_, 5, 5, 200.0D, 200.0D, 0.5D);
       float f = 684.412F;
@@ -364,34 +356,34 @@ public class WorldBesideVoid extends GctAllElement {
               if (this.terrainType == WorldType.AMPLIFIED && f5 > 0.0F) {
                 f5 = 1.0F + f5 * 2.0F;
                 f6 = 1.0F + f6 * 4.0F;
-              } 
+              }
               float f7 = this.biomeWeights[j1 + 2 + (k1 + 2) * 5] / (f5 + 2.0F);
               if (biome1.getBaseHeight() > biome.getBaseHeight())
-                f7 /= 2.0F; 
+                f7 /= 2.0F;
               f2 += f6 * f7;
               f3 += f5 * f7;
               f4 += f7;
-            } 
-          } 
+            }
+          }
           f2 /= f4;
           f3 /= f4;
           f2 = f2 * 0.9F + 0.1F;
           f3 = (f3 * 4.0F - 1.0F) / 8.0F;
           double d7 = this.depthReg[j] / 8000.0D;
           if (d7 < 0.0D)
-            d7 = -d7 * 0.3D; 
+            d7 = -d7 * 0.3D;
           d7 = d7 * 3.0D - 2.0D;
           if (d7 < 0.0D) {
             d7 /= 2.0D;
             if (d7 < -1.0D)
-              d7 = -1.0D; 
+              d7 = -1.0D;
             d7 /= 1.4D;
             d7 /= 2.0D;
           } else {
             if (d7 > 1.0D)
-              d7 = 1.0D; 
+              d7 = 1.0D;
             d7 /= 8.0D;
-          } 
+          }
           j++;
           double d8 = f3;
           double d9 = f2;
@@ -401,7 +393,7 @@ public class WorldBesideVoid extends GctAllElement {
           for (int l1 = 0; l1 < 33; l1++) {
             double d1 = (l1 - d0) * 12.0D * 128.0D / 256.0D / d9;
             if (d1 < 0.0D)
-              d1 *= 4.0D; 
+              d1 *= 4.0D;
             double d2 = this.limitRegMin[i] / 512.0D;
             double d3 = this.limitRegMax[i] / 512.0D;
             double d4 = (this.noiseRegMain[i] / 10.0D + 1.0D) / 2.0D;
@@ -409,22 +401,22 @@ public class WorldBesideVoid extends GctAllElement {
             if (l1 > 29) {
               double d6 = ((l1 - 29) / 3.0F);
               d5 = d5 * (1.0D - d6) + -10.0D * d6;
-            } 
+            }
             this.heightMap[i] = d5;
             i++;
-          } 
-        } 
-      } 
+          }
+        }
+      }
     }
-    
+
     private void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {
       this.depthbuff = this.height.getRegion(this.depthbuff, (x * 16), (z * 16), 16, 16, 0.0625D, 0.0625D, 1.0D);
       for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 16; j++)
-          generateBiomeTerrain(this.world, this.random, primer, x * 16 + i, z * 16 + j, this.depthbuff[j + i * 16], biomesIn[j + i * 16]); 
-      } 
+          generateBiomeTerrain(this.world, this.random, primer, x * 16 + i, z * 16 + j, this.depthbuff[j + i * 16], biomesIn[j + i * 16]);
+      }
     }
-    
+
     public final void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal, Biome biome) {
       int i = 63;
       IBlockState iblockstate = biome.topBlock;
@@ -449,13 +441,13 @@ public class WorldBesideVoid extends GctAllElement {
               } else if (j1 >= i - 4 && j1 <= i + 1) {
                 iblockstate = biome.topBlock;
                 iblockstate1 = biome.fillerBlock;
-              } 
+              }
               if (j1 < i && (iblockstate == null || iblockstate.getMaterial() == Material.AIR))
                 if (biome.getTemperature((BlockPos)blockpos$mutableblockpos.setPos(x, j1, z)) < 0.15F) {
                   iblockstate = FLUID;
                 } else {
                   iblockstate = FLUID;
-                }  
+                }
               j = k;
               if (j1 >= i - 1) {
                 chunkPrimerIn.setBlockState(i1, j1, l, iblockstate);
@@ -465,29 +457,28 @@ public class WorldBesideVoid extends GctAllElement {
                 chunkPrimerIn.setBlockState(i1, j1, l, STONE2);
               } else {
                 chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
-              } 
+              }
             } else if (j > 0) {
               j--;
               chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
               if (j == 0 && iblockstate1.getBlock() == Blocks.SAND && k > 1) {
                 j = rand.nextInt(4) + Math.max(0, j1 - 63);
                 iblockstate1 = (iblockstate1.getValue((IProperty)BlockSand.VARIANT) == BlockSand.EnumType.RED_SAND) ? STONE2 : STONE2;
-              } 
-            } 
-          } 
-        } 
-      } 
+              }
+            }
+          }
+        }
+      }
     }
   }
-  
+
   public static class GenLayerBiomesCustom extends GenLayer {
-    private Biome[] allowedBiomes = new Biome[] { (Biome)Biome.REGISTRY.getObject(new ResourceLocation("gct_all:bloodyplain")), (Biome)Biome.REGISTRY
-        .getObject(new ResourceLocation("gct_all:curruptplain")) };
-    
+    private Biome[] allowedBiomes = new Biome[] { BiomeBloodyplain.biome, BiomeCurruptplain.biome };
+
     public GenLayerBiomesCustom(long seed) {
       super(seed);
     }
-    
+
     public int[] getInts(int x, int z, int width, int depth) {
       int[] dest = IntCache.getIntCache(width * depth);
       for (int dz = 0; dz < depth; dz++) {
@@ -495,30 +486,30 @@ public class WorldBesideVoid extends GctAllElement {
           initChunkSeed((dx + x), (dz + z));
           Biome biome = this.allowedBiomes[nextInt(this.allowedBiomes.length)];
           dest[dx + dz * width] = Biome.getIdForBiome((biome == null) ? Biomes.DEFAULT : biome);
-        } 
-      } 
+        }
+      }
       return dest;
     }
   }
-  
+
   public static class BiomeProviderCustom extends BiomeProvider {
     private GenLayer genBiomes;
-    
+
     private GenLayer biomeIndexLayer;
-    
+
     private BiomeCache biomeCache;
-    
+
     public BiomeProviderCustom() {
       this(0L);
     }
-    
+
     public BiomeProviderCustom(long seed) {
       this.biomeCache = new BiomeCache(this);
       GenLayer[] agenlayer = makeTheWorld(seed);
       this.genBiomes = agenlayer[0];
       this.biomeIndexLayer = agenlayer[1];
     }
-    
+
     private GenLayer[] makeTheWorld(long seed) {
       GenLayer biomes = new WorldBesideVoid.GenLayerBiomesCustom(1L);
       GenLayerZoom genLayerZoom = new GenLayerZoom(1000L, biomes);
@@ -532,35 +523,35 @@ public class WorldBesideVoid extends GctAllElement {
       genLayerVoronoiZoom.initWorldGenSeed(seed);
       return new GenLayer[] { (GenLayer)genLayerZoom, (GenLayer)genLayerVoronoiZoom };
     }
-    
+
     public BiomeProviderCustom(World world) {
       this(world.getSeed());
     }
-    
+
     public void cleanupCache() {
       this.biomeCache.cleanupCache();
     }
-    
+
     public Biome getBiome(BlockPos pos) {
       return getBiome(pos, null);
     }
-    
+
     public Biome getBiome(BlockPos pos, Biome defaultBiome) {
       return this.biomeCache.getBiome(pos.getX(), pos.getZ(), defaultBiome);
     }
-    
+
     public Biome[] getBiomes(Biome[] oldBiomeList, int x, int z, int width, int depth) {
       return getBiomes(oldBiomeList, x, z, width, depth, true);
     }
-    
+
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height) {
       IntCache.resetIntCache();
       if (biomes == null || biomes.length < width * height)
-        biomes = new Biome[width * height]; 
+        biomes = new Biome[width * height];
       int[] aint = this.genBiomes.getInts(x, z, width, height);
       try {
         for (int i = 0; i < width * height; i++)
-          biomes[i] = Biome.getBiome(aint[i], Biomes.DEFAULT); 
+          biomes[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
         return biomes;
       } catch (Throwable throwable) {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
@@ -571,24 +562,24 @@ public class WorldBesideVoid extends GctAllElement {
         crashreportcategory.addCrashSection("w", Integer.valueOf(width));
         crashreportcategory.addCrashSection("h", Integer.valueOf(height));
         throw new ReportedException(crashreport);
-      } 
+      }
     }
-    
+
     public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
       IntCache.resetIntCache();
       if (listToReuse == null || listToReuse.length < width * length)
-        listToReuse = new Biome[width * length]; 
+        listToReuse = new Biome[width * length];
       if (cacheFlag && width == 16 && length == 16 && (x & 0xF) == 0 && (z & 0xF) == 0) {
         Biome[] abiome = this.biomeCache.getCachedBiomes(x, z);
         System.arraycopy(abiome, 0, listToReuse, 0, width * length);
         return listToReuse;
-      } 
+      }
       int[] aint = this.biomeIndexLayer.getInts(x, z, width, length);
       for (int i = 0; i < width * length; i++)
-        listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT); 
+        listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
       return listToReuse;
     }
-    
+
     public boolean areBiomesViable(int x, int z, int radius, List<Biome> allowed) {
       IntCache.resetIntCache();
       int i = x - radius >> 2;
@@ -602,8 +593,8 @@ public class WorldBesideVoid extends GctAllElement {
         for (int k1 = 0; k1 < i1 * j1; k1++) {
           Biome biome = Biome.getBiome(aint[k1]);
           if (!allowed.contains(biome))
-            return false; 
-        } 
+            return false;
+        }
         return true;
       } catch (Throwable throwable) {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
@@ -614,9 +605,9 @@ public class WorldBesideVoid extends GctAllElement {
         crashreportcategory.addCrashSection("radius", Integer.valueOf(radius));
         crashreportcategory.addCrashSection("allowed", allowed);
         throw new ReportedException(crashreport);
-      } 
+      }
     }
-    
+
     @Nullable
     public BlockPos findBiomePosition(int x, int z, int range, List<Biome> biomes, Random random) {
       IntCache.resetIntCache();
@@ -636,8 +627,8 @@ public class WorldBesideVoid extends GctAllElement {
         if (biomes.contains(biome) && (blockpos == null || random.nextInt(k1 + 1) == 0)) {
           blockpos = new BlockPos(i2, 0, j2);
           k1++;
-        } 
-      } 
+        }
+      }
       return blockpos;
     }
   }

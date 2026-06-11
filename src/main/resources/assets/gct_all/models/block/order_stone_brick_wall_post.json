@@ -1,0 +1,7 @@
+﻿{
+  "parent": "block/wall_post",
+  "textures": {
+    "wall": "gct_all:blocks/order_stonebrick",
+    "particle": "gct_all:blocks/order_stonebrick"
+  }
+}

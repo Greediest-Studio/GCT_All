@@ -1,7 +1,6 @@
 package com.gmm.gctall.client;
 
 import com.gmm.gctall.Tags;
-import com.gmm.gctall.block.BlockBaseOre;
 import com.gmm.gctall.registry.GctAllContent;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -19,18 +18,7 @@ public final class GctAllModels {
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
-        for (GctAllContent.ItemModel model : GctAllContent.INSTANCE.getItemModels()) {
-            item(model.getItem(), model.getRegistryName());
-        }
-        GctAllContent.INSTANCE.getElements().forEach(element -> element.registerModels(event));
-
-        for (BlockBaseOre ore : com.gmm.gctall.registry.GctBasesBlocks.getOres()) {
-            block(ore);
-        }
-        block(com.gmm.gctall.registry.GctMacBlocks.ATOMIC_VIBERATOR);
-        block(com.gmm.gctall.registry.GctMacBlocks.ATOMIC_DECAYER);
-        block(com.gmm.gctall.registry.GctMacBlocks.ATOMIC_ACIDOR);
-        block(com.gmm.gctall.registry.GctMacBlocks.ENDER_FORGE);
+        GctAllContent.registerModels(event);
     }
 
     public static void item(Item item, String registryName) {
@@ -42,4 +30,5 @@ public final class GctAllModels {
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), 0,
                 new ModelResourceLocation(block.getRegistryName(), "inventory"));
     }
+
 }

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProElfTrade;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -43,39 +40,32 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityElf extends GctAllElement {
+public final class EntityElf {
   public static final int ENTITYID = 39;
-  
-  public static final int ENTITYID_RANGED = 40;
-  
-  public EntityElf(GctAllContent instance) {
-    super(instance, 293);
+
+  public static final int ENTITYID_RANGED = 40;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(ElfEntity.class).id(new ResourceLocation("gct_all", "elf"), 39).name("elf").tracker(64, 3, true).egg(-1, -1).build());
   }
-  
-  public void initElements() {
-    this.elements.entities.add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "elf"), 39).name("elf").tracker(64, 3, true).egg(-1, -1).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelZombie(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(ElfEntity.class, renderManager -> new RenderLiving(renderManager, new ModelZombie(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/elf.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
-    public EntityCustom(World world) {
+
+  public static class ElfEntity extends EntityMob {
+    public ElfEntity(World world) {
       super(world);
       setSize(0.6F, 1.8F);
       this.experienceValue = 0;
@@ -83,7 +73,7 @@ public class EntityElf extends GctAllElement {
       setNoAI(false);
       enablePersistence();
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
@@ -92,35 +82,35 @@ public class EntityElf extends GctAllElement {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.tasks.addTask(5, (EntityAIBase)new EntityAISwimming((EntityLiving)this));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public boolean processInteract(EntityPlayer entity, EnumHand hand) {
       super.processInteract(entity, hand);
       int x = (int)this.posX;
@@ -136,35 +126,35 @@ public class EntityElf extends GctAllElement {
       ProcedureProElfTrade.executeProcedure($_dependencies);
       return true;
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.2D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
   }
-  
+
   public static class ModelZombie extends ModelBase {
     public ModelRenderer bipedRightArm;
-    
+
     public ModelRenderer bipedRightLeg;
-    
+
     public ModelRenderer bipedHead;
-    
+
     public ModelRenderer bipedBody;
-    
+
     public ModelRenderer bipedLeftArm;
-    
+
     public ModelRenderer bipedLeftLeg;
-    
+
     public ModelRenderer bipedHeadwear;
-    
+
     public ModelZombie() {
       this.textureWidth = 64;
       this.textureHeight = 64;
@@ -194,7 +184,7 @@ public class EntityElf extends GctAllElement {
       this.bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
       this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F);
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.bipedHead.render(f5);
       this.bipedRightArm.render(f5);
@@ -204,13 +194,13 @@ public class EntityElf extends GctAllElement {
       this.bipedLeftLeg.render(f5);
       this.bipedBody.render(f5);
     }
-    
+
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.bipedRightArm.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.1415927F) * f1;

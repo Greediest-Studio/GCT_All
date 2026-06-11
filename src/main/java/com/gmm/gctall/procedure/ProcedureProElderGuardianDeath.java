@@ -2,9 +2,6 @@ package com.gmm.gctall.procedure;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemAtlantis;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -15,12 +12,10 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Tag
-public class ProcedureProElderGuardianDeath extends GctAllElement {
-  public ProcedureProElderGuardianDeath(GctAllContent instance) {
-    super(instance, 270);
+public final class ProcedureProElderGuardianDeath {
+  private ProcedureProElderGuardianDeath() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProElderGuardianDeath", "entity", "x", "y", "z", "world"))
       return;
@@ -29,14 +24,14 @@ public class ProcedureProElderGuardianDeath extends GctAllElement {
     int y = ProcedureContext.y(dependencies);
     int z = ProcedureContext.z(dependencies);
     World world = ProcedureContext.world(dependencies);
-    if (entity instanceof net.minecraft.entity.monster.EntityElderGuardian && 
+    if (entity instanceof net.minecraft.entity.monster.EntityElderGuardian &&
       !world.isRemote) {
       EntityItem entityToSpawn = new EntityItem(world, x, y, z, new ItemStack(ItemAtlantis.block, 1));
       entityToSpawn.setPickupDelay(10);
       world.spawnEntity((Entity)entityToSpawn);
-    } 
+    }
   }
-  
+
   @SubscribeEvent
   public void onEntityDeath(LivingDeathEvent event) {
     if (event != null && event.getEntity() != null) {
@@ -53,9 +48,9 @@ public class ProcedureProElderGuardianDeath extends GctAllElement {
       dependencies.put("entity", entity);
       dependencies.put("event", event);
       executeProcedure(dependencies);
-    } 
+    }
   }
-  
+
   public void preInit(FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(this);
   }

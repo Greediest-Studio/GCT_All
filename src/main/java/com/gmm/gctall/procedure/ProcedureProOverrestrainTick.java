@@ -3,9 +3,6 @@ package com.gmm.gctall.procedure;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.potion.PotionOverrestrain;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,12 +14,10 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@Tag
-public class ProcedureProOverrestrainTick extends GctAllElement {
-  public ProcedureProOverrestrainTick(GctAllContent instance) {
-    super(instance, 147);
+public final class ProcedureProOverrestrainTick {
+  private ProcedureProOverrestrainTick() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProOverrestrainTick", "entity"))
       return;
@@ -33,21 +28,21 @@ public class ProcedureProOverrestrainTick extends GctAllElement {
             Collection<PotionEffect> effects = ((EntityLivingBase)entity).getActivePotionEffects();
             for (PotionEffect effect : effects) {
               if (effect.getPotion() == PotionOverrestrain.potion)
-                return true; 
-            } 
-          } 
+                return true;
+            }
+          }
           return false;
         }
       }).check())
       if (((entity instanceof EntityLivingBase) ? ((EntityLivingBase)entity)
         .getHealth() : -1.0F) <= ((entity instanceof EntityLivingBase) ? ((EntityLivingBase)entity)
-        .getMaxHealth() : -1.0F) * 0.7D && 
+        .getMaxHealth() : -1.0F) * 0.7D &&
         entity instanceof EntityLivingBase)
         ((EntityLivingBase)entity)
           .setHealth(
-            (float)(((entity instanceof EntityLivingBase) ? ((EntityLivingBase)entity).getHealth() : -1.0F) + ((entity instanceof EntityLivingBase) ? ((EntityLivingBase)entity).getMaxHealth() : -1.0F) * 0.03D));  
+            (float)(((entity instanceof EntityLivingBase) ? ((EntityLivingBase)entity).getHealth() : -1.0F) + ((entity instanceof EntityLivingBase) ? ((EntityLivingBase)entity).getMaxHealth() : -1.0F) * 0.03D));
   }
-  
+
   @SubscribeEvent
   public void onPlayerTick(TickEvent.PlayerTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
@@ -64,9 +59,9 @@ public class ProcedureProOverrestrainTick extends GctAllElement {
       dependencies.put("entity", entityPlayer);
       dependencies.put("event", event);
       executeProcedure(dependencies);
-    } 
+    }
   }
-  
+
   public void preInit(FMLPreInitializationEvent event) {
     MinecraftForge.EVENT_BUS.register(this);
   }

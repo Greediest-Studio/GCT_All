@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProApocalypseHolder;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSilverfish;
@@ -34,32 +31,24 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityApocalypseHolder extends GctAllElement {
+public final class EntityApocalypseHolder {
   public static final int ENTITYID = 37;
-  
-  public static final int ENTITYID_RANGED = 38;
-  
-  public EntityApocalypseHolder(GctAllContent instance) {
-    super(instance, 200);
+
+  public static final int ENTITYID_RANGED = 38;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(ApocalypseHolderEntity.class).id(new ResourceLocation("gct_all", "apocalypse_holder"), 37).name("apocalypse_holder").tracker(64, 3, true).egg(-1, -1).build());
   }
-  
-  public void initElements() {
-    this.elements.entities
-      .add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "apocalypse_holder"), 37).name("apocalypse_holder").tracker(64, 3, true).egg(-1, -1).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(ApocalypseHolderEntity.class, renderManager -> {
           RenderLiving customRender = new RenderLiving(renderManager, (ModelBase)new ModelSilverfish(), 0.5F) {
               protected ResourceLocation getEntityTexture(Entity entity) {
                 return new ResourceLocation("gct_all:textures/holder.png");
@@ -69,9 +58,9 @@ public class EntityApocalypseHolder extends GctAllElement {
           return (Render)customRender;
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
-    public EntityCustom(World world) {
+
+  public static class ApocalypseHolderEntity extends EntityMob {
+    public ApocalypseHolderEntity(World world) {
       super(world);
       setSize(0.4F, 0.3F);
       this.experienceValue = 0;
@@ -79,59 +68,59 @@ public class EntityApocalypseHolder extends GctAllElement {
       setNoAI(true);
       enablePersistence();
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityArrow)
-        return false; 
+        return false;
       if (source.getImmediateSource() instanceof net.minecraft.entity.player.EntityPlayer)
-        return false; 
+        return false;
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       if (source == DamageSource.CACTUS)
-        return false; 
+        return false;
       if (source == DamageSource.DROWN)
-        return false; 
+        return false;
       if (source == DamageSource.LIGHTNING_BOLT)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      ApocalypseHolderEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("entity", entityCustom);
       $_dependencies.put("x", Integer.valueOf(x));
@@ -140,19 +129,19 @@ public class EntityApocalypseHolder extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProApocalypseHolder.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
-    
+
     public boolean canBeCollidedWith() {
       return false;
     }

@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureAbyssPlagueOnEntityTickUpdate;
 import com.gmm.gctall.procedure.ProcedureAbyssPlaguePlayerCollidesWithThisEntity;
 import com.gmm.gctall.procedure.ProcedureAncientShoggothEntityDies;
@@ -50,41 +47,34 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityAncientShoggoth extends GctAllElement {
+public final class EntityAncientShoggoth {
   public static final int ENTITYID = 3;
-  
-  public static final int ENTITYID_RANGED = 4;
-  
-  public EntityAncientShoggoth(GctAllContent instance) {
-    super(instance, 7);
+
+  public static final int ENTITYID_RANGED = 4;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(AncientShoggothEntity.class).id(new ResourceLocation("gct_all", "ancientshoggoth"), 3).name("ancientshoggoth").tracker(256, 3, true).egg(-16777216, -16777216).build());
   }
-  
-  public void initElements() {
-    registerEntity(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "ancientshoggoth"), 3).name("ancientshoggoth").tracker(256, 3, true).egg(-16777216, -16777216).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelAncientShoggoth(), 8.0F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(AncientShoggothEntity.class, renderManager -> new RenderLiving(renderManager, new ModelAncientShoggoth(), 8.0F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/as.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
+
+  public static class AncientShoggothEntity extends EntityMob {
     private final BossInfoServer bossInfo;
-    
-    public EntityCustom(World world) {
+
+    public AncientShoggothEntity(World world) {
       super(world);
       this.bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
       setSize(8.0F, 8.0F);
@@ -93,7 +83,7 @@ public class EntityAncientShoggoth extends GctAllElement {
       setNoAI(false);
       enablePersistence();
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIWander((EntityCreature)this, 1.0D));
@@ -104,49 +94,49 @@ public class EntityAncientShoggoth extends GctAllElement {
       this.targetTasks.addTask(6, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, true, new Class[0]));
       this.targetTasks.addTask(7, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:shoggoth_ambient"));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:shoggoth_hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:shoggoth_death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       if (source == DamageSource.CACTUS)
-        return false; 
+        return false;
       if (source == DamageSource.DROWN)
-        return false; 
+        return false;
       if (source == DamageSource.LIGHTNING_BOLT)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
       int x = (int)this.posX;
@@ -159,7 +149,7 @@ public class EntityAncientShoggoth extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureAncientShoggothEntityDies.executeProcedure($_dependencies);
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
@@ -172,7 +162,7 @@ public class EntityAncientShoggoth extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureAbyssPlagueOnEntityTickUpdate.executeProcedure($_dependencies);
     }
-    
+
     public void onCollideWithPlayer(EntityPlayer entity) {
       super.onCollideWithPlayer(entity);
       int x = (int)this.posX;
@@ -182,38 +172,38 @@ public class EntityAncientShoggoth extends GctAllElement {
       $_dependencies.put("entity", entity);
       ProcedureAbyssPlaguePlayerCollidesWithThisEntity.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(2.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120000.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(120000.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(25.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(25.0D);
     }
-    
+
     public boolean isNonBoss() {
       return false;
     }
-    
+
     public void addTrackingPlayer(EntityPlayerMP player) {
       super.addTrackingPlayer(player);
       this.bossInfo.addPlayer(player);
     }
-    
+
     public void removeTrackingPlayer(EntityPlayerMP player) {
       super.removeTrackingPlayer(player);
       this.bossInfo.removePlayer(player);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       this.bossInfo.setPercent(getHealth() / getMaxHealth());
     }
-    
+
     public void onLivingUpdate() {
       super.onLivingUpdate();
       int i = (int)this.posX;
@@ -229,311 +219,311 @@ public class EntityAncientShoggoth extends GctAllElement {
         double d4 = (random.nextFloat() - 0.5D) * 0.5D;
         double d5 = (random.nextFloat() - 0.5D) * 0.5D;
         this.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0, d1, d2, d3, d4, d5, new int[0]);
-      } 
+      }
     }
   }
-  
+
   public static class ModelAncientShoggoth extends ModelBase {
     public ModelRenderer headJoint;
-    
+
     public ModelRenderer bodyBase;
-    
+
     public ModelRenderer headJointChild;
-    
+
     public ModelRenderer headJointChildChild;
-    
+
     public ModelRenderer headJointChildChild_1;
-    
+
     public ModelRenderer headJointChildChild_2;
-    
+
     public ModelRenderer headJointChildChild_3;
-    
+
     public ModelRenderer headJointChildChild_4;
-    
+
     public ModelRenderer headJointChildChild_5;
-    
+
     public ModelRenderer headJointChildChild_6;
-    
+
     public ModelRenderer headJointChildChild_7;
-    
+
     public ModelRenderer headJointChildChild_8;
-    
+
     public ModelRenderer headJointChildChild_9;
-    
+
     public ModelRenderer headJointChildChild_10;
-    
+
     public ModelRenderer headJointChildChildChild;
-    
+
     public ModelRenderer headJointChildChildChild_1;
-    
+
     public ModelRenderer headJointChildChildChild_2;
-    
+
     public ModelRenderer headJointChildChildChild_3;
-    
+
     public ModelRenderer headJointChildChildChild_4;
-    
+
     public ModelRenderer headJointChildChildChild_5;
-    
+
     public ModelRenderer headJointChildChildChild_6;
-    
+
     public ModelRenderer headJointChildChildChild_7;
-    
+
     public ModelRenderer headJointChildChildChild_8;
-    
+
     public ModelRenderer headJointChildChildChild_9;
-    
+
     public ModelRenderer headJointChildChildChild_10;
-    
+
     public ModelRenderer headJointChildChildChildChild;
-    
+
     public ModelRenderer headJointChildChildChildChild_1;
-    
+
     public ModelRenderer headJointChildChildChild_11;
-    
+
     public ModelRenderer headJointChildChildChild_12;
-    
+
     public ModelRenderer headJointChildChildChild_13;
-    
+
     public ModelRenderer headJointChildChildChild_14;
-    
+
     public ModelRenderer headJointChildChildChild_15;
-    
+
     public ModelRenderer headJointChildChildChild_16;
-    
+
     public ModelRenderer headJointChildChildChild_17;
-    
+
     public ModelRenderer headJointChildChildChild_18;
-    
+
     public ModelRenderer headJointChildChildChild_19;
-    
+
     public ModelRenderer headJointChildChildChildChild_2;
-    
+
     public ModelRenderer headJointChildChildChildChild_3;
-    
+
     public ModelRenderer headJointChildChildChild_20;
-    
+
     public ModelRenderer headJointChildChildChild_21;
-    
+
     public ModelRenderer headJointChildChildChild_22;
-    
+
     public ModelRenderer headJointChildChildChild_23;
-    
+
     public ModelRenderer headJointChildChildChild_24;
-    
+
     public ModelRenderer headJointChildChildChild_25;
-    
+
     public ModelRenderer headJointChildChildChild_26;
-    
+
     public ModelRenderer headJointChildChildChild_27;
-    
+
     public ModelRenderer headJointChildChildChild_28;
-    
+
     public ModelRenderer headJointChildChildChild_29;
-    
+
     public ModelRenderer headJointChildChildChildChild_4;
-    
+
     public ModelRenderer headJointChildChildChildChild_5;
-    
+
     public ModelRenderer bodyBaseChild;
-    
+
     public ModelRenderer bodyBaseChild_1;
-    
+
     public ModelRenderer bodyBaseChild_2;
-    
+
     public ModelRenderer bodyBaseChild_3;
-    
+
     public ModelRenderer bodyBaseChild_4;
-    
+
     public ModelRenderer bodyBaseChild_5;
-    
+
     public ModelRenderer bodyBaseChild_6;
-    
+
     public ModelRenderer bodyBaseChild_7;
-    
+
     public ModelRenderer bodyBaseChild_8;
-    
+
     public ModelRenderer bodyBaseChild_9;
-    
+
     public ModelRenderer bodyBaseChildChild;
-    
+
     public ModelRenderer bodyBaseChildChildChild;
-    
+
     public ModelRenderer bodyBaseChildChildChild_1;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild;
-    
+
     public ModelRenderer bodyBaseChildChild_1;
-    
+
     public ModelRenderer bodyBaseChildChild_2;
-    
+
     public ModelRenderer bodyBaseChildChildChild_2;
-    
+
     public ModelRenderer bodyBaseChildChild_3;
-    
+
     public ModelRenderer bodyBaseChildChild_4;
-    
+
     public ModelRenderer bodyBaseChildChild_5;
-    
+
     public ModelRenderer bodyBaseChildChild_6;
-    
+
     public ModelRenderer bodyBaseChildChild_7;
-    
+
     public ModelRenderer bodyBaseChildChild_8;
-    
+
     public ModelRenderer bodyBaseChildChild_9;
-    
+
     public ModelRenderer bodyBaseChildChild_10;
-    
+
     public ModelRenderer bodyBaseChildChild_11;
-    
+
     public ModelRenderer bodyBaseChildChild_12;
-    
+
     public ModelRenderer bodyBaseChildChild_13;
-    
+
     public ModelRenderer bodyBaseChildChild_14;
-    
+
     public ModelRenderer bodyBaseChildChild_15;
-    
+
     public ModelRenderer bodyBaseChildChild_16;
-    
+
     public ModelRenderer bodyBaseChildChild_17;
-    
+
     public ModelRenderer bodyBaseChildChild_18;
-    
+
     public ModelRenderer bodyBaseChildChild_19;
-    
+
     public ModelRenderer bodyBaseChildChildChild_3;
-    
+
     public ModelRenderer bodyBaseChildChildChild_4;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_1;
-    
+
     public ModelRenderer bodyBaseChildChildChild_5;
-    
+
     public ModelRenderer bodyBaseChildChildChild_6;
-    
+
     public ModelRenderer bodyBaseChildChildChild_7;
-    
+
     public ModelRenderer bodyBaseChildChildChild_8;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_2;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_1;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_2;
-    
+
     public ModelRenderer bodyBaseChildChildChild_9;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_3;
-    
+
     public ModelRenderer bodyBaseChildChildChild_10;
-    
+
     public ModelRenderer bodyBaseChildChildChild_11;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_4;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_5;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_6;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_3;
-    
+
     public ModelRenderer bodyBaseChildChildChild_12;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_7;
-    
+
     public ModelRenderer bodyBaseChildChildChild_13;
-    
+
     public ModelRenderer bodyBaseChildChildChild_14;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_8;
-    
+
     public ModelRenderer bodyBaseChildChildChild_15;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_9;
-    
+
     public ModelRenderer bodyBaseChildChildChild_16;
-    
+
     public ModelRenderer bodyBaseChildChildChild_17;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_10;
-    
+
     public ModelRenderer bodyBaseChildChildChild_18;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_11;
-    
+
     public ModelRenderer bodyBaseChildChildChild_19;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_12;
-    
+
     public ModelRenderer bodyBaseChildChild_20;
-    
+
     public ModelRenderer bodyBaseChildChildChild_20;
-    
+
     public ModelRenderer bodyBaseChildChild_21;
-    
+
     public ModelRenderer bodyBaseChildChild_22;
-    
+
     public ModelRenderer bodyBaseChildChildChild_21;
-    
+
     public ModelRenderer bodyBaseChildChildChild_22;
-    
+
     public ModelRenderer bodyBaseChildChild_23;
-    
+
     public ModelRenderer bodyBaseChildChildChild_23;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_13;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_14;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_4;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_5;
-    
+
     public ModelRenderer bodyBaseChildChild_24;
-    
+
     public ModelRenderer bodyBaseChildChild_25;
-    
+
     public ModelRenderer bodyBaseChildChildChild_24;
-    
+
     public ModelRenderer bodyBaseChildChild_26;
-    
+
     public ModelRenderer bodyBaseChildChildChild_25;
-    
+
     public ModelRenderer bodyBaseChildChildChild_26;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_15;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_6;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_7;
-    
+
     public ModelRenderer bodyBaseChildChild_27;
-    
+
     public ModelRenderer bodyBaseChildChildChild_27;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_16;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_17;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_8;
-    
+
     public ModelRenderer bodyBaseChildChild_28;
-    
+
     public ModelRenderer bodyBaseChildChild_29;
-    
+
     public ModelRenderer bodyBaseChildChildChild_28;
-    
+
     public ModelRenderer bodyBaseChildChildChild_29;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_18;
-    
+
     public ModelRenderer bodyBaseChildChildChildChild_19;
-    
+
     public ModelRenderer bodyBaseChildChildChildChildChild_9;
-    
+
     public ModelAncientShoggoth() {
       this.textureWidth = 128;
       this.textureHeight = 128;
@@ -1293,7 +1283,7 @@ public class EntityAncientShoggoth extends GctAllElement {
       this.bodyBaseChildChild_29.addChild(this.bodyBaseChildChildChild_29);
       this.bodyBaseChildChildChild_10.addChild(this.bodyBaseChildChildChildChild_4);
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       GlStateManager.pushMatrix();
       GlStateManager.translate(this.bodyBase.offsetX, this.bodyBase.offsetY, this.bodyBase.offsetZ);
@@ -1312,13 +1302,13 @@ public class EntityAncientShoggoth extends GctAllElement {
       this.headJoint.render(f5);
       GlStateManager.popMatrix();
     }
-    
+
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.headJoint.rotateAngleY = f3 / 57.295776F;

@@ -1,0 +1,22 @@
+{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "1": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "2": {
+      "item": "gct_all:order_stone_brick_crashed"
+    }
+  },
+  "result": {
+    "item": "gct_all:order_stone_brick_crashed_slab",
+    "count": 6
+  }
+}

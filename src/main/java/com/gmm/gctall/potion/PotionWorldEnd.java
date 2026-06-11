@@ -3,9 +3,6 @@ package com.gmm.gctall.potion;
 import java.util.HashMap;
 import java.util.Map;
 import com.gmm.gctall.Tags;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProWorldEndTick;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -18,50 +15,42 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class PotionWorldEnd extends GctAllElement {
-  public static final Potion potion = new PotionCustom();
-  
-  public static final PotionType potionType = new PotionTypeCustom();
-  
-  public PotionWorldEnd(GctAllContent instance) {
-    super(instance, 136);
+public final class PotionWorldEnd {
+  public static final Potion potion = new WorldEndEffect();
+
+  public static final PotionType potionType = new WorldEndEffectType();
+  private PotionWorldEnd() {
   }
-  
-  public void initElements() {
-    registerPotion(() -> potion);
-    registerPotionType(() -> potionType);
-  }
-  
-  public static class PotionTypeCustom extends PotionType {
-    public PotionTypeCustom() {
+
+  public static class WorldEndEffectType extends PotionType {
+    public WorldEndEffectType() {
       super(new PotionEffect[] { new PotionEffect(PotionWorldEnd.potion, 3600) });
       setRegistryName(new ResourceLocation(Tags.MOD_ID, "world_end"));
     }
   }
-  
-  public static class PotionCustom extends Potion {
+
+  public static class WorldEndEffect extends Potion {
     private final ResourceLocation potionIcon;
-    
-    public PotionCustom() {
+
+    public WorldEndEffect() {
       super(false, -16777216);
       setRegistryName(new ResourceLocation(Tags.MOD_ID, "world_end"));
       setPotionName("effect.world_end");
       this.potionIcon = new ResourceLocation("gct_all:textures/mob_effect/world_end.png");
     }
-    
+
     public boolean isInstant() {
       return false;
     }
-    
+
     public boolean shouldRenderInvText(PotionEffect effect) {
       return true;
     }
-    
+
     public boolean shouldRenderHUD(PotionEffect effect) {
       return true;
     }
-    
+
     public void performEffect(EntityLivingBase entity, int amplifier) {
       World world = entity.world;
       int x = (int)entity.posX;
@@ -71,21 +60,21 @@ public class PotionWorldEnd extends GctAllElement {
       $_dependencies.put("entity", entity);
       ProcedureProWorldEndTick.executeProcedure($_dependencies);
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void renderInventoryEffect(int x, int y, PotionEffect effect, Minecraft mc) {
       if (mc.currentScreen != null) {
         mc.getTextureManager().bindTexture(this.potionIcon);
         Gui.drawModalRectWithCustomSizedTexture(x + 6, y + 7, 0.0F, 0.0F, 18, 18, 18.0F, 18.0F);
-      } 
+      }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void renderHUDEffect(int x, int y, PotionEffect effect, Minecraft mc, float alpha) {
       mc.getTextureManager().bindTexture(this.potionIcon);
       Gui.drawModalRectWithCustomSizedTexture(x + 3, y + 3, 0.0F, 0.0F, 18, 18, 18.0F, 18.0F);
     }
-    
+
     public boolean isReady(int duration, int amplifier) {
       return true;
     }

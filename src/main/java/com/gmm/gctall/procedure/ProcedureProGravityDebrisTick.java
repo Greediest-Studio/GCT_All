@@ -1,20 +1,15 @@
 package com.gmm.gctall.procedure;
 
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.block.BlockGravityDebris;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-@Tag
-public class ProcedureProGravityDebrisTick extends GctAllElement {
-  public ProcedureProGravityDebrisTick(GctAllContent instance) {
-    super(instance, 377);
+public final class ProcedureProGravityDebrisTick {
+  private ProcedureProGravityDebrisTick() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProGravityDebrisTick", "x", "y", "z", "world"))
       return;
@@ -28,7 +23,7 @@ public class ProcedureProGravityDebrisTick extends GctAllElement {
       } else {
         world.setBlockToAir(new BlockPos(x, y, z));
         world.setBlockState(new BlockPos(x, y + 1, z), BlockGravityDebris.block.getDefaultState(), 3);
-      }  
+      }
   }
 }
 

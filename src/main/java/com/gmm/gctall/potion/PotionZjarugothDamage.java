@@ -3,9 +3,6 @@ package com.gmm.gctall.potion;
 import java.util.HashMap;
 import java.util.Map;
 import com.gmm.gctall.Tags;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureZjarugothDamagePotionStartedapplied;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,40 +11,33 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
-@Tag
-public class PotionZjarugothDamage extends GctAllElement {
-  public static final Potion potion = new PotionCustom();
-  
-  public PotionZjarugothDamage(GctAllContent instance) {
-    super(instance, 78);
+public final class PotionZjarugothDamage {
+  public static final Potion potion = new ZjarugothDamageEffect();
+  private PotionZjarugothDamage() {
   }
-  
-  public void initElements() {
-    registerPotion(() -> new PotionCustom());
-  }
-  
-  public static class PotionCustom extends Potion {
+
+  public static class ZjarugothDamageEffect extends Potion {
     private final ResourceLocation potionIcon;
-    
-    public PotionCustom() {
+
+    public ZjarugothDamageEffect() {
       super(true, -1);
       setRegistryName(new ResourceLocation(Tags.MOD_ID, "zjarugoth_damage"));
       setPotionName("effect.zjarugoth_damage");
       this.potionIcon = new ResourceLocation("gct_all:textures/mob_effect/zjarugoth_damage.png");
     }
-    
+
     public boolean isInstant() {
       return true;
     }
-    
+
     public boolean shouldRenderInvText(PotionEffect effect) {
       return false;
     }
-    
+
     public boolean shouldRenderHUD(PotionEffect effect) {
       return false;
     }
-    
+
     public void affectEntity(Entity source, Entity indirectSource, EntityLivingBase entity, int amplifier, double health) {
       World world = entity.world;
       int x = (int)entity.posX;
@@ -57,7 +47,7 @@ public class PotionZjarugothDamage extends GctAllElement {
       $_dependencies.put("entity", entity);
       ProcedureZjarugothDamagePotionStartedapplied.executeProcedure($_dependencies);
     }
-    
+
     public boolean isReady(int duration, int amplifier) {
       return true;
     }

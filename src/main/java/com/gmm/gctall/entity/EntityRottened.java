@@ -1,8 +1,5 @@
 package com.gmm.gctall.entity;
 
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.Render;
@@ -37,43 +34,36 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityRottened extends GctAllElement {
+public final class EntityRottened {
   public static final int ENTITYID = 25;
-  
-  public static final int ENTITYID_RANGED = 26;
-  
-  public EntityRottened(GctAllContent instance) {
-    super(instance, 7);
+
+  public static final int ENTITYID_RANGED = 26;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(RottenedEntity.class).id(new ResourceLocation("gct_all", "rottened"), 25).name("rottened").tracker(64, 3, true).egg(-6750004, -13434727).build());
   }
-  
-  public void initElements() {
-    this.elements.entities.add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "rottened"), 25).name("rottened").tracker(64, 3, true).egg(-6750004, -13434727).build());
-  }
-  
-  public void init(FMLInitializationEvent event) {
+
+  public static void init(FMLInitializationEvent event) {
     Biome[] spawnBiomes = { (Biome)Biome.REGISTRY.getObject(new ResourceLocation("gct_all:bloodyplain")), (Biome)Biome.REGISTRY.getObject(new ResourceLocation("gct_all:curruptplain")) };
-    EntityRegistry.addSpawn(EntityCustom.class, 30, 4, 4, EnumCreatureType.MONSTER, spawnBiomes);
+    EntityRegistry.addSpawn(RottenedEntity.class, 30, 4, 4, EnumCreatureType.MONSTER, spawnBiomes);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelZombie(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(RottenedEntity.class, renderManager -> new RenderLiving(renderManager, new ModelZombie(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/rottened.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityZombie {
-    public EntityCustom(World world) {
+
+  public static class RottenedEntity extends EntityZombie {
+    public RottenedEntity(World world) {
       super(world);
       setSize(0.6F, 1.8F);
       this.experienceValue = 5;
       this.isImmuneToFire = true;
       setNoAI(false);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
@@ -82,65 +72,65 @@ public class EntityRottened extends GctAllElement {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.tasks.addTask(5, (EntityAIBase)new EntityAISwimming((EntityLiving)this));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEAD;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.zombie.ambient"));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.zombie.hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.zombie.death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.6D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(20.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D);
     }
   }
-  
+
   public static class ModelZombie extends ModelBase {
     public ModelRenderer bipedRightArm;
-    
+
     public ModelRenderer bipedRightLeg;
-    
+
     public ModelRenderer bipedHead;
-    
+
     public ModelRenderer bipedBody;
-    
+
     public ModelRenderer bipedLeftArm;
-    
+
     public ModelRenderer bipedLeftLeg;
-    
+
     public ModelRenderer bipedHeadwear;
-    
+
     public ModelZombie() {
       this.textureWidth = 64;
       this.textureHeight = 64;
@@ -170,7 +160,7 @@ public class EntityRottened extends GctAllElement {
       this.bipedBody.setRotationPoint(0.0F, 0.0F, 0.0F);
       this.bipedBody.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.0F);
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.bipedHead.render(f5);
       this.bipedRightArm.render(f5);
@@ -180,13 +170,13 @@ public class EntityRottened extends GctAllElement {
       this.bipedLeftLeg.render(f5);
       this.bipedBody.render(f5);
     }
-    
+
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.bipedRightArm.rotateAngleX = MathHelper.cos(f * 0.6662F + 3.1415927F) * f1;

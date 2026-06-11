@@ -6,9 +6,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProZethurSkill;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
@@ -54,41 +51,34 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityZethur extends GctAllElement {
+public final class EntityZethur {
   public static final int ENTITYID = 29;
-  
-  public static final int ENTITYID_RANGED = 30;
-  
-  public EntityZethur(GctAllContent instance) {
-    super(instance, 194);
+
+  public static final int ENTITYID_RANGED = 30;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(ZethurEntity.class).id(new ResourceLocation("gct_all", "zethur"), 29).name("zethur").tracker(256, 3, true).egg(-16777216, -10066330).build());
   }
-  
-  public void initElements() {
-    this.elements.entities.add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "zethur"), 29).name("zethur").tracker(256, 3, true).egg(-16777216, -10066330).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelZephyrModel(), 4.0F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(ZethurEntity.class, renderManager -> new RenderLiving(renderManager, new ModelZephyrModel(), 4.0F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/zephyr.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
+
+  public static class ZethurEntity extends EntityMob {
     private final BossInfoServer bossInfo;
-    
-    public EntityCustom(World world) {
+
+    public ZethurEntity(World world) {
       super(world);
       this.bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.PURPLE, BossInfo.Overlay.PROGRESS);
       setSize(4.0F, 1.8F);
@@ -99,47 +89,47 @@ public class EntityZethur extends GctAllElement {
       this.navigator = (PathNavigate)new PathNavigateFlying((EntityLiving)this, this.world);
       this.moveHelper = (EntityMoveHelper)new EntityFlyHelper((EntityLiving)this);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, new EntityAIBase() {
             public boolean shouldExecute() {
-              if (EntityZethur.EntityCustom.this.getAttackTarget() != null && !EntityZethur.EntityCustom.this.getMoveHelper().isUpdating())
-                return true; 
+              if (EntityZethur.ZethurEntity.this.getAttackTarget() != null && !EntityZethur.ZethurEntity.this.getMoveHelper().isUpdating())
+                return true;
               return false;
             }
-            
+
             public boolean shouldContinueExecuting() {
-              return (EntityZethur.EntityCustom.this.getMoveHelper().isUpdating() && EntityZethur.EntityCustom.this.getAttackTarget() != null && EntityZethur.EntityCustom.this.getAttackTarget().isEntityAlive());
+              return (EntityZethur.ZethurEntity.this.getMoveHelper().isUpdating() && EntityZethur.ZethurEntity.this.getAttackTarget() != null && EntityZethur.ZethurEntity.this.getAttackTarget().isEntityAlive());
             }
-            
+
             public void startExecuting() {
-              EntityLivingBase livingentity = EntityZethur.EntityCustom.this.getAttackTarget();
+              EntityLivingBase livingentity = EntityZethur.ZethurEntity.this.getAttackTarget();
               Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-              EntityZethur.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 7.0D);
+              EntityZethur.ZethurEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 7.0D);
             }
-            
+
             public void updateTask() {
-              EntityLivingBase livingentity = EntityZethur.EntityCustom.this.getAttackTarget();
-              double d0 = EntityZethur.EntityCustom.this.getDistanceSq((Entity)livingentity);
+              EntityLivingBase livingentity = EntityZethur.ZethurEntity.this.getAttackTarget();
+              double d0 = EntityZethur.ZethurEntity.this.getDistanceSq((Entity)livingentity);
               if (d0 <= getAttackReachSq(livingentity)) {
-                EntityZethur.EntityCustom.this.attackEntityAsMob((Entity)livingentity);
+                EntityZethur.ZethurEntity.this.attackEntityAsMob((Entity)livingentity);
               } else if (d0 < 128.0D) {
                 Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-                EntityZethur.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 7.0D);
-              } 
+                EntityZethur.ZethurEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 7.0D);
+              }
             }
-            
+
             protected double getAttackReachSq(EntityLivingBase attackTarget) {
-              return EntityZethur.EntityCustom.this.width * 1.5D * EntityZethur.EntityCustom.this.height * 1.5D + attackTarget.height;
+              return EntityZethur.ZethurEntity.this.width * 1.5D * EntityZethur.ZethurEntity.this.height * 1.5D + attackTarget.height;
             }
           });
       this.tasks.addTask(2, (EntityAIBase)new EntityAIWander((EntityCreature)this, 5.0D, 20) {
             protected Vec3d getPosition() {
-              Random random = EntityZethur.EntityCustom.this.getRNG();
-              double dir_x = EntityZethur.EntityCustom.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_y = EntityZethur.EntityCustom.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_z = EntityZethur.EntityCustom.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              Random random = EntityZethur.ZethurEntity.this.getRNG();
+              double dir_x = EntityZethur.ZethurEntity.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_y = EntityZethur.ZethurEntity.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_z = EntityZethur.ZethurEntity.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
               return new Vec3d(dir_x, dir_y, dir_z);
             }
           });
@@ -148,62 +138,62 @@ public class EntityZethur extends GctAllElement {
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
       this.targetTasks.addTask(6, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, false, new Class[0]));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public void fall(float l, float d) {}
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       if (source == DamageSource.DROWN)
-        return false; 
+        return false;
       if (source == DamageSource.LIGHTNING_BOLT)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
     }
-    
+
     @Nullable
     protected ResourceLocation getLootTable() {
       return new ResourceLocation("gct_all:entities/zethur");
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      ZethurEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("x", Integer.valueOf(x));
       $_dependencies.put("y", Integer.valueOf(y));
@@ -211,73 +201,73 @@ public class EntityZethur extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProZethurSkill.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(10.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(19000.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(19000.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(40.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(40.0D);
       getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
       getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.3D);
     }
-    
+
     public boolean isNonBoss() {
       return false;
     }
-    
+
     public void addTrackingPlayer(EntityPlayerMP player) {
       super.addTrackingPlayer(player);
       this.bossInfo.addPlayer(player);
     }
-    
+
     public void removeTrackingPlayer(EntityPlayerMP player) {
       super.removeTrackingPlayer(player);
       this.bossInfo.removePlayer(player);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       setNoGravity(true);
       this.bossInfo.setPercent(getHealth() / getMaxHealth());
     }
-    
+
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
-    
+
     public void setNoGravity(boolean ignored) {
       super.setNoGravity(true);
     }
   }
-  
+
   public static class ModelZephyrModel extends ModelBase {
     private final ModelRenderer BodyLeftSide2;
-    
+
     private final ModelRenderer BodyLeftSide1;
-    
+
     private final ModelRenderer LeftFace;
-    
+
     private final ModelRenderer Mouth;
-    
+
     private final ModelRenderer BodyRightSide1;
-    
+
     private final ModelRenderer BodyRightSide2;
-    
+
     private final ModelRenderer CloudButt;
-    
+
     private final ModelRenderer tail1;
-    
+
     private final ModelRenderer tail2;
-    
+
     private final ModelRenderer Tail1ChildChild;
-    
+
     private final ModelRenderer RightFace;
-    
+
     private final ModelRenderer Body;
-    
+
     public ModelZephyrModel() {
       this.textureWidth = 384;
       this.textureHeight = 96;
@@ -322,7 +312,7 @@ public class EntityZethur extends GctAllElement {
       this.Body.setRotationPoint(0.0F, -24.0F, 0.0F);
       this.Body.cubeList.add(new ModelBox(this.Body, 81, 27, -18.0F, 28.0F, -21.0F, 36, 27, 42, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.BodyLeftSide2.render(f5);
       this.BodyLeftSide1.render(f5);
@@ -335,13 +325,13 @@ public class EntityZethur extends GctAllElement {
       this.RightFace.render(f5);
       this.Body.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
     }

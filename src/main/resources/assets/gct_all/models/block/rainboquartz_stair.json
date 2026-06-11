@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/stairs",
+  "textures": {
+    "bottom": "gct_all:blocks/rainboquartz_block",
+    "top": "gct_all:blocks/rainboquartz_block",
+    "side": "gct_all:blocks/rainboquartz_block"
+  }
+}

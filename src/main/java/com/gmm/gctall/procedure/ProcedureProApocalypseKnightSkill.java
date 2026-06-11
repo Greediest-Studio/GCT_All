@@ -1,18 +1,14 @@
 package com.gmm.gctall.procedure;
 
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
-import com.gmm.gctall.util.ServerCommandHelper;
+import com.gmm.gctall.entity.EntityApocalypseCube;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-@Tag
-public class ProcedureProApocalypseKnightSkill extends GctAllElement {
-  public ProcedureProApocalypseKnightSkill(GctAllContent instance) {
-    super(instance, 160);
+public final class ProcedureProApocalypseKnightSkill {
+  private ProcedureProApocalypseKnightSkill() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProApocalypseKnightSkill", "x", "y", "z", "world"))
       return;
@@ -21,7 +17,8 @@ public class ProcedureProApocalypseKnightSkill extends GctAllElement {
     int z = ProcedureContext.z(dependencies);
     World world = ProcedureContext.world(dependencies);
     if (world.rand.nextDouble() < 0.01D)
-      ServerCommandHelper.run(world, x, y, z, "effect @e[type=gct_all:apocalypse_cube, r=16] instant_health 1 6"); 
+      for (EntityApocalypseCube.ApocalypseCubeEntity cube : ProcedureEffectHelper.livingWithin(EntityApocalypseCube.ApocalypseCubeEntity.class, world, new BlockPos(x, y, z), 16.0D))
+        cube.setHealth(Math.min(cube.getMaxHealth(), cube.getHealth() + 32.0F));
   }
 }
 

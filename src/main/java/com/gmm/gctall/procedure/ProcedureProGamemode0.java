@@ -1,25 +1,20 @@
 package com.gmm.gctall.procedure;
 
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.GameType;
 
-@Tag
-public class ProcedureProGamemode0 extends GctAllElement {
-  public ProcedureProGamemode0(GctAllContent instance) {
-    super(instance, 383);
+public final class ProcedureProGamemode0 {
+  private ProcedureProGamemode0() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProGamemode0", "entity"))
       return;
     Entity entity = ProcedureContext.entity(dependencies);
     if (entity instanceof EntityPlayer)
-      ((EntityPlayer)entity).setGameType(GameType.SURVIVAL); 
+      ((EntityPlayer)entity).setGameType(GameType.SURVIVAL);
   }
 }
 

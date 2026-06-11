@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 import com.gmm.gctall.GctAllMod;
 import com.gmm.gctall.network.GctAllNetwork;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemAncientMud;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -24,7 +21,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -32,37 +28,29 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-@Tag
-public class GuiGUISanityAltar extends GctAllElement {
+public final class GuiGUISanityAltar {
   public static int GUIID = 101;
-  
+
   public static HashMap<String, Object> guistate = new HashMap<>();
-  
-  public GuiGUISanityAltar(GctAllContent instance) {
-    super(instance, 27);
+  private GuiGUISanityAltar() {
   }
-  
-  public void preInit(FMLPreInitializationEvent event) {
-    this.elements.addNetworkMessage(GUIButtonPressedMessageHandler.class, GUIButtonPressedMessage.class, new Side[] { Side.SERVER });
-    this.elements.addNetworkMessage(GUISlotChangedMessageHandler.class, GUISlotChangedMessage.class, new Side[] { Side.SERVER });
-  }
-  
-  public static class GuiContainerMod extends Container implements Supplier<Map<Integer, Slot>> {
+
+  public static class SanityAltarContainer extends Container implements Supplier<Map<Integer, Slot>> {
     private IInventory internal;
-    
+
     private World world;
-    
+
     private EntityPlayer entity;
-    
+
     private int x;
-    
+
     private int y;
-    
+
     private int z;
-    
+
     private Map<Integer, Slot> customSlots = new HashMap<>();
-    
-    public GuiContainerMod(World world, int x, int y, int z, EntityPlayer player) {
+
+    public SanityAltarContainer(World world, int x, int y, int z, EntityPlayer player) {
       this.world = world;
       this.entity = player;
       this.x = x;
@@ -71,7 +59,7 @@ public class GuiGUISanityAltar extends GctAllElement {
       this.internal = (IInventory)new InventoryBasic("", true, 1);
       TileEntity ent = world.getTileEntity(new BlockPos(x, y, z));
       if (ent instanceof IInventory)
-        this.internal = (IInventory)ent; 
+        this.internal = (IInventory)ent;
       this.customSlots.put(Integer.valueOf(0), addSlotToContainer(new Slot(this.internal, 0, 79, 39) {
               public boolean isItemValid(ItemStack stack) {
                 return ((new ItemStack(ItemAncientMud.block, 1)).getItem() == stack.getItem());
@@ -80,20 +68,20 @@ public class GuiGUISanityAltar extends GctAllElement {
       int si;
       for (si = 0; si < 3; si++) {
         for (int sj = 0; sj < 9; sj++)
-          addSlotToContainer(new Slot((IInventory)player.inventory, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18)); 
-      } 
+          addSlotToContainer(new Slot((IInventory)player.inventory, sj + (si + 1) * 9, 8 + sj * 18, 84 + si * 18));
+      }
       for (si = 0; si < 9; si++)
-        addSlotToContainer(new Slot((IInventory)player.inventory, si, 8 + si * 18, 142)); 
+        addSlotToContainer(new Slot((IInventory)player.inventory, si, 8 + si * 18, 142));
     }
-    
+
     public Map<Integer, Slot> get() {
       return this.customSlots;
     }
-    
+
     public boolean canInteractWith(EntityPlayer player) {
       return this.internal.isUsableByPlayer(player);
     }
-    
+
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
       ItemStack itemstack = ItemStack.EMPTY;
       Slot slot = this.inventorySlots.get(index);
@@ -102,39 +90,39 @@ public class GuiGUISanityAltar extends GctAllElement {
         itemstack = itemstack1.copy();
         if (index < 1) {
           if (!mergeItemStack(itemstack1, 1, this.inventorySlots.size(), true))
-            return ItemStack.EMPTY; 
+            return ItemStack.EMPTY;
           slot.onSlotChange(itemstack1, itemstack);
         } else if (!mergeItemStack(itemstack1, 0, 1, false)) {
           if (index < 28) {
             if (!mergeItemStack(itemstack1, 28, this.inventorySlots.size(), true))
-              return ItemStack.EMPTY; 
+              return ItemStack.EMPTY;
           } else if (!mergeItemStack(itemstack1, 1, 28, false)) {
             return ItemStack.EMPTY;
-          } 
-        } 
+          }
+        }
         if (itemstack1.getCount() == 0) {
           slot.putStack(ItemStack.EMPTY);
         } else {
           slot.onSlotChanged();
-        } 
+        }
         if (itemstack1.getCount() == itemstack.getCount())
-          return ItemStack.EMPTY; 
+          return ItemStack.EMPTY;
         slot.onTake(playerIn, itemstack1);
-      } 
+      }
       return itemstack;
     }
-    
+
     protected boolean mergeItemStack(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection) {
       boolean flag = false;
       int i = startIndex;
       if (reverseDirection)
-        i = endIndex - 1; 
+        i = endIndex - 1;
       if (stack.isStackable())
         while (!stack.isEmpty() && (reverseDirection ? i >= startIndex : i < endIndex)) {
           Slot slot = this.inventorySlots.get(i);
           ItemStack itemstack = slot.getStack();
           if (slot.isItemValid(stack) && !itemstack.isEmpty() && itemstack.getItem() == stack.getItem() && (
-            !stack.getHasSubtypes() || stack.getMetadata() == itemstack.getMetadata()) && 
+            !stack.getHasSubtypes() || stack.getMetadata() == itemstack.getMetadata()) &&
             ItemStack.areItemStackTagsEqual(stack, itemstack)) {
             int j = itemstack.getCount() + stack.getCount();
             int maxSize = Math.min(slot.getSlotStackLimit(), stack.getMaxStackSize());
@@ -148,20 +136,20 @@ public class GuiGUISanityAltar extends GctAllElement {
               itemstack.setCount(maxSize);
               slot.putStack(itemstack);
               flag = true;
-            } 
-          } 
+            }
+          }
           if (reverseDirection) {
             i--;
             continue;
-          } 
+          }
           i++;
-        }  
+        }
       if (!stack.isEmpty()) {
         if (reverseDirection) {
           i = endIndex - 1;
         } else {
           i = startIndex;
-        } 
+        }
         while (reverseDirection ? i >= startIndex : i < endIndex) {
           Slot slot1 = this.inventorySlots.get(i);
           ItemStack itemstack1 = slot1.getStack();
@@ -170,48 +158,48 @@ public class GuiGUISanityAltar extends GctAllElement {
               slot1.putStack(stack.splitStack(slot1.getSlotStackLimit()));
             } else {
               slot1.putStack(stack.splitStack(stack.getCount()));
-            } 
+            }
             slot1.onSlotChanged();
             flag = true;
             break;
-          } 
+          }
           if (reverseDirection) {
             i--;
             continue;
-          } 
+          }
           i++;
-        } 
-      } 
+        }
+      }
       return flag;
     }
-    
+
     public void onContainerClosed(EntityPlayer playerIn) {
       super.onContainerClosed(playerIn);
       if (this.internal instanceof InventoryBasic && playerIn instanceof EntityPlayerMP)
-        clearContainer(playerIn, playerIn.world, this.internal); 
+        clearContainer(playerIn, playerIn.world, this.internal);
     }
-    
+
     private void slotChanged(int slotid, int ctype, int meta) {
       if (this.world != null && this.world.isRemote) {
         GctAllNetwork.CHANNEL.sendToServer(new GuiGUISanityAltar.GUISlotChangedMessage(slotid, this.x, this.y, this.z, ctype, meta));
         GuiGUISanityAltar.handleSlotAction(this.entity, slotid, ctype, meta, this.x, this.y, this.z);
-      } 
+      }
     }
   }
-  
-  public static class GuiWindow extends GuiContainer {
+
+  public static class SanityAltarScreen extends GuiContainer {
     private World world;
-    
+
     private int x;
-    
+
     private int y;
-    
+
     private int z;
-    
+
     private EntityPlayer entity;
-    
-    public GuiWindow(World world, int x, int y, int z, EntityPlayer entity) {
-      super(new GuiGUISanityAltar.GuiContainerMod(world, x, y, z, entity));
+
+    public SanityAltarScreen(World world, int x, int y, int z, EntityPlayer entity) {
+      super(new GuiGUISanityAltar.SanityAltarContainer(world, x, y, z, entity));
       this.world = world;
       this.x = x;
       this.y = y;
@@ -220,15 +208,15 @@ public class GuiGUISanityAltar extends GctAllElement {
       this.xSize = 176;
       this.ySize = 166;
     }
-    
+
     private static final ResourceLocation texture = new ResourceLocation("gct_all:textures/gui_sanity_altar.png");
-    
+
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
       drawDefaultBackground();
       super.drawScreen(mouseX, mouseY, partialTicks);
       renderHoveredToolTip(mouseX, mouseY);
     }
-    
+
     protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
       GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
       this.mc.renderEngine.bindTexture(texture);
@@ -237,26 +225,26 @@ public class GuiGUISanityAltar extends GctAllElement {
       drawModalRectWithCustomSizedTexture(k, l, 0.0F, 0.0F, this.xSize, this.ySize, this.xSize, this.ySize);
       this.zLevel = 100.0F;
     }
-    
+
     public void updateScreen() {
       super.updateScreen();
     }
-    
+
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
       super.mouseClicked(mouseX, mouseY, mouseButton);
     }
-    
+
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
       super.keyTyped(typedChar, keyCode);
     }
-    
+
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {}
-    
+
     public void onGuiClosed() {
       super.onGuiClosed();
       Keyboard.enableRepeatEvents(false);
     }
-    
+
     public void initGui() {
       super.initGui();
       this.guiLeft = (this.width - 176) / 2;
@@ -264,17 +252,17 @@ public class GuiGUISanityAltar extends GctAllElement {
       Keyboard.enableRepeatEvents(true);
       this.buttonList.clear();
     }
-    
+
     protected void actionPerformed(GuiButton button) {
       GctAllNetwork.CHANNEL.sendToServer(new GuiGUISanityAltar.GUIButtonPressedMessage(button.id, this.x, this.y, this.z));
       GuiGUISanityAltar.handleButtonAction(this.entity, button.id, this.x, this.y, this.z);
     }
-    
+
     public boolean doesGuiPauseGame() {
       return false;
     }
   }
-  
+
   public static class GUIButtonPressedMessageHandler implements IMessageHandler<GUIButtonPressedMessage, IMessage> {
     public IMessage onMessage(GuiGUISanityAltar.GUIButtonPressedMessage message, MessageContext context) {
       EntityPlayerMP entity = (context.getServerHandler()).player;
@@ -288,7 +276,7 @@ public class GuiGUISanityAltar extends GctAllElement {
       return null;
     }
   }
-  
+
   public static class GUISlotChangedMessageHandler implements IMessageHandler<GUISlotChangedMessage, IMessage> {
     public IMessage onMessage(GuiGUISanityAltar.GUISlotChangedMessage message, MessageContext context) {
       EntityPlayerMP entity = (context.getServerHandler()).player;
@@ -304,32 +292,32 @@ public class GuiGUISanityAltar extends GctAllElement {
       return null;
     }
   }
-  
+
   public static class GUIButtonPressedMessage implements IMessage {
     int buttonID;
-    
+
     int x;
-    
+
     int y;
-    
+
     int z;
-    
+
     public GUIButtonPressedMessage() {}
-    
+
     public GUIButtonPressedMessage(int buttonID, int x, int y, int z) {
       this.buttonID = buttonID;
       this.x = x;
       this.y = y;
       this.z = z;
     }
-    
+
     public void toBytes(ByteBuf buf) {
       buf.writeInt(this.buttonID);
       buf.writeInt(this.x);
       buf.writeInt(this.y);
       buf.writeInt(this.z);
     }
-    
+
     public void fromBytes(ByteBuf buf) {
       this.buttonID = buf.readInt();
       this.x = buf.readInt();
@@ -337,22 +325,22 @@ public class GuiGUISanityAltar extends GctAllElement {
       this.z = buf.readInt();
     }
   }
-  
+
   public static class GUISlotChangedMessage implements IMessage {
     int slotID;
-    
+
     int x;
-    
+
     int y;
-    
+
     int z;
-    
+
     int changeType;
-    
+
     int meta;
-    
+
     public GUISlotChangedMessage() {}
-    
+
     public GUISlotChangedMessage(int slotID, int x, int y, int z, int changeType, int meta) {
       this.slotID = slotID;
       this.x = x;
@@ -361,7 +349,7 @@ public class GuiGUISanityAltar extends GctAllElement {
       this.changeType = changeType;
       this.meta = meta;
     }
-    
+
     public void toBytes(ByteBuf buf) {
       buf.writeInt(this.slotID);
       buf.writeInt(this.x);
@@ -370,7 +358,7 @@ public class GuiGUISanityAltar extends GctAllElement {
       buf.writeInt(this.changeType);
       buf.writeInt(this.meta);
     }
-    
+
     public void fromBytes(ByteBuf buf) {
       this.slotID = buf.readInt();
       this.x = buf.readInt();
@@ -380,17 +368,17 @@ public class GuiGUISanityAltar extends GctAllElement {
       this.meta = buf.readInt();
     }
   }
-  
+
   private static void handleButtonAction(EntityPlayer entity, int buttonID, int x, int y, int z) {
     World world = entity.world;
     if (!world.isBlockLoaded(new BlockPos(x, y, z)))
-      return; 
+      return;
   }
-  
+
   private static void handleSlotAction(EntityPlayer entity, int slotID, int changeType, int meta, int x, int y, int z) {
     World world = entity.world;
     if (!world.isBlockLoaded(new BlockPos(x, y, z)))
-      return; 
+      return;
   }
 }
 

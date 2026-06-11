@@ -5,9 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProApocalypseDeath;
 import com.gmm.gctall.procedure.ProcedureProApocalypseKnightSkill;
 import net.minecraft.block.state.IBlockState;
@@ -60,32 +57,24 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityApocalypseKnight extends GctAllElement {
+public final class EntityApocalypseKnight {
   public static final int ENTITYID = 23;
-  
-  public static final int ENTITYID_RANGED = 24;
-  
-  public EntityApocalypseKnight(GctAllContent instance) {
-    super(instance, 6);
+
+  public static final int ENTITYID_RANGED = 24;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(ApocalypseKnightEntity.class).id(new ResourceLocation("gct_all", "apocalypse_knight"), 23).name("apocalypse_knight").tracker(128, 3, true).egg(-16777216, -3407770).build());
   }
-  
-  public void initElements() {
-    this.elements.entities
-      .add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "apocalypse_knight"), 23).name("apocalypse_knight").tracker(128, 3, true).egg(-16777216, -3407770).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(ApocalypseKnightEntity.class, renderManager -> {
           RenderBiped customRender = new RenderBiped(renderManager, new ModelBiped(), 0.5F) {
               protected ResourceLocation getEntityTexture(Entity entity) {
                 return new ResourceLocation("gct_all:textures/apkn.png");
@@ -100,11 +89,11 @@ public class EntityApocalypseKnight extends GctAllElement {
           return (Render)customRender;
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
+
+  public static class ApocalypseKnightEntity extends EntityMob {
     private final BossInfoServer bossInfo;
-    
-    public EntityCustom(World world) {
+
+    public ApocalypseKnightEntity(World world) {
       super(world);
       this.bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.WHITE, BossInfo.Overlay.PROGRESS);
       setSize(0.6F, 1.8F);
@@ -116,47 +105,47 @@ public class EntityApocalypseKnight extends GctAllElement {
       this.navigator = (PathNavigate)new PathNavigateFlying((EntityLiving)this, this.world);
       this.moveHelper = (EntityMoveHelper)new EntityFlyHelper((EntityLiving)this);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, new EntityAIBase() {
             public boolean shouldExecute() {
-              if (EntityApocalypseKnight.EntityCustom.this.getAttackTarget() != null && !EntityApocalypseKnight.EntityCustom.this.getMoveHelper().isUpdating())
-                return true; 
+              if (EntityApocalypseKnight.ApocalypseKnightEntity.this.getAttackTarget() != null && !EntityApocalypseKnight.ApocalypseKnightEntity.this.getMoveHelper().isUpdating())
+                return true;
               return false;
             }
-            
+
             public boolean shouldContinueExecuting() {
-              return (EntityApocalypseKnight.EntityCustom.this.getMoveHelper().isUpdating() && EntityApocalypseKnight.EntityCustom.this.getAttackTarget() != null && EntityApocalypseKnight.EntityCustom.this.getAttackTarget().isEntityAlive());
+              return (EntityApocalypseKnight.ApocalypseKnightEntity.this.getMoveHelper().isUpdating() && EntityApocalypseKnight.ApocalypseKnightEntity.this.getAttackTarget() != null && EntityApocalypseKnight.ApocalypseKnightEntity.this.getAttackTarget().isEntityAlive());
             }
-            
+
             public void startExecuting() {
-              EntityLivingBase livingentity = EntityApocalypseKnight.EntityCustom.this.getAttackTarget();
+              EntityLivingBase livingentity = EntityApocalypseKnight.ApocalypseKnightEntity.this.getAttackTarget();
               Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-              EntityApocalypseKnight.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.5D);
+              EntityApocalypseKnight.ApocalypseKnightEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.5D);
             }
-            
+
             public void updateTask() {
-              EntityLivingBase livingentity = EntityApocalypseKnight.EntityCustom.this.getAttackTarget();
-              double d0 = EntityApocalypseKnight.EntityCustom.this.getDistanceSq((Entity)livingentity);
+              EntityLivingBase livingentity = EntityApocalypseKnight.ApocalypseKnightEntity.this.getAttackTarget();
+              double d0 = EntityApocalypseKnight.ApocalypseKnightEntity.this.getDistanceSq((Entity)livingentity);
               if (d0 <= getAttackReachSq(livingentity)) {
-                EntityApocalypseKnight.EntityCustom.this.attackEntityAsMob((Entity)livingentity);
+                EntityApocalypseKnight.ApocalypseKnightEntity.this.attackEntityAsMob((Entity)livingentity);
               } else if (d0 < 64.0D) {
                 Vec3d vec3d = livingentity.getPositionEyes(1.0F);
-                EntityApocalypseKnight.EntityCustom.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.5D);
-              } 
+                EntityApocalypseKnight.ApocalypseKnightEntity.this.moveHelper.setMoveTo(vec3d.x, vec3d.y, vec3d.z, 5.5D);
+              }
             }
-            
+
             protected double getAttackReachSq(EntityLivingBase attackTarget) {
-              return EntityApocalypseKnight.EntityCustom.this.width * 1.5D * EntityApocalypseKnight.EntityCustom.this.height * 1.5D + attackTarget.height;
+              return EntityApocalypseKnight.ApocalypseKnightEntity.this.width * 1.5D * EntityApocalypseKnight.ApocalypseKnightEntity.this.height * 1.5D + attackTarget.height;
             }
           });
       this.tasks.addTask(2, (EntityAIBase)new EntityAIWander((EntityCreature)this, 4.0D, 20) {
             protected Vec3d getPosition() {
-              Random random = EntityApocalypseKnight.EntityCustom.this.getRNG();
-              double dir_x = EntityApocalypseKnight.EntityCustom.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_y = EntityApocalypseKnight.EntityCustom.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
-              double dir_z = EntityApocalypseKnight.EntityCustom.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              Random random = EntityApocalypseKnight.ApocalypseKnightEntity.this.getRNG();
+              double dir_x = EntityApocalypseKnight.ApocalypseKnightEntity.this.posX + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_y = EntityApocalypseKnight.ApocalypseKnightEntity.this.posY + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
+              double dir_z = EntityApocalypseKnight.ApocalypseKnightEntity.this.posZ + ((random.nextFloat() * 2.0F - 1.0F) * 16.0F);
               return new Vec3d(dir_x, dir_y, dir_z);
             }
           });
@@ -165,53 +154,53 @@ public class EntityApocalypseKnight extends GctAllElement {
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, false, new Class[0]));
       this.targetTasks.addTask(6, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.irongolem.hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.enderdragon.death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public void fall(float l, float d) {}
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityArrow)
-        return false; 
+        return false;
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      ApocalypseKnightEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("x", Integer.valueOf(x));
       $_dependencies.put("y", Integer.valueOf(y));
@@ -219,13 +208,13 @@ public class EntityApocalypseKnight extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProApocalypseDeath.executeProcedure($_dependencies);
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      ApocalypseKnightEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("x", Integer.valueOf(x));
       $_dependencies.put("y", Integer.valueOf(y));
@@ -233,47 +222,47 @@ public class EntityApocalypseKnight extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProApocalypseKnightSkill.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(4.5D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(4.5D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6000.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(6000.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(25.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(25.0D);
       getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
       getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(4.5D);
     }
-    
+
     public boolean isNonBoss() {
       return false;
     }
-    
+
     public void addTrackingPlayer(EntityPlayerMP player) {
       super.addTrackingPlayer(player);
       this.bossInfo.addPlayer(player);
     }
-    
+
     public void removeTrackingPlayer(EntityPlayerMP player) {
       super.removeTrackingPlayer(player);
       this.bossInfo.removePlayer(player);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       setNoGravity(true);
       this.bossInfo.setPercent(getHealth() / getMaxHealth());
     }
-    
+
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
-    
+
     public void setNoGravity(boolean ignored) {
       super.setNoGravity(true);
     }
-    
+
     public void onLivingUpdate() {
       super.onLivingUpdate();
       int i = (int)this.posX;
@@ -285,7 +274,7 @@ public class EntityApocalypseKnight extends GctAllElement {
         double d1 = j + 0.7D + (random.nextFloat() - 0.5D) * 0.5D + 0.5D;
         double d2 = k + 0.5D + (random.nextFloat() - 0.5D) * 0.5D;
         this.world.spawnParticle(EnumParticleTypes.SPELL_MOB_AMBIENT, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
-      } 
+      }
     }
   }
 }

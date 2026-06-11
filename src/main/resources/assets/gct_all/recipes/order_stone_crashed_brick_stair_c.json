@@ -1,0 +1,33 @@
+{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0  ",
+    "34 ",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "3": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "4": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "6": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "7": {
+      "item": "gct_all:order_stone_brick_crashed"
+    },
+    "8": {
+      "item": "gct_all:order_stone_brick_crashed"
+    }
+  },
+  "result": {
+    "item": "gct_all:order_stone_brick_crashed_stair",
+    "count": 4
+  }
+}

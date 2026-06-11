@@ -1,9 +1,6 @@
 package com.gmm.gctall.procedure;
 
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemEarthOrb;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -11,12 +8,10 @@ import net.minecraft.tileentity.TileEntityLockableLoot;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-@Tag
-public class ProcedureProEarthboundReceiverParticle extends GctAllElement {
-  public ProcedureProEarthboundReceiverParticle(GctAllContent instance) {
-    super(instance, 371);
+public final class ProcedureProEarthboundReceiverParticle {
+  private ProcedureProEarthboundReceiverParticle() {
   }
-  
+
   public static boolean executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProEarthboundReceiverParticle", "x", "y", "z", "world"))
       return false;
@@ -28,11 +23,11 @@ public class ProcedureProEarthboundReceiverParticle extends GctAllElement {
         public ItemStack getItemStack(BlockPos pos, int sltid) {
           TileEntity inv = world.getTileEntity(pos);
           if (inv instanceof TileEntityLockableLoot)
-            return ((TileEntityLockableLoot)inv).getStackInSlot(sltid); 
+            return ((TileEntityLockableLoot)inv).getStackInSlot(sltid);
           return ItemStack.EMPTY;
         }
       }).getItemStack(new BlockPos(x, y, z), 0).getItem() == (new ItemStack(ItemEarthOrb.block, 1)).getItem())
-      return true; 
+      return true;
     return false;
   }
 }

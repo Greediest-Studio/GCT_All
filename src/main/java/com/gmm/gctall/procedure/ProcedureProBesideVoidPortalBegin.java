@@ -1,9 +1,6 @@
 package com.gmm.gctall.procedure;
 
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.block.BlockArcaneVisReceiver;
 import com.gmm.gctall.block.BlockBesideVoidPortal1;
 import com.gmm.gctall.block.BlockBesideVoidPortal2;
@@ -18,12 +15,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-@Tag
-public class ProcedureProBesideVoidPortalBegin extends GctAllElement {
-  public ProcedureProBesideVoidPortalBegin(GctAllContent instance) {
-    super(instance, 154);
+public final class ProcedureProBesideVoidPortalBegin {
+  private ProcedureProBesideVoidPortalBegin() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProBesideVoidPortalBegin", "x", "y", "z", "world"))
       return;
@@ -101,7 +96,7 @@ public class ProcedureProBesideVoidPortalBegin extends GctAllElement {
       world.setBlockState(new BlockPos(x, y + 3, z), BlockBesideVoidPortal1.block.getDefaultState(), 3);
       world.setBlockState(new BlockPos(x, y + 2, z), BlockBesideVoidPortal2.block.getDefaultState(), 3);
       world.setBlockState(new BlockPos(x, y + 1, z), BlockBesideVoidPortal3.block.getDefaultState(), 3);
-    } 
+    }
   }
 }
 

@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProWaterRodClear;
 import com.gmm.gctall.procedure.ProcedureProWaterRodSkill;
 import net.minecraft.client.model.ModelBase;
@@ -42,40 +39,32 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityWeatherWaterRod extends GctAllElement {
+public final class EntityWeatherWaterRod {
   public static final int ENTITYID = 35;
-  
-  public static final int ENTITYID_RANGED = 36;
-  
-  public EntityWeatherWaterRod(GctAllContent instance) {
-    super(instance, 196);
+
+  public static final int ENTITYID_RANGED = 36;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(WeatherWaterRodEntity.class).id(new ResourceLocation("gct_all", "weather_water_rod"), 35).name("weather_water_rod").tracker(64, 3, true).egg(-16776961, -13369345).build());
   }
-  
-  public void initElements() {
-    this.elements.entities
-      .add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "weather_water_rod"), 35).name("weather_water_rod").tracker(64, 3, true).egg(-16776961, -13369345).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelWaterRod(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(WeatherWaterRodEntity.class, renderManager -> new RenderLiving(renderManager, new ModelWaterRod(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/water_flow.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
-    public EntityCustom(World world) {
+
+  public static class WeatherWaterRodEntity extends EntityMob {
+    public WeatherWaterRodEntity(World world) {
       super(world);
       setSize(1.0F, 16.0F);
       this.experienceValue = 0;
@@ -83,7 +72,7 @@ public class EntityWeatherWaterRod extends GctAllElement {
       setNoAI(false);
       enablePersistence();
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
@@ -92,67 +81,67 @@ public class EntityWeatherWaterRod extends GctAllElement {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("block.water.ambient"));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.player.swim"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.player.swim"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityArrow)
-        return false; 
+        return false;
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       if (source == DamageSource.CACTUS)
-        return false; 
+        return false;
       if (source == DamageSource.DROWN)
-        return false; 
+        return false;
       if (source == DamageSource.LIGHTNING_BOLT)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      WeatherWaterRodEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       ProcedureProWaterRodClear.executeProcedure($_dependencies);
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      WeatherWaterRodEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("entity", entityCustom);
       $_dependencies.put("x", Integer.valueOf(x));
@@ -161,23 +150,23 @@ public class EntityWeatherWaterRod extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProWaterRodSkill.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(0.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(100.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(3.0D);
     }
   }
-  
+
   public static class ModelWaterRod extends ModelBase {
     private final ModelRenderer bb_main;
-    
+
     public ModelWaterRod() {
       this.textureWidth = 300;
       this.textureHeight = 300;
@@ -185,17 +174,17 @@ public class EntityWeatherWaterRod extends GctAllElement {
       this.bb_main.setRotationPoint(0.0F, 24.0F, 0.0F);
       this.bb_main.cubeList.add(new ModelBox(this.bb_main, 0, 0, -8.0F, -256.0F, -8.0F, 16, 256, 16, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.bb_main.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
     }

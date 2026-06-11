@@ -1,0 +1,32 @@
+{
+  "group": "gct_all",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_all:order_stone_brick"
+    },
+    "1": {
+      "item": "gct_all:order_stone_brick"
+    },
+    "2": {
+      "item": "gct_all:order_stone_brick"
+    },
+    "3": {
+      "item": "gct_all:order_stone_brick"
+    },
+    "4": {
+      "item": "gct_all:order_stone_brick"
+    },
+    "5": {
+      "item": "gct_all:order_stone_brick"
+    }
+  },
+  "result": {
+    "item": "gct_all:order_stone_brick_wall",
+    "count": 6
+  }
+}

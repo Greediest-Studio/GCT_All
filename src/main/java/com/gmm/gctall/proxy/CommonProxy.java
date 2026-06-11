@@ -1,10 +1,18 @@
 package com.gmm.gctall.proxy;
 
+import com.gmm.gctall.command.GctAllCommands;
 import com.gmm.gctall.GctAllGuiHandler;
 import com.gmm.gctall.GctAllMod;
-import com.gmm.gctall.world.gen.ModOreWorldGenerator;
+import com.gmm.gctall.data.GctAllVariableEvents;
+import com.gmm.gctall.entity.GctAllEntities;
+import com.gmm.gctall.gui.GctAllGuiNetwork;
+import com.gmm.gctall.item.crafting.GctAllRecipes;
+import com.gmm.gctall.network.GctAllMessages;
 import com.gmm.gctall.registry.GctAllContent;
 import com.gmm.gctall.registry.GctAllOreDictionary;
+import com.gmm.gctall.world.biome.GctAllBiomes;
+import com.gmm.gctall.world.dimension.GctAllDimensions;
+import com.gmm.gctall.world.structure.GctAllStructureGenerator;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -20,25 +28,28 @@ public class CommonProxy {
     }
 
     public void preInit(FMLPreInitializationEvent event) {
-        GameRegistry.registerWorldGenerator(GctAllContent.INSTANCE, 5);
-        GameRegistry.registerWorldGenerator(new ModOreWorldGenerator(), 5);
-        GameRegistry.registerFuelHandler(GctAllContent.INSTANCE);
+        GameRegistry.registerWorldGenerator(new GctAllStructureGenerator(), 5);
         NetworkRegistry.INSTANCE.registerGuiHandler(GctAllMod.INSTANCE, new GctAllGuiHandler());
 
-        GctAllContent.INSTANCE.preInit(event);
-        MinecraftForge.EVENT_BUS.register(GctAllContent.INSTANCE);
-        GctAllContent.INSTANCE.getElements().forEach(element -> element.preInit(event));
+        GctAllContent.preInit(event);
+        GctAllDimensions.registerDimensions();
+        GctAllMessages.register();
+        GctAllGuiNetwork.registerMessages();
+        MinecraftForge.EVENT_BUS.register(new GctAllVariableEvents());
     }
 
     public void init(FMLInitializationEvent event) {
+        GctAllBiomes.init();
         GctAllOreDictionary.register();
-        GctAllContent.INSTANCE.getElements().forEach(element -> element.init(event));
+        GctAllRecipes.registerSmelting();
+        GctAllContent.init(event);
+        GctAllEntities.init(event);
     }
 
     public void postInit(FMLPostInitializationEvent event) {
     }
 
     public void serverLoad(FMLServerStartingEvent event) {
-        GctAllContent.INSTANCE.getElements().forEach(element -> element.serverLoad(event));
+        GctAllCommands.register(event);
     }
 }

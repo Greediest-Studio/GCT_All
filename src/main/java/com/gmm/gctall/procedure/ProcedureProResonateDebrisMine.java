@@ -1,9 +1,6 @@
 package com.gmm.gctall.procedure;
 
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.block.BlockResonateDebris;
 import com.gmm.gctall.item.ItemResonatedScrap;
 import net.minecraft.entity.Entity;
@@ -13,12 +10,10 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-@Tag
-public class ProcedureProResonateDebrisMine extends GctAllElement {
-  public ProcedureProResonateDebrisMine(GctAllContent instance) {
-    super(instance, 360);
+public final class ProcedureProResonateDebrisMine {
+  private ProcedureProResonateDebrisMine() {
   }
-  
+
   public static void executeProcedure(Map<String, Object> dependencies) {
     if (!ProcedureContext.require(dependencies, "ProResonateDebrisMine", "entity", "x", "y", "z", "world"))
       return;
@@ -36,8 +31,8 @@ public class ProcedureProResonateDebrisMine extends GctAllElement {
         world.spawnEntity((Entity)entityToSpawn);
       }
       if (!world.isRemote)
-        world.spawnEntity((Entity)new EntityXPOrb(world, x, y, z, 30 + world.rand.nextInt(15))); 
-    } 
+        world.spawnEntity((Entity)new EntityXPOrb(world, x, y, z, 30 + world.rand.nextInt(15)));
+    }
   }
 }
 

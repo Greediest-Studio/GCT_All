@@ -4,13 +4,11 @@ import com.google.common.cache.LoadingCache;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
-import com.gmm.gctall.util.RegistrationHelper;
 import com.gmm.gctall.block.BlockHeavite;
 import com.gmm.gctall.block.BlockMeteor;
 import com.gmm.gctall.item.ItemEverheaven;
+import com.gmm.gctall.procedure.TeleporterDirect;
+import com.gmm.gctall.world.biome.BiomeEverheavenWaste;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.BlockPortal;
@@ -27,8 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ReportedException;
@@ -60,7 +56,6 @@ import net.minecraft.world.gen.layer.GenLayer;
 import net.minecraft.world.gen.layer.GenLayerVoronoiZoom;
 import net.minecraft.world.gen.layer.GenLayerZoom;
 import net.minecraft.world.gen.layer.IntCache;
-import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -68,120 +63,98 @@ import net.minecraftforge.event.terraingen.ChunkGeneratorEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.terraingen.TerrainGen;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class WorldEverheaven extends GctAllElement {
+public class WorldEverheaven {
   public static int DIMID = 78;
-  
+
   public static final boolean NETHER_TYPE = false;
-  
-  @ObjectHolder("gct_all:everheaven_portal")
-  public static final BlockCustomPortal portal = null;
-  
+  public static final PortalBlock portal = new PortalBlock();
+
   public static DimensionType dtype;
-  
-  public WorldEverheaven(GctAllContent instance) {
-    super(instance, 215);
-  }
-  
-  public void initElements() {
-    this.elements.blocks.add(() -> new BlockCustomPortal());
-    this.elements.items.add(() -> (Item)(new ItemBlock((Block)portal)).setRegistryName(portal.getRegistryName()));
-    this.elements.items.add(() -> (Item)(new ItemEverheaven()).setTranslationKey("everheaven").setRegistryName("everheaven"));
-  }
-  
-  public void preInit(FMLPreInitializationEvent event) {
+public static void registerDimension() {
     if (DimensionManager.isDimensionRegistered(DIMID)) {
       DIMID = DimensionManager.getNextFreeDimId();
       System.err.println("Dimension ID for dimension everheaven is already registered. Falling back to ID: " + DIMID);
-    } 
+    }
     dtype = DimensionType.register("everheaven", "_everheaven", DIMID, WorldProviderMod.class, false);
     DimensionManager.registerDimension(DIMID, dtype);
   }
-  
-  @SideOnly(Side.CLIENT)
-  public void registerModels(ModelRegistryEvent event) {
-    RegistrationHelper.registerItemModel(ItemEverheaven.block, "everheaven");
-  }
-  
-  public static class WorldProviderMod extends WorldProvider {
+public static class WorldProviderMod extends WorldProvider {
     public void init() {
       this.biomeProvider = new WorldEverheaven.BiomeProviderCustom(this.world.getSeed());
       this.nether = false;
       this.hasSkyLight = true;
     }
-    
+
     public void calculateInitialWeather() {}
-    
+
     public void updateWeather() {}
-    
+
     public boolean canDoLightning(Chunk chunk) {
       return false;
     }
-    
+
     public boolean canDoRainSnowIce(Chunk chunk) {
       return false;
     }
-    
+
     public DimensionType getDimensionType() {
       return WorldEverheaven.dtype;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public Vec3d getFogColor(float par1, float par2) {
       return new Vec3d(0.6D, 0.6D, 1.0D);
     }
-    
+
     public IChunkGenerator createChunkGenerator() {
       return new WorldEverheaven.ChunkProviderModded(this.world, this.world.getSeed() - WorldEverheaven.DIMID);
     }
-    
+
     public boolean isSurfaceWorld() {
       return false;
     }
-    
+
     public boolean canRespawnHere() {
       return true;
     }
-    
+
     @SideOnly(Side.CLIENT)
     public boolean doesXZShowFog(int par1, int par2) {
       return true;
     }
-    
+
     public WorldProvider.WorldSleepResult canSleepAt(EntityPlayer player, BlockPos pos) {
       return WorldProvider.WorldSleepResult.BED_EXPLODES;
     }
-    
+
     protected void generateLightBrightnessTable() {
       float f = 0.5F;
       for (int i = 0; i <= 15; i++) {
         float f1 = 1.0F - i / 15.0F;
         this.lightBrightnessTable[i] = (1.0F - f1) / (f1 * 3.0F + 1.0F) * (1.0F - f) + f;
-      } 
+      }
     }
-    
+
     public boolean doesWaterVaporize() {
       return false;
     }
   }
-  
+
   public static class TeleporterDimensionMod extends Teleporter {
     private Vec3d lastPortalVec;
-    
+
     private EnumFacing teleportDirection;
-    
+
     public TeleporterDimensionMod(WorldServer worldServer, Vec3d lastPortalVec, EnumFacing teleportDirection) {
       super(worldServer);
       this.lastPortalVec = lastPortalVec;
       this.teleportDirection = teleportDirection;
     }
-    
+
     public boolean makePortal(Entity entityIn) {
       int i = 16;
       double d0 = -1.0D;
@@ -202,14 +175,14 @@ public class WorldEverheaven extends GctAllElement {
           label173: for (j3 = this.world.getActualHeight() - 1; j3 >= 0; j3--) {
             if (this.world.isAirBlock((BlockPos)blockpos$mutableblockpos.setPos(j2, j3, l2))) {
               while (j3 > 0 && this.world.isAirBlock((BlockPos)blockpos$mutableblockpos.setPos(j2, j3 - 1, l2)))
-                j3--; 
+                j3--;
               for (int k3 = i2; k3 < i2 + 4; k3++) {
                 int l3 = k3 % 2;
                 int i4 = 1 - l3;
                 if (k3 % 4 >= 2) {
                   l3 = -l3;
                   i4 = -i4;
-                } 
+                }
                 for (int j4 = 0; j4 < 3; j4++) {
                   for (int k4 = 0; k4 < 4; k4++) {
                     for (int l4 = -1; l4 < 4; ) {
@@ -218,15 +191,15 @@ public class WorldEverheaven extends GctAllElement {
                       int k5 = l2 + (k4 - 1) * i4 - j4 * l3;
                       blockpos$mutableblockpos.setPos(i5, j5, k5);
                       if (l4 >= 0 || this.world.getBlockState((BlockPos)blockpos$mutableblockpos).getMaterial().isSolid()) {
-                        if (l4 >= 0 && 
+                        if (l4 >= 0 &&
                           !this.world.isAirBlock((BlockPos)blockpos$mutableblockpos))
-                          continue label173; 
+                          continue label173;
                         l4++;
-                      } 
+                      }
                       continue label173;
-                    } 
-                  } 
-                } 
+                    }
+                  }
+                }
                 double d5 = j3 + 0.5D - entityIn.posY;
                 double d7 = d1 * d1 + d5 * d5 + d2 * d2;
                 if (d0 < 0.0D || d7 < d0) {
@@ -235,12 +208,12 @@ public class WorldEverheaven extends GctAllElement {
                   j1 = j3;
                   k1 = l2;
                   l1 = k3 % 4;
-                } 
-              } 
-            } 
-          } 
-        } 
-      } 
+                }
+              }
+            }
+          }
+        }
+      }
       if (d0 < 0.0D)
         for (int l5 = j - 16; l5 <= j + 16; l5++) {
           double d3 = l5 + 0.5D - entityIn.posX;
@@ -250,7 +223,7 @@ public class WorldEverheaven extends GctAllElement {
             label170: for (i7 = this.world.getActualHeight() - 1; i7 >= 0; i7--) {
               if (this.world.isAirBlock((BlockPos)blockpos$mutableblockpos.setPos(l5, i7, j6))) {
                 while (i7 > 0 && this.world.isAirBlock((BlockPos)blockpos$mutableblockpos.setPos(l5, i7 - 1, j6)))
-                  i7--; 
+                  i7--;
                 for (int k7 = i2; k7 < i2 + 2; k7++) {
                   int j8 = k7 % 2;
                   int j9 = 1 - j8;
@@ -261,14 +234,14 @@ public class WorldEverheaven extends GctAllElement {
                       int j13 = j6 + (j10 - 1) * j9;
                       blockpos$mutableblockpos.setPos(j12, i13, j13);
                       if (j11 >= 0 || this.world.getBlockState((BlockPos)blockpos$mutableblockpos).getMaterial().isSolid()) {
-                        if (j11 >= 0 && 
+                        if (j11 >= 0 &&
                           !this.world.isAirBlock((BlockPos)blockpos$mutableblockpos))
-                          continue label170; 
+                          continue label170;
                         j11++;
-                      } 
+                      }
                       continue label170;
-                    } 
-                  } 
+                    }
+                  }
                   double d6 = i7 + 0.5D - entityIn.posY;
                   double d8 = d3 * d3 + d6 * d6 + d4 * d4;
                   if (d0 < 0.0D || d8 < d0) {
@@ -277,12 +250,12 @@ public class WorldEverheaven extends GctAllElement {
                     j1 = i7;
                     k1 = j6;
                     l1 = k7 % 2;
-                  } 
-                } 
-              } 
-            } 
-          } 
-        }  
+                  }
+                }
+              }
+            }
+          }
+        }
       int i6 = i1;
       int k2 = j1;
       int k6 = k1;
@@ -291,7 +264,7 @@ public class WorldEverheaven extends GctAllElement {
       if (l1 % 4 >= 2) {
         l6 = -l6;
         i3 = -i3;
-      } 
+      }
       if (d0 < 0.0D) {
         j1 = MathHelper.clamp(j1, 70, this.world.getActualHeight() - 10);
         k2 = j1;
@@ -304,10 +277,10 @@ public class WorldEverheaven extends GctAllElement {
               boolean flag = (k8 < 0);
               this.world.setBlockState(new BlockPos(k9, k10, k11), flag ? BlockHeavite.block
                   .getDefaultState().getBlock().getDefaultState() : Blocks.AIR.getDefaultState());
-            } 
-          } 
-        } 
-      } 
+            }
+          }
+        }
+      }
       IBlockState iblockstate = WorldEverheaven.portal.getDefaultState().withProperty((IProperty)BlockPortal.AXIS, (l6 == 0) ? (Comparable)EnumFacing.Axis.Z : (Comparable)EnumFacing.Axis.X);
       for (int i8 = 0; i8 < 4; i8++) {
         for (int l8 = 0; l8 < 4; l8++) {
@@ -318,8 +291,8 @@ public class WorldEverheaven extends GctAllElement {
             boolean flag1 = (l8 == 0 || l8 == 3 || l9 == -1 || l9 == 3);
             this.world.setBlockState(new BlockPos(l10, l11, k12), flag1 ? BlockHeavite.block
                 .getDefaultState().getBlock().getDefaultState() : iblockstate, 2);
-          } 
-        } 
+          }
+        }
         for (int i9 = 0; i9 < 4; i9++) {
           for (int i10 = -1; i10 < 4; i10++) {
             int i11 = i6 + (i9 - 1) * l6;
@@ -327,18 +300,18 @@ public class WorldEverheaven extends GctAllElement {
             int l12 = k6 + (i9 - 1) * i3;
             BlockPos blockpos = new BlockPos(i11, i12, l12);
             this.world.notifyNeighborsOfStateChange(blockpos, this.world.getBlockState(blockpos).getBlock(), false);
-          } 
-        } 
-      } 
+          }
+        }
+      }
       return true;
     }
-    
+
     public void placeInPortal(Entity entityIn, float rotationYaw) {
       if (this.world.provider.getDimensionType().getId() != 1) {
         if (!placeInExistingPortal(entityIn, rotationYaw)) {
           makePortal(entityIn);
           placeInExistingPortal(entityIn, rotationYaw);
-        } 
+        }
       } else {
         int i = MathHelper.floor(entityIn.posX);
         int j = MathHelper.floor(entityIn.posY) - 1;
@@ -354,16 +327,16 @@ public class WorldEverheaven extends GctAllElement {
               boolean flag = (l1 < 0);
               this.world.setBlockState(new BlockPos(i2, j2, k2), flag ? BlockHeavite.block
                   .getDefaultState().getBlock().getDefaultState() : Blocks.AIR.getDefaultState());
-            } 
-          } 
-        } 
+            }
+          }
+        }
         entityIn.setLocationAndAngles(i, j, k, entityIn.rotationYaw, 0.0F);
         entityIn.motionX = 0.0D;
         entityIn.motionY = 0.0D;
         entityIn.motionZ = 0.0D;
-      } 
+      }
     }
-    
+
     public boolean placeInExistingPortal(Entity entityIn, float rotationYaw) {
       int i = 128;
       double d0 = -1.0D;
@@ -386,22 +359,22 @@ public class WorldEverheaven extends GctAllElement {
             for (; blockpos1.getY() >= 0; blockpos1 = blockpos1.down()) {
               BlockPos blockpos2 = blockpos1.down();
               if (this.world.getBlockState(blockpos1).getBlock() == WorldEverheaven.portal) {
-                for (blockpos2 = blockpos1.down(); this.world.getBlockState(blockpos2).getBlock() == WorldEverheaven.portal; 
+                for (blockpos2 = blockpos1.down(); this.world.getBlockState(blockpos2).getBlock() == WorldEverheaven.portal;
                   blockpos2 = blockpos2.down())
-                  blockpos1 = blockpos2; 
+                  blockpos1 = blockpos2;
                 double d1 = blockpos1.distanceSq((Vec3i)blockpos3);
                 if (d0 < 0.0D || d1 < d0) {
                   d0 = d1;
                   blockpos = blockpos1;
-                } 
-              } 
-            } 
-          } 
-        } 
-      } 
+                }
+              }
+            }
+          }
+        }
+      }
       if (d0 >= 0.0D) {
         if (flag)
-          this.destinationCoordinateCache.put(l, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime())); 
+          this.destinationCoordinateCache.put(l, new Teleporter.PortalPosition(blockpos, this.world.getTotalWorldTime()));
         double d5 = blockpos.getX() + 0.5D;
         double d7 = blockpos.getZ() + 0.5D;
         BlockPattern.PatternHelper blockpattern$patternhelper = WorldEverheaven.portal.createPatternHelper((World)this.world, blockpos);
@@ -409,12 +382,12 @@ public class WorldEverheaven extends GctAllElement {
         double d2 = (blockpattern$patternhelper.getForwards().getAxis() == EnumFacing.Axis.X) ? blockpattern$patternhelper.getFrontTopLeft().getZ() : blockpattern$patternhelper.getFrontTopLeft().getX();
         double d6 = (blockpattern$patternhelper.getFrontTopLeft().getY() + 1) - this.lastPortalVec.y * blockpattern$patternhelper.getHeight();
         if (flag1)
-          d2++; 
+          d2++;
         if (blockpattern$patternhelper.getForwards().getAxis() == EnumFacing.Axis.X) {
           d7 = d2 + (1.0D - this.lastPortalVec.x) * blockpattern$patternhelper.getWidth() * blockpattern$patternhelper.getForwards().rotateY().getAxisDirection().getOffset();
         } else {
           d5 = d2 + (1.0D - this.lastPortalVec.x) * blockpattern$patternhelper.getWidth() * blockpattern$patternhelper.getForwards().rotateY().getAxisDirection().getOffset();
-        } 
+        }
         float f = 0.0F;
         float f1 = 0.0F;
         float f2 = 0.0F;
@@ -431,34 +404,41 @@ public class WorldEverheaven extends GctAllElement {
         } else {
           f2 = -1.0F;
           f3 = 1.0F;
-        } 
+        }
         double d3 = entityIn.motionX;
         double d4 = entityIn.motionZ;
         entityIn.motionX = d3 * f + d4 * f3;
         entityIn.motionZ = d3 * f2 + d4 * f1;
         entityIn
           .rotationYaw = rotationYaw - (this.teleportDirection.getOpposite().getHorizontalIndex() * 90) + (blockpattern$patternhelper.getForwards().getHorizontalIndex() * 90);
+        BlockPos safePos = TeleporterDirect.findSafeTeleportPos(this.world, new BlockPos(d5, d6, d7));
+        d5 = safePos.getX() + 0.5D;
+        d6 = safePos.getY();
+        d7 = safePos.getZ() + 0.5D;
+        entityIn.motionX = 0.0D;
+        entityIn.motionY = 0.0D;
+        entityIn.motionZ = 0.0D;
         if (entityIn instanceof EntityPlayerMP) {
           ((EntityPlayerMP)entityIn).connection.setPlayerLocation(d5, d6, d7, entityIn.rotationYaw, entityIn.rotationPitch);
         } else {
           entityIn.setLocationAndAngles(d5, d6, d7, entityIn.rotationYaw, entityIn.rotationPitch);
-        } 
+        }
         return true;
-      } 
+      }
       return false;
     }
   }
-  
-  public static class BlockCustomPortal extends BlockPortal {
-    public BlockCustomPortal() {
+
+  public static class PortalBlock extends BlockPortal {
+    public PortalBlock() {
       setHardness(-1.0F);
       setTranslationKey("everheaven_portal");
       setRegistryName("everheaven_portal");
       setLightLevel(0.53333336F);
     }
-    
+
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {}
-    
+
     public void portalSpawn(World worldIn, BlockPos pos) {
       Size portalsize = new Size(worldIn, pos, EnumFacing.Axis.X);
       if (portalsize.isValid() && portalsize.portalBlockCount == 0) {
@@ -466,10 +446,10 @@ public class WorldEverheaven extends GctAllElement {
       } else {
         portalsize = new Size(worldIn, pos, EnumFacing.Axis.Z);
         if (portalsize.isValid() && portalsize.portalBlockCount == 0)
-          portalsize.placePortalBlocks(); 
-      } 
+          portalsize.placePortalBlocks();
+      }
     }
-    
+
     public BlockPattern.PatternHelper createPatternHelper(World worldIn, BlockPos p_181089_2_) {
       EnumFacing.Axis enumfacing$axis = EnumFacing.Axis.Z;
       Size blockportal$size = new Size(worldIn, p_181089_2_, EnumFacing.Axis.X);
@@ -477,9 +457,9 @@ public class WorldEverheaven extends GctAllElement {
       if (!blockportal$size.isValid()) {
         enumfacing$axis = EnumFacing.Axis.X;
         blockportal$size = new Size(worldIn, p_181089_2_, EnumFacing.Axis.Z);
-      } 
+      }
       if (!blockportal$size.isValid())
-        return new BlockPattern.PatternHelper(p_181089_2_, EnumFacing.NORTH, EnumFacing.UP, loadingcache, 1, 1, 1); 
+        return new BlockPattern.PatternHelper(p_181089_2_, EnumFacing.NORTH, EnumFacing.UP, loadingcache, 1, 1, 1);
       int[] aint = new int[(EnumFacing.AxisDirection.values()).length];
       EnumFacing enumfacing = blockportal$size.rightDir.rotateYCCW();
       BlockPos blockpos = blockportal$size.bottomLeft.up(blockportal$size.getHeight() - 1);
@@ -489,36 +469,36 @@ public class WorldEverheaven extends GctAllElement {
           for (int j = 0; j < blockportal$size.getHeight(); j++) {
             BlockWorldState blockworldstate = blockpattern$patternhelper.translateOffset(i, j, 1);
             if (blockworldstate.getBlockState() != null && blockworldstate.getBlockState().getMaterial() != Material.AIR)
-              aint[enumfacing$axisdirection.ordinal()] = aint[enumfacing$axisdirection.ordinal()] + 1; 
-          } 
-        } 
-      } 
+              aint[enumfacing$axisdirection.ordinal()] = aint[enumfacing$axisdirection.ordinal()] + 1;
+          }
+        }
+      }
       EnumFacing.AxisDirection enumfacing$axisdirection1 = EnumFacing.AxisDirection.POSITIVE;
       for (EnumFacing.AxisDirection enumfacing$axisdirection2 : EnumFacing.AxisDirection.values()) {
         if (aint[enumfacing$axisdirection2.ordinal()] < aint[enumfacing$axisdirection1.ordinal()])
-          enumfacing$axisdirection1 = enumfacing$axisdirection2; 
-      } 
+          enumfacing$axisdirection1 = enumfacing$axisdirection2;
+      }
       return new BlockPattern.PatternHelper(
           (enumfacing.getAxisDirection() == enumfacing$axisdirection1) ? blockpos : blockpos
-          
-          .offset(blockportal$size.rightDir, blockportal$size.getWidth() - 1), 
+
+          .offset(blockportal$size.rightDir, blockportal$size.getWidth() - 1),
           EnumFacing.getFacingFromAxis(enumfacing$axisdirection1, enumfacing$axis), EnumFacing.UP, loadingcache, blockportal$size
           .getWidth(), blockportal$size.getHeight(), 1);
     }
-    
+
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
       EnumFacing.Axis enumfacing$axis = (EnumFacing.Axis)state.getValue((IProperty)AXIS);
       if (enumfacing$axis == EnumFacing.Axis.X) {
         Size blockportal$size = new Size(worldIn, pos, EnumFacing.Axis.X);
         if (!blockportal$size.isValid() || blockportal$size.portalBlockCount < blockportal$size.width * blockportal$size.height)
-          worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); 
+          worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
       } else if (enumfacing$axis == EnumFacing.Axis.Z) {
         Size blockportal$size1 = new Size(worldIn, pos, EnumFacing.Axis.Z);
         if (!blockportal$size1.isValid() || blockportal$size1.portalBlockCount < blockportal$size1.width * blockportal$size1.height)
-          worldIn.setBlockState(pos, Blocks.AIR.getDefaultState()); 
-      } 
+          worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+      }
     }
-    
+
     @SideOnly(Side.CLIENT)
     public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random random) {
       for (int i = 0; i < 4; i++) {
@@ -535,16 +515,16 @@ public class WorldEverheaven extends GctAllElement {
         } else {
           pz = pos.getZ() + 0.5D + 0.25D * j;
           vz = (random.nextFloat() * 2.0F * j);
-        } 
+        }
         world.spawnParticle(EnumParticleTypes.SPELL, px, py, pz, vx, vy, vz, new int[0]);
-      } 
+      }
       if (random.nextInt(110) == 0)
         world.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, (SoundEvent)SoundEvent.REGISTRY
-            
+
             .getObject(new ResourceLocation("block.portal.ambient")), SoundCategory.BLOCKS, 0.5F, random
-            .nextFloat() * 0.4F + 0.8F, false); 
+            .nextFloat() * 0.4F + 0.8F, false);
     }
-    
+
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
       if (!worldIn.isRemote && !entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn instanceof EntityPlayerMP) {
         EntityPlayerMP thePlayer = (EntityPlayerMP)entityIn;
@@ -556,10 +536,10 @@ public class WorldEverheaven extends GctAllElement {
         } else {
           thePlayer.timeUntilPortal = thePlayer.getPortalCooldown();
           thePlayer.changeDimension(0, getTeleporterForDimension((Entity)thePlayer, pos, 0));
-        } 
-      } 
+        }
+      }
     }
-    
+
     private WorldEverheaven.TeleporterDimensionMod getTeleporterForDimension(Entity entity, BlockPos pos, int dimid) {
       BlockPattern.PatternHelper bph = WorldEverheaven.portal.createPatternHelper(entity.world, new BlockPos((Vec3i)pos));
       double d0 = (bph.getForwards().getAxis() == EnumFacing.Axis.X) ? bph.getFrontTopLeft().getZ() : bph.getFrontTopLeft().getX();
@@ -570,24 +550,24 @@ public class WorldEverheaven extends GctAllElement {
           .getFrontTopLeft().getY() - bph.getHeight()));
       return new WorldEverheaven.TeleporterDimensionMod(entity.getServer().getWorld(dimid), new Vec3d(d1, d2, 0.0D), bph.getForwards());
     }
-    
+
     public static class Size {
       private final World world;
-      
+
       private final EnumFacing.Axis axis;
-      
+
       private final EnumFacing rightDir;
-      
+
       private final EnumFacing leftDir;
-      
+
       private int portalBlockCount;
-      
+
       private BlockPos bottomLeft;
-      
+
       private int height;
-      
+
       private int width;
-      
+
       public Size(World worldIn, BlockPos p_i45694_2_, EnumFacing.Axis p_i45694_3_) {
         this.world = worldIn;
         this.axis = p_i45694_3_;
@@ -597,7 +577,7 @@ public class WorldEverheaven extends GctAllElement {
         } else {
           this.leftDir = EnumFacing.NORTH;
           this.rightDir = EnumFacing.SOUTH;
-        } 
+        }
         BlockPos blockpos = p_i45694_2_;
         for (; p_i45694_2_.getY() > blockpos.getY() - 21 && p_i45694_2_.getY() > 0 && isEmptyBlock(worldIn.getBlockState(p_i45694_2_.down()).getBlock()); p_i45694_2_ = p_i45694_2_.down());
         int i = getDistanceUntilEdge(p_i45694_2_, this.leftDir) - 1;
@@ -607,120 +587,120 @@ public class WorldEverheaven extends GctAllElement {
           if (this.width < 2 || this.width > 21) {
             this.bottomLeft = null;
             this.width = 0;
-          } 
-        } 
+          }
+        }
         if (this.bottomLeft != null)
-          this.height = calculatePortalHeight(); 
+          this.height = calculatePortalHeight();
       }
-      
+
       protected int getDistanceUntilEdge(BlockPos p_180120_1_, EnumFacing p_180120_2_) {
         int i;
         for (i = 0; i < 22; i++) {
           BlockPos blockpos = p_180120_1_.offset(p_180120_2_, i);
           if (!isEmptyBlock(this.world.getBlockState(blockpos).getBlock()) || this.world
             .getBlockState(blockpos.down()).getBlock() != BlockHeavite.block.getDefaultState().getBlock())
-            break; 
-        } 
+            break;
+        }
         Block block = this.world.getBlockState(p_180120_1_.offset(p_180120_2_, i)).getBlock();
         return (block == BlockHeavite.block.getDefaultState().getBlock()) ? i : 0;
       }
-      
+
       public int getHeight() {
         return this.height;
       }
-      
+
       public int getWidth() {
         return this.width;
       }
-      
+
       protected int calculatePortalHeight() {
         label38: for (this.height = 0; this.height < 21; this.height++) {
           for (int i = 0; i < this.width; i++) {
             BlockPos blockpos = this.bottomLeft.offset(this.rightDir, i).up(this.height);
             Block block = this.world.getBlockState(blockpos).getBlock();
             if (!isEmptyBlock(block))
-              break label38; 
+              break label38;
             if (block == WorldEverheaven.portal)
-              this.portalBlockCount++; 
+              this.portalBlockCount++;
             if (i == 0) {
               block = this.world.getBlockState(blockpos.offset(this.leftDir)).getBlock();
               if (block != BlockHeavite.block.getDefaultState().getBlock())
-                break label38; 
+                break label38;
             } else if (i == this.width - 1) {
               block = this.world.getBlockState(blockpos.offset(this.rightDir)).getBlock();
               if (block != BlockHeavite.block.getDefaultState().getBlock())
-                break label38; 
-            } 
-          } 
-        } 
+                break label38;
+            }
+          }
+        }
         for (int j = 0; j < this.width; j++) {
           if (this.world.getBlockState(this.bottomLeft.offset(this.rightDir, j).up(this.height)).getBlock() != BlockHeavite.block
             .getDefaultState().getBlock()) {
             this.height = 0;
             break;
-          } 
-        } 
+          }
+        }
         if (this.height <= 21 && this.height >= 3)
-          return this.height; 
+          return this.height;
         this.bottomLeft = null;
         this.width = 0;
         this.height = 0;
         return 0;
       }
-      
+
       protected boolean isEmptyBlock(Block blockIn) {
         return (blockIn.getDefaultState().getMaterial() == Material.AIR || blockIn == Blocks.FIRE || blockIn == WorldEverheaven.portal);
       }
-      
+
       public boolean isValid() {
         return (this.bottomLeft != null && this.width >= 2 && this.width <= 21 && this.height >= 3 && this.height <= 21);
       }
-      
+
       public void placePortalBlocks() {
         for (int i = 0; i < this.width; i++) {
           BlockPos blockpos = this.bottomLeft.offset(this.rightDir, i);
           for (int j = 0; j < this.height; j++)
-            this.world.setBlockState(blockpos.up(j), WorldEverheaven.portal.getDefaultState().withProperty((IProperty)BlockPortal.AXIS, (Comparable)this.axis), 2); 
-        } 
+            this.world.setBlockState(blockpos.up(j), WorldEverheaven.portal.getDefaultState().withProperty((IProperty)BlockPortal.AXIS, (Comparable)this.axis), 2);
+        }
       }
     }
   }
-  
+
   public static class ChunkProviderModded implements IChunkGenerator {
     private static final IBlockState STONE = BlockMeteor.block.getDefaultState();
-    
+
     private static final IBlockState AIR = Blocks.AIR.getDefaultState();
-    
+
     private static final int SEALEVEL = 63;
-    
+
     private final World world;
-    
+
     private Random random;
-    
+
     private final NoiseGeneratorSimplex islandNoise;
-    
+
     private final NoiseGeneratorOctaves perlinnoise1;
-    
+
     private final NoiseGeneratorOctaves perlinnoise2;
-    
+
     private final NoiseGeneratorOctaves perlinnoise3;
-    
+
     private final NoiseGeneratorPerlin height;
-    
+
     private Biome[] biomesForGeneration;
-    
+
     private double[] buffer;
-    
+
     private double[] pnr;
-    
+
     private double[] ar;
-    
+
     private double[] br;
-    
+
     private double[] depthbuff = new double[256];
-    
+
     private WorldGenerator islandGen;
-    
+
     public ChunkProviderModded(World worldIn, long seed) {
       worldIn.setSeaLevel(63);
       this.world = worldIn;
@@ -737,16 +717,16 @@ public class WorldEverheaven extends GctAllElement {
               for (int j = MathHelper.floor(-f); j <= MathHelper.ceil(f); j++) {
                 for (int k = MathHelper.floor(-f); k <= MathHelper.ceil(f); k++) {
                   if ((j * j + k * k) <= (f + 1.0F) * (f + 1.0F))
-                    setBlockAndNotifyAdequately(worldIn, position.add(j, i, k), WorldEverheaven.ChunkProviderModded.STONE); 
-                } 
-              } 
+                    setBlockAndNotifyAdequately(worldIn, position.add(j, i, k), WorldEverheaven.ChunkProviderModded.STONE);
+                }
+              }
               f = (float)(f - rand.nextInt(2) + 0.5D);
-            } 
+            }
             return true;
           }
         };
     }
-    
+
     public Chunk generateChunk(int x, int z) {
       this.random.setSeed(x * 535358712L + z * 347539041L);
       ChunkPrimer chunkprimer = new ChunkPrimer();
@@ -756,11 +736,11 @@ public class WorldEverheaven extends GctAllElement {
       Chunk chunk = new Chunk(this.world, chunkprimer, x, z);
       byte[] abyte = chunk.getBiomeArray();
       for (int i = 0; i < abyte.length; i++)
-        abyte[i] = (byte)Biome.getIdForBiome(this.biomesForGeneration[i]); 
+        abyte[i] = (byte)Biome.getIdForBiome(this.biomesForGeneration[i]);
       chunk.generateSkylightMap();
       return chunk;
     }
-    
+
     public void populate(int x, int z) {
       BlockFalling.fallInstantly = true;
       ForgeEventFactory.onChunkPopulate(true, this, this.world, this.random, x, z, false);
@@ -773,8 +753,8 @@ public class WorldEverheaven extends GctAllElement {
             .add(this.random.nextInt(16) + 8, 55 + this.random.nextInt(16), this.random.nextInt(16) + 8));
         if (this.random.nextInt(4) == 0)
           this.islandGen.generate(this.world, this.random, blockpos
-              .add(this.random.nextInt(16) + 8, 55 + this.random.nextInt(16), this.random.nextInt(16) + 8)); 
-      } 
+              .add(this.random.nextInt(16) + 8, 55 + this.random.nextInt(16), this.random.nextInt(16) + 8));
+      }
       Biome biome = this.world.getBiome(blockpos.add(16, 0, 16));
       MinecraftForge.EVENT_BUS
         .post((Event)new DecorateBiomeEvent.Pre(this.world, this.random, blockpos));
@@ -782,36 +762,36 @@ public class WorldEverheaven extends GctAllElement {
       MinecraftForge.EVENT_BUS
         .post((Event)new DecorateBiomeEvent.Post(this.world, this.random, blockpos));
       if (TerrainGen.populate(this, this.world, this.random, x, z, false, PopulateChunkEvent.Populate.EventType.ANIMALS))
-        WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.random); 
+        WorldEntitySpawner.performWorldGenSpawning(this.world, biome, i + 8, j + 8, 16, 16, this.random);
       ForgeEventFactory.onChunkPopulate(false, this, this.world, this.random, x, z, false);
       BlockFalling.fallInstantly = false;
     }
-    
+
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
       return this.world.getBiome(pos).getSpawnableList(creatureType);
     }
-    
+
     public void recreateStructures(Chunk chunkIn, int x, int z) {}
-    
+
     public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
       return false;
     }
-    
+
     public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean findUnexplored) {
       return null;
     }
-    
+
     public boolean generateStructures(Chunk chunkIn, int x, int z) {
       return false;
     }
-    
+
     private double[] getHeights(double[] p_185963_1_, int p_185963_2_, int p_185963_3_, int p_185963_4_, int p_185963_5_, int p_185963_6_, int p_185963_7_) {
       ChunkGeneratorEvent.InitNoiseField event = new ChunkGeneratorEvent.InitNoiseField(this, p_185963_1_, p_185963_2_, p_185963_3_, p_185963_4_, p_185963_5_, p_185963_6_, p_185963_7_);
       MinecraftForge.EVENT_BUS.post((Event)event);
       if (event.getResult() == Event.Result.DENY)
-        return event.getNoisefield(); 
+        return event.getNoisefield();
       if (p_185963_1_ == null)
-        p_185963_1_ = new double[p_185963_5_ * p_185963_6_ * p_185963_7_]; 
+        p_185963_1_ = new double[p_185963_5_ * p_185963_6_ * p_185963_7_];
       double d0 = 684.412D;
       double d1 = 684.412D;
       d0 *= 2.0D;
@@ -834,7 +814,7 @@ public class WorldEverheaven extends GctAllElement {
               d4 = d3;
             } else {
               d4 = d2 + (d3 - d2) * d5;
-            } 
+            }
             d4 -= 8.0D;
             d4 += f;
             int k1 = 2;
@@ -842,28 +822,28 @@ public class WorldEverheaven extends GctAllElement {
               double d6 = ((j1 - p_185963_6_ / 2 - k1) / 64.0F);
               d6 = MathHelper.clamp(d6, 0.0D, 1.0D);
               d4 = d4 * (1.0D - d6) + -3000.0D * d6;
-            } 
+            }
             k1 = 8;
             if (j1 < k1) {
               double d7 = ((k1 - j1) / (k1 - 1.0F));
               d4 = d4 * (1.0D - d7) + -30.0D * d7;
-            } 
+            }
             p_185963_1_[k] = d4;
             k++;
-          } 
-        } 
-      } 
+          }
+        }
+      }
       return p_185963_1_;
     }
-    
+
     private float getIslandHeightValue(int p_185960_1_, int p_185960_2_, int p_185960_3_, int p_185960_4_) {
       float f = (p_185960_1_ * 2 + p_185960_3_);
       float f1 = (p_185960_2_ * 2 + p_185960_4_);
       float f2 = 100.0F - MathHelper.sqrt(f * f + f1 * f1) * 8.0F;
       if (f2 > 80.0F)
-        f2 = 80.0F; 
+        f2 = 80.0F;
       if (f2 < -100.0F)
-        f2 = -100.0F; 
+        f2 = -100.0F;
       for (int i = -12; i <= 12; i++) {
         for (int j = -12; j <= 12; j++) {
           long k = (p_185960_1_ + i);
@@ -874,17 +854,17 @@ public class WorldEverheaven extends GctAllElement {
             f1 = (p_185960_4_ - j * 2);
             float f4 = 100.0F - MathHelper.sqrt(f * f + f1 * f1) * f3;
             if (f4 > 80.0F)
-              f4 = 80.0F; 
+              f4 = 80.0F;
             if (f4 < -100.0F)
-              f4 = -100.0F; 
+              f4 = -100.0F;
             if (f4 > f2)
-              f2 = f4; 
-          } 
-        } 
-      } 
+              f2 = f4;
+          }
+        }
+      }
       return f2;
     }
-    
+
     public void setBlocksInChunk(int x, int z, ChunkPrimer primer) {
       int i = 2;
       int j = 3;
@@ -916,34 +896,34 @@ public class WorldEverheaven extends GctAllElement {
                 for (int j2 = 0; j2 < 8; j2++) {
                   IBlockState iblockstate = AIR;
                   if (d15 > 0.0D)
-                    iblockstate = STONE; 
+                    iblockstate = STONE;
                   int k2 = i2 + i1 * 8;
                   int l2 = l1 + k1 * 4;
                   int i3 = j2 + j1 * 8;
                   primer.setBlockState(k2, l2, i3, iblockstate);
                   d15 += d16;
-                } 
+                }
                 d10 += d12;
                 d11 += d13;
-              } 
+              }
               d1 += d5;
               d2 += d6;
               d3 += d7;
               d4 += d8;
-            } 
-          } 
-        } 
-      } 
+            }
+          }
+        }
+      }
     }
-    
+
     private void replaceBiomeBlocks(int x, int z, ChunkPrimer primer, Biome[] biomesIn) {
       this.depthbuff = this.height.getRegion(this.depthbuff, (x * 16), (z * 16), 16, 16, 0.0625D, 0.0625D, 1.0D);
       for (int i = 0; i < 16; i++) {
         for (int j = 0; j < 16; j++)
-          generateBiomeTerrain(this.world, this.random, primer, x * 16 + i, z * 16 + j, this.depthbuff[j + i * 16], biomesIn[j + i * 16]); 
-      } 
+          generateBiomeTerrain(this.world, this.random, primer, x * 16 + i, z * 16 + j, this.depthbuff[j + i * 16], biomesIn[j + i * 16]);
+      }
     }
-    
+
     private void generateBiomeTerrain(World worldIn, Random rand, ChunkPrimer chunkPrimerIn, int x, int z, double noiseVal, Biome biome) {
       int i = 63;
       IBlockState iblockstate = biome.topBlock;
@@ -961,7 +941,7 @@ public class WorldEverheaven extends GctAllElement {
             if (k <= 0) {
               iblockstate = AIR;
               iblockstate1 = STONE;
-            } 
+            }
             j = k;
             if (j1 >= i - 1) {
               chunkPrimerIn.setBlockState(i1, j1, l, iblockstate);
@@ -969,23 +949,23 @@ public class WorldEverheaven extends GctAllElement {
               iblockstate1 = STONE;
             } else {
               chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
-            } 
+            }
           } else if (j > 0) {
             j--;
             chunkPrimerIn.setBlockState(i1, j1, l, iblockstate1);
-          } 
-        } 
-      } 
+          }
+        }
+      }
     }
   }
-  
+
   public static class GenLayerBiomesCustom extends GenLayer {
-    private Biome[] allowedBiomes = new Biome[] { (Biome)Biome.REGISTRY.getObject(new ResourceLocation("gct_all:everheaven_waste")) };
-    
+    private Biome[] allowedBiomes = new Biome[] { BiomeEverheavenWaste.biome };
+
     public GenLayerBiomesCustom(long seed) {
       super(seed);
     }
-    
+
     public int[] getInts(int x, int z, int width, int depth) {
       int[] dest = IntCache.getIntCache(width * depth);
       for (int dz = 0; dz < depth; dz++) {
@@ -993,30 +973,30 @@ public class WorldEverheaven extends GctAllElement {
           initChunkSeed((dx + x), (dz + z));
           Biome biome = this.allowedBiomes[nextInt(this.allowedBiomes.length)];
           dest[dx + dz * width] = Biome.getIdForBiome((biome == null) ? Biomes.DEFAULT : biome);
-        } 
-      } 
+        }
+      }
       return dest;
     }
   }
-  
+
   public static class BiomeProviderCustom extends BiomeProvider {
     private GenLayer genBiomes;
-    
+
     private GenLayer biomeIndexLayer;
-    
+
     private BiomeCache biomeCache;
-    
+
     public BiomeProviderCustom() {
       this(0L);
     }
-    
+
     public BiomeProviderCustom(long seed) {
       this.biomeCache = new BiomeCache(this);
       GenLayer[] agenlayer = makeTheWorld(seed);
       this.genBiomes = agenlayer[0];
       this.biomeIndexLayer = agenlayer[1];
     }
-    
+
     private GenLayer[] makeTheWorld(long seed) {
       GenLayer biomes = new WorldEverheaven.GenLayerBiomesCustom(1L);
       GenLayerZoom genLayerZoom = new GenLayerZoom(1000L, biomes);
@@ -1030,35 +1010,35 @@ public class WorldEverheaven extends GctAllElement {
       genLayerVoronoiZoom.initWorldGenSeed(seed);
       return new GenLayer[] { (GenLayer)genLayerZoom, (GenLayer)genLayerVoronoiZoom };
     }
-    
+
     public BiomeProviderCustom(World world) {
       this(world.getSeed());
     }
-    
+
     public void cleanupCache() {
       this.biomeCache.cleanupCache();
     }
-    
+
     public Biome getBiome(BlockPos pos) {
       return getBiome(pos, null);
     }
-    
+
     public Biome getBiome(BlockPos pos, Biome defaultBiome) {
       return this.biomeCache.getBiome(pos.getX(), pos.getZ(), defaultBiome);
     }
-    
+
     public Biome[] getBiomes(Biome[] oldBiomeList, int x, int z, int width, int depth) {
       return getBiomes(oldBiomeList, x, z, width, depth, true);
     }
-    
+
     public Biome[] getBiomesForGeneration(Biome[] biomes, int x, int z, int width, int height) {
       IntCache.resetIntCache();
       if (biomes == null || biomes.length < width * height)
-        biomes = new Biome[width * height]; 
+        biomes = new Biome[width * height];
       int[] aint = this.genBiomes.getInts(x, z, width, height);
       try {
         for (int i = 0; i < width * height; i++)
-          biomes[i] = Biome.getBiome(aint[i], Biomes.DEFAULT); 
+          biomes[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
         return biomes;
       } catch (Throwable throwable) {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
@@ -1069,24 +1049,24 @@ public class WorldEverheaven extends GctAllElement {
         crashreportcategory.addCrashSection("w", Integer.valueOf(width));
         crashreportcategory.addCrashSection("h", Integer.valueOf(height));
         throw new ReportedException(crashreport);
-      } 
+      }
     }
-    
+
     public Biome[] getBiomes(@Nullable Biome[] listToReuse, int x, int z, int width, int length, boolean cacheFlag) {
       IntCache.resetIntCache();
       if (listToReuse == null || listToReuse.length < width * length)
-        listToReuse = new Biome[width * length]; 
+        listToReuse = new Biome[width * length];
       if (cacheFlag && width == 16 && length == 16 && (x & 0xF) == 0 && (z & 0xF) == 0) {
         Biome[] abiome = this.biomeCache.getCachedBiomes(x, z);
         System.arraycopy(abiome, 0, listToReuse, 0, width * length);
         return listToReuse;
-      } 
+      }
       int[] aint = this.biomeIndexLayer.getInts(x, z, width, length);
       for (int i = 0; i < width * length; i++)
-        listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT); 
+        listToReuse[i] = Biome.getBiome(aint[i], Biomes.DEFAULT);
       return listToReuse;
     }
-    
+
     public boolean areBiomesViable(int x, int z, int radius, List<Biome> allowed) {
       IntCache.resetIntCache();
       int i = x - radius >> 2;
@@ -1100,8 +1080,8 @@ public class WorldEverheaven extends GctAllElement {
         for (int k1 = 0; k1 < i1 * j1; k1++) {
           Biome biome = Biome.getBiome(aint[k1]);
           if (!allowed.contains(biome))
-            return false; 
-        } 
+            return false;
+        }
         return true;
       } catch (Throwable throwable) {
         CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Invalid Biome id");
@@ -1112,9 +1092,9 @@ public class WorldEverheaven extends GctAllElement {
         crashreportcategory.addCrashSection("radius", Integer.valueOf(radius));
         crashreportcategory.addCrashSection("allowed", allowed);
         throw new ReportedException(crashreport);
-      } 
+      }
     }
-    
+
     @Nullable
     public BlockPos findBiomePosition(int x, int z, int range, List<Biome> biomes, Random random) {
       IntCache.resetIntCache();
@@ -1134,8 +1114,8 @@ public class WorldEverheaven extends GctAllElement {
         if (biomes.contains(biome) && (blockpos == null || random.nextInt(k1 + 1) == 0)) {
           blockpos = new BlockPos(i2, 0, j2);
           k1++;
-        } 
-      } 
+        }
+      }
       return blockpos;
     }
   }

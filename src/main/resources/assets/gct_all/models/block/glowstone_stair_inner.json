@@ -1,0 +1,8 @@
+﻿{
+  "parent": "block/inner_stairs",
+  "textures": {
+    "bottom": "gct_all:blocks/glowstone",
+    "top": "gct_all:blocks/glowstone",
+    "side": "gct_all:blocks/glowstone"
+  }
+}

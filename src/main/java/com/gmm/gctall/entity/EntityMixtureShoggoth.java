@@ -2,9 +2,6 @@ package com.gmm.gctall.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemShoggothTancale;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -42,39 +39,32 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityMixtureShoggoth extends GctAllElement {
+public final class EntityMixtureShoggoth {
   public static final int ENTITYID = 13;
-  
-  public static final int ENTITYID_RANGED = 14;
-  
-  public EntityMixtureShoggoth(GctAllContent instance) {
-    super(instance, 100);
+
+  public static final int ENTITYID_RANGED = 14;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(MixtureShoggothEntity.class).id(new ResourceLocation("gct_all", "mixture_shoggoth"), 13).name("mixture_shoggoth").tracker(64, 3, true).egg(-16777216, -16711681).build());
   }
-  
-  public void initElements() {
-    registerEntity(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "mixture_shoggoth"), 13).name("mixture_shoggoth").tracker(64, 3, true).egg(-16777216, -16711681).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelShoggoth(), 1.0F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(MixtureShoggothEntity.class, renderManager -> new RenderLiving(renderManager, new ModelShoggoth(), 1.0F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/shoggoth.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
-    public EntityCustom(World world) {
+
+  public static class MixtureShoggothEntity extends EntityMob {
+    public MixtureShoggothEntity(World world) {
       super(world);
       setSize(2.5F, 2.5F);
       this.experienceValue = 20;
@@ -82,7 +72,7 @@ public class EntityMixtureShoggoth extends GctAllElement {
       setNoAI(false);
       enablePersistence();
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
@@ -93,163 +83,163 @@ public class EntityMixtureShoggoth extends GctAllElement {
       this.tasks.addTask(6, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.tasks.addTask(7, (EntityAIBase)new EntityAISwimming((EntityLiving)this));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return (new ItemStack(ItemShoggothTancale.block, 1)).getItem();
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:shoggoth_ambient"));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:shoggoth_hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:shoggoth_death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityArrow)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(30.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(30.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.3D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(300.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(18.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(18.0D);
     }
   }
-  
+
   public static class ModelShoggoth extends ModelBase {
     private final ModelRenderer mouthBack;
-    
+
     private final ModelRenderer mouthBackChild;
-    
+
     private final ModelRenderer mouthBackChildChild;
-    
+
     private final ModelRenderer mouthBackChildChildChild;
-    
+
     private final ModelRenderer mouthBackChildChildChild_1;
-    
+
     private final ModelRenderer mouthRight;
-    
+
     private final ModelRenderer mouthBottom;
-    
+
     private final ModelRenderer mouthBottomChild;
-    
+
     private final ModelRenderer mouthBottomChild_1;
-    
+
     private final ModelRenderer mouthUpper;
-    
+
     private final ModelRenderer mouthUpperChild_1;
-    
+
     private final ModelRenderer mouthUpperChild_2;
-    
+
     private final ModelRenderer mouthUpperChild;
-    
+
     private final ModelRenderer sideSmall;
-    
+
     private final ModelRenderer sideSmall_r1;
-    
+
     private final ModelRenderer sideLarge;
-    
+
     private final ModelRenderer eyeTentacleLower;
-    
+
     private final ModelRenderer eyeTentacleLowerChild;
-    
+
     private final ModelRenderer eyeTentacleLowerChildChild;
-    
+
     private final ModelRenderer eyeTentacleLowerChildChildChild;
-    
+
     private final ModelRenderer mouthLeft;
-    
+
     private final ModelRenderer rightTentacleLower;
-    
+
     private final ModelRenderer rightTentacleLowerChild;
-    
+
     private final ModelRenderer bottom;
-    
+
     private final ModelRenderer bottom_r1;
-    
+
     private final ModelRenderer bottomChild_2;
-    
+
     private final ModelRenderer bottomChildChild_2;
-    
+
     private final ModelRenderer bottomChildChildChild_2;
-    
+
     private final ModelRenderer bottomChildChildChildChild_2;
-    
+
     private final ModelRenderer bottomChild;
-    
+
     private final ModelRenderer bottomChildChild;
-    
+
     private final ModelRenderer bottomChildChildChild;
-    
+
     private final ModelRenderer bottomChildChildChildChild;
-    
+
     private final ModelRenderer bottomChild_1;
-    
+
     private final ModelRenderer bottomChildChild_1;
-    
+
     private final ModelRenderer bottomChildChildChild_1;
-    
+
     private final ModelRenderer bottomChildChildChildChild_1;
-    
+
     private final ModelRenderer leftTentacleLower;
-    
+
     private final ModelRenderer leftTentacleLowerChild;
-    
+
     private final ModelRenderer abyssCube;
-    
+
     private final ModelRenderer cube_r1;
-    
+
     private final ModelRenderer cube_r2;
-    
+
     private final ModelRenderer cube_r3;
-    
+
     private final ModelRenderer cube_r4;
-    
+
     private final ModelRenderer cube_r5;
-    
+
     private final ModelRenderer cube_r6;
-    
+
     private final ModelRenderer cube_r7;
-    
+
     private final ModelRenderer cube_r8;
-    
+
     private final ModelRenderer cube_r9;
-    
+
     private final ModelRenderer cube_r10;
-    
+
     private final ModelRenderer cube_r11;
-    
+
     private final ModelRenderer cube_r12;
-    
+
     private final ModelRenderer cube_r13;
-    
+
     private final ModelRenderer otherChunk;
-    
+
     public ModelShoggoth() {
       this.textureWidth = 128;
       this.textureHeight = 128;
@@ -491,7 +481,7 @@ public class EntityMixtureShoggoth extends GctAllElement {
       this.otherChunk.setRotationPoint(12.0F, 2.0F, -7.0F);
       this.otherChunk.cubeList.add(new ModelBox(this.otherChunk, 0, 0, -6.0F, -11.0F, 0.0F, 12, 12, 12, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.mouthBack.render(f5);
       this.mouthRight.render(f5);
@@ -507,13 +497,13 @@ public class EntityMixtureShoggoth extends GctAllElement {
       this.abyssCube.render(f5);
       this.otherChunk.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.bottomChild.rotateAngleY = MathHelper.cos(f * 1.0F) * -1.0F * f1;

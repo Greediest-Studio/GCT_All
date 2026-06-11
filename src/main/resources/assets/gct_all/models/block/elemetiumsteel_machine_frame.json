@@ -1,0 +1,8 @@
+﻿{
+  "parent": "gct_all:custom/modelmachineblockeverite",
+  "textures": {
+    "all": "gct_all:blocks/storage2",
+    "particle": "gct_all:blocks/storage2",
+    "0": "gct_all:blocks/storage2"
+  }
+}

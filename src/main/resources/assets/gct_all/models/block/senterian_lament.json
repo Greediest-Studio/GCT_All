@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/lament_broken",
+    "up": "gct_all:blocks/lament_broken",
+    "north": "gct_all:blocks/lament_broken",
+    "east": "gct_all:blocks/lament_broken",
+    "south": "gct_all:blocks/lament_broken",
+    "west": "gct_all:blocks/lament_broken",
+    "particle": "gct_all:blocks/lament_broken"
+  }
+}

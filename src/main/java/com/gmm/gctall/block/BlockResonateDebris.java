@@ -6,10 +6,6 @@ import com.google.common.base.Predicate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
-import com.gmm.gctall.util.RegistrationHelper;
 import com.gmm.gctall.procedure.ProcedureProResonateDebrisBomb;
 import com.gmm.gctall.procedure.ProcedureProResonateDebrisMine;
 import net.minecraft.block.Block;
@@ -25,36 +21,14 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class BlockResonateDebris extends GctAllElement {
-  @ObjectHolder("gct_all:resonate_debris")
-  public static final Block block = null;
-  
-  public BlockResonateDebris(GctAllContent instance) {
-    super(instance, 358);
-  }
-  
-  public void initElements() {
-    this.elements.blocks.add(() -> (Block)(new BlockCustom()).setRegistryName("resonate_debris"));
-    this.elements.items.add(() -> RegistrationHelper.itemBlock(block));
-  }
-  
-  @SideOnly(Side.CLIENT)
-  public void registerModels(ModelRegistryEvent event) {
-    RegistrationHelper.registerBlockItemModel(block, "resonate_debris");
-  }
-  
-  public void generateWorld(Random random, int chunkX, int chunkZ, World world, int dimID, IChunkGenerator cg, IChunkProvider cp) {
+  public class BlockResonateDebris extends Block {
+  public static final Block block = new BlockResonateDebris();public void generateWorld(Random random, int chunkX, int chunkZ, World world, int dimID, IChunkGenerator cg, IChunkProvider cp) {
     boolean dimensionCriteria = false;
     if (dimID == 1)
-      dimensionCriteria = true; 
+      dimensionCriteria = true;
     if (!dimensionCriteria)
-      return; 
+      return;
     for (int i = 0; i < 2; i++) {
       int x = chunkX + random.nextInt(16);
       int y = random.nextInt(80) + 0;
@@ -63,57 +37,54 @@ public class BlockResonateDebris extends GctAllElement {
             public boolean apply(IBlockState blockAt) {
               boolean blockCriteria = false;
               if (blockAt.getBlock() == Blocks.END_STONE.getDefaultState().getBlock())
-                blockCriteria = true; 
+                blockCriteria = true;
               return blockCriteria;
             }
           })).generate(world, random, new BlockPos(x, y, z));
-    } 
+    }
   }
-  
-  public static class BlockCustom extends Block {
-    public BlockCustom() {
-      super(Material.ROCK);
-      setTranslationKey("resonate_debris");
-      setSoundType(SoundType.STONE);
-      setHarvestLevel("pickaxe", 12);
-      setHardness(100.0F);
-      setResistance(30.0F);
-      setLightLevel(0.0F);
-      setLightOpacity(255);
-      setCreativeTab(GctAllCreativeTab.TAB);
-    }
-    
-    public int quantityDropped(Random random) {
-      return 0;
-    }
-    
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer entity, boolean willHarvest) {
-      boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest);
-      int x = pos.getX();
-      int y = pos.getY();
-      int z = pos.getZ();
-      Map<String, Object> $_dependencies = new HashMap<>();
-      $_dependencies.put("entity", entity);
-      $_dependencies.put("x", Integer.valueOf(x));
-      $_dependencies.put("y", Integer.valueOf(y));
-      $_dependencies.put("z", Integer.valueOf(z));
-      $_dependencies.put("world", world);
-      ProcedureProResonateDebrisMine.executeProcedure($_dependencies);
-      return retval;
-    }
-    
-    public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
-      super.onExplosionDestroy(world, pos, e);
-      int x = pos.getX();
-      int y = pos.getY();
-      int z = pos.getZ();
-      Map<String, Object> $_dependencies = new HashMap<>();
-      $_dependencies.put("x", Integer.valueOf(x));
-      $_dependencies.put("y", Integer.valueOf(y));
-      $_dependencies.put("z", Integer.valueOf(z));
-      $_dependencies.put("world", world);
-      ProcedureProResonateDebrisBomb.executeProcedure($_dependencies);
-    }
+
+  public BlockResonateDebris() {
+    super(Material.ROCK);
+    setTranslationKey("resonate_debris");
+    setSoundType(SoundType.STONE);
+    setHarvestLevel("pickaxe", 12);
+    setHardness(100.0F);
+    setResistance(30.0F);
+    setLightLevel(0.0F);
+    setLightOpacity(255);
+    setCreativeTab(GctAllCreativeTab.TAB);
+  }
+
+  public int quantityDropped(Random random) {
+    return 0;
+  }
+
+  public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer entity, boolean willHarvest) {
+    boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest);
+    int x = pos.getX();
+    int y = pos.getY();
+    int z = pos.getZ();
+    Map<String, Object> $_dependencies = new HashMap<>();
+    $_dependencies.put("entity", entity);
+    $_dependencies.put("x", Integer.valueOf(x));
+    $_dependencies.put("y", Integer.valueOf(y));
+    $_dependencies.put("z", Integer.valueOf(z));
+    $_dependencies.put("world", world);
+    ProcedureProResonateDebrisMine.executeProcedure($_dependencies);
+    return retval;
+  }
+
+  public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
+    super.onExplosionDestroy(world, pos, e);
+    int x = pos.getX();
+    int y = pos.getY();
+    int z = pos.getZ();
+    Map<String, Object> $_dependencies = new HashMap<>();
+    $_dependencies.put("x", Integer.valueOf(x));
+    $_dependencies.put("y", Integer.valueOf(y));
+    $_dependencies.put("z", Integer.valueOf(z));
+    $_dependencies.put("world", world);
+    ProcedureProResonateDebrisBomb.executeProcedure($_dependencies);
   }
 }
-

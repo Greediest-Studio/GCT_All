@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProApocalypseCubeHurt;
 import com.gmm.gctall.procedure.ProcedureProApocalypseCubeSkill;
 import com.gmm.gctall.procedure.ProcedureProApocalypseDeath;
@@ -51,42 +48,34 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityApocalypseCube extends GctAllElement {
+public final class EntityApocalypseCube {
   public static final int ENTITYID = 9;
-  
-  public static final int ENTITYID_RANGED = 10;
-  
-  public EntityApocalypseCube(GctAllContent instance) {
-    super(instance, 1);
+
+  public static final int ENTITYID_RANGED = 10;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(ApocalypseCubeEntity.class).id(new ResourceLocation("gct_all", "apocalypse_cube"), 9).name("apocalypse_cube").tracker(64, 3, true).egg(-6750208, -3407872).build());
   }
-  
-  public void initElements() {
-    this.elements.entities
-      .add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "apocalypse_cube"), 9).name("apocalypse_cube").tracker(64, 3, true).egg(-6750208, -3407872).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelTFApocalypseCube(), 1.0F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(ApocalypseCubeEntity.class, renderManager -> new RenderLiving(renderManager, new ModelTFApocalypseCube(), 1.0F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/modeltfapocalypsecube-texture.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
+
+  public static class ApocalypseCubeEntity extends EntityMob {
     private final BossInfoServer bossInfo;
-    
-    public EntityCustom(World world) {
+
+    public ApocalypseCubeEntity(World world) {
       super(world);
       this.bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.RED, BossInfo.Overlay.PROGRESS);
       setSize(2.0F, 2.0F);
@@ -97,7 +86,7 @@ public class EntityApocalypseCube extends GctAllElement {
       this.navigator = (PathNavigate)new PathNavigateFlying((EntityLiving)this, this.world);
       this.moveHelper = (EntityMoveHelper)new EntityFlyHelper((EntityLiving)this);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAISwimming((EntityLiving)this));
@@ -105,51 +94,51 @@ public class EntityApocalypseCube extends GctAllElement {
       this.tasks.addTask(3, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 4.0D, true));
       this.targetTasks.addTask(4, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.irongolem.hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.irongolem.death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public void fall(float l, float d) {}
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      ApocalypseCubeEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("x", Integer.valueOf(x));
       $_dependencies.put("y", Integer.valueOf(y));
@@ -157,13 +146,13 @@ public class EntityApocalypseCube extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProApocalypseDeath.executeProcedure($_dependencies);
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      ApocalypseCubeEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("entity", entityCustom);
       $_dependencies.put("x", Integer.valueOf(x));
@@ -172,7 +161,7 @@ public class EntityApocalypseCube extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProApocalypseCubeSkill.executeProcedure($_dependencies);
     }
-    
+
     public void onCollideWithPlayer(EntityPlayer entity) {
       super.onCollideWithPlayer(entity);
       int x = (int)this.posX;
@@ -185,61 +174,61 @@ public class EntityApocalypseCube extends GctAllElement {
       $_dependencies.put("z", Integer.valueOf(z));
       ProcedureProApocalypseCubeHurt.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(6.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(5.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(5.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9000.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(9000.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(15.0D);
       getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
       getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(5.0D);
     }
-    
+
     public boolean isNonBoss() {
       return false;
     }
-    
+
     public void addTrackingPlayer(EntityPlayerMP player) {
       super.addTrackingPlayer(player);
       this.bossInfo.addPlayer(player);
     }
-    
+
     public void removeTrackingPlayer(EntityPlayerMP player) {
       super.removeTrackingPlayer(player);
       this.bossInfo.removePlayer(player);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       setNoGravity(true);
       this.bossInfo.setPercent(getHealth() / getMaxHealth());
     }
-    
+
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
-    
+
     public void setNoGravity(boolean ignored) {
       super.setNoGravity(true);
     }
   }
-  
+
   public static class ModelTFApocalypseCube extends ModelBase {
     public ModelRenderer body;
-    
+
     public ModelRenderer leg2;
-    
+
     public ModelRenderer leg4;
-    
+
     public ModelRenderer leg1;
-    
+
     public ModelRenderer leg3;
-    
+
     public ModelRenderer head;
-    
+
     public ModelTFApocalypseCube() {
       this.textureWidth = 128;
       this.textureHeight = 64;
@@ -262,7 +251,7 @@ public class EntityApocalypseCube extends GctAllElement {
       this.head.setRotationPoint(0.0F, 0.0F, 0.0F);
       this.head.addBox(0.0F, 0.0F, 0.0F, 0, 0, 0, 0.0F);
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.body.render(f5);
       this.leg3.render(f5);
@@ -271,13 +260,13 @@ public class EntityApocalypseCube extends GctAllElement {
       this.leg2.render(f5);
       this.head.render(f5);
     }
-    
+
     public void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.body.rotateAngleY = f3 / 57.295776F;

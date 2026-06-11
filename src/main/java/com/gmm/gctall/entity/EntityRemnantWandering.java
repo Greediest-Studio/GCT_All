@@ -1,8 +1,5 @@
 package com.gmm.gctall.entity;
 
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.item.ItemWarpedSoul;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -37,38 +34,31 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityRemnantWandering extends GctAllElement {
+public final class EntityRemnantWandering {
   public static final int ENTITYID = 7;
-  
-  public static final int ENTITYID_RANGED = 8;
-  
-  public EntityRemnantWandering(GctAllContent instance) {
-    super(instance, 62);
+
+  public static final int ENTITYID_RANGED = 8;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(RemnantWanderingEntity.class).id(new ResourceLocation("gct_all", "remnant_wandering"), 7).name("remnant_wandering").tracker(256, 3, true).egg(-13421773, -1).build());
   }
-  
-  public void initElements() {
-    registerEntity(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "remnant_wandering"), 7).name("remnant_wandering").tracker(256, 3, true).egg(-13421773, -1).build());
-  }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelRemnant(), 0.5F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(RemnantWanderingEntity.class, renderManager -> new RenderLiving(renderManager, new ModelRemnant(), 0.5F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/modelremnant-texture.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
-    public EntityCustom(World world) {
+
+  public static class RemnantWanderingEntity extends EntityMob {
+    public RemnantWanderingEntity(World world) {
       super(world);
       setSize(0.6F, 1.8F);
       this.experienceValue = 10;
       this.isImmuneToFire = false;
       setNoAI(false);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
@@ -77,107 +67,107 @@ public class EntityRemnantWandering extends GctAllElement {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected Item getDropItem() {
       return (new ItemStack(ItemWarpedSoul.block, 1)).getItem();
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:remnant_ambient"));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.generic.death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(80.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(8.0D);
     }
   }
-  
+
   public static class ModelRemnant extends ModelBase {
     private final ModelRenderer body;
-    
+
     private final ModelRenderer head;
-    
+
     private final ModelRenderer headChild_1;
-    
+
     private final ModelRenderer headChild;
-    
+
     private final ModelRenderer leg1;
-    
+
     private final ModelRenderer leg1Child;
-    
+
     private final ModelRenderer leg1ChildChild;
-    
+
     private final ModelRenderer leg1ChildChildChild;
-    
+
     private final ModelRenderer leg1ChildChildChildChild;
-    
+
     private final ModelRenderer leg4;
-    
+
     private final ModelRenderer leg4Child;
-    
+
     private final ModelRenderer leg4ChildChild;
-    
+
     private final ModelRenderer leg4ChildChildChild;
-    
+
     private final ModelRenderer leg4ChildChildChildChild;
-    
+
     private final ModelRenderer leg2;
-    
+
     private final ModelRenderer leg2Child;
-    
+
     private final ModelRenderer leg2ChildChild;
-    
+
     private final ModelRenderer leg2ChildChildChild;
-    
+
     private final ModelRenderer leg2ChildChildChildChild;
-    
+
     private final ModelRenderer leg3;
-    
+
     private final ModelRenderer leg3Child;
-    
+
     private final ModelRenderer leg3ChildChild;
-    
+
     private final ModelRenderer leg3ChildChildChild;
-    
+
     private final ModelRenderer leg3ChildChildChildChild;
-    
+
     private final ModelRenderer rightarm;
-    
+
     private final ModelRenderer leftarm;
-    
+
     private final ModelRenderer cube_r1;
-    
+
     private final ModelRenderer leftarmChild_2;
-    
+
     private final ModelRenderer leftarmChild_1;
-    
+
     private final ModelRenderer leftarmChild_3;
-    
+
     private final ModelRenderer leftarmChild;
-    
+
     public ModelRemnant() {
       this.textureWidth = 128;
       this.textureHeight = 64;
@@ -309,7 +299,7 @@ public class EntityRemnantWandering extends GctAllElement {
       setRotationAngle(this.leftarmChild, 0.1833F, 0.0F, 0.0F);
       this.leftarmChild.cubeList.add(new ModelBox(this.leftarmChild, 0, 46, -1.0F, 0.0F, -1.0F, 2, 8, 2, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.body.render(f5);
       this.head.render(f5);
@@ -320,13 +310,13 @@ public class EntityRemnantWandering extends GctAllElement {
       this.rightarm.render(f5);
       this.leftarm.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.leg2ChildChildChild.rotateAngleY = f2 / 20.0F;

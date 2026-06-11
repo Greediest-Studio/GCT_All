@@ -1,7 +1,7 @@
-﻿{
+{
   "parent": "gct_all:custom/modelapocalypsealtar",
   "textures": {
-    "particle": "gct_all:blocks/apocalypsium_block",
-    "0": "gct_all:blocks/apocalypsium_block"
+    "particle": "gct_all:blocks/apocalypse_altar_base",
+    "0": "gct_all:blocks/apocalypse_altar_base"
   }
 }

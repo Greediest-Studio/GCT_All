@@ -1,9 +1,6 @@
 package com.gmm.gctall.world.biome;
 
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.block.BlockMeteor;
 import com.gmm.gctall.entity.EntityBligtz;
 import com.gmm.gctall.entity.EntityBnatuz;
@@ -13,74 +10,53 @@ import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class BiomeEverheavenWaste extends GctAllElement {
-  @ObjectHolder("gct_all:everheaven_waste")
-  public static final BiomeGenCustom biome = null;
-  
-  public BiomeEverheavenWaste(GctAllContent instance) {
-    super(instance, 216);
+public class BiomeEverheavenWaste extends Biome {
+  public static final BiomeEverheavenWaste biome = new BiomeEverheavenWaste();
+  public BiomeEverheavenWaste() {
+    super((new Biome.BiomeProperties("Everheaven Waste")).setRainfall(0.0F).setBaseHeight(0.1F).setWaterColor(-13434880).setHeightVariation(0.2F)
+        .setTemperature(2.0F));
+    setRegistryName("everheaven_waste");
+    this.topBlock = BlockMeteor.block.getDefaultState();
+    this.fillerBlock = BlockMeteor.block.getDefaultState();
+    this.decorator.treesPerChunk = 0;
+    this.decorator.flowersPerChunk = 0;
+    this.decorator.grassPerChunk = 0;
+    this.decorator.mushroomsPerChunk = 0;
+    this.decorator.bigMushroomsPerChunk = 0;
+    this.decorator.reedsPerChunk = 0;
+    this.decorator.cactiPerChunk = 0;
+    this.decorator.sandPatchesPerChunk = 0;
+    this.decorator.gravelPatchesPerChunk = 0;
+    this.spawnableMonsterList.clear();
+    this.spawnableCreatureList.clear();
+    this.spawnableWaterCreatureList.clear();
+    this.spawnableCaveCreatureList.clear();
+    this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBthdz.BthdzEntity.class, 10, 1, 4));
+    this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBninz.BninzEntity.class, 10, 1, 2));
+    this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBligtz.BligtzEntity.class, 10, 1, 2));
+    this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBnatuz.BnatuzEntity.class, 10, 1, 2));
+    this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityZombie.class, 20, 1, 2));
   }
-  
-  public void initElements() {
-    this.elements.biomes.add(() -> new BiomeGenCustom());
+
+  @SideOnly(Side.CLIENT)
+  public int getGrassColorAtPos(BlockPos pos) {
+    return -13434880;
   }
-  
-  public void init(FMLInitializationEvent event) {
-    BiomeDictionary.addTypes(biome, new BiomeDictionary.Type[] { BiomeDictionary.Type.WASTELAND });
+
+  @SideOnly(Side.CLIENT)
+  public int getFoliageColorAtPos(BlockPos pos) {
+    return -13434880;
   }
-  
-  static class BiomeGenCustom extends Biome {
-    public BiomeGenCustom() {
-      super((new Biome.BiomeProperties("Everheaven Waste")).setRainfall(0.0F).setBaseHeight(0.1F).setWaterColor(-13434880).setHeightVariation(0.2F)
-          .setTemperature(2.0F));
-      setRegistryName("everheaven_waste");
-      this.topBlock = BlockMeteor.block.getDefaultState();
-      this.fillerBlock = BlockMeteor.block.getDefaultState();
-      this.decorator.treesPerChunk = 0;
-      this.decorator.flowersPerChunk = 0;
-      this.decorator.grassPerChunk = 0;
-      this.decorator.mushroomsPerChunk = 0;
-      this.decorator.bigMushroomsPerChunk = 0;
-      this.decorator.reedsPerChunk = 0;
-      this.decorator.cactiPerChunk = 0;
-      this.decorator.sandPatchesPerChunk = 0;
-      this.decorator.gravelPatchesPerChunk = 0;
-      this.spawnableMonsterList.clear();
-      this.spawnableCreatureList.clear();
-      this.spawnableWaterCreatureList.clear();
-      this.spawnableCaveCreatureList.clear();
-      this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBthdz.EntityCustom.class, 10, 1, 4));
-      this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBninz.EntityCustom.class, 10, 1, 2));
-      this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBligtz.EntityCustom.class, 10, 1, 2));
-      this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityBnatuz.EntityCustom.class, 10, 1, 2));
-      this.spawnableCreatureList.add(new Biome.SpawnListEntry(EntityZombie.class, 20, 1, 2));
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getGrassColorAtPos(BlockPos pos) {
-      return -13434880;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getFoliageColorAtPos(BlockPos pos) {
-      return -13434880;
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public int getSkyColorByTemp(float currentTemperature) {
-      return -6710785;
-    }
-    
-    public WorldGenAbstractTree getRandomTreeFeature(Random rand) {
-      return super.getRandomTreeFeature(rand);
-    }
+
+  @SideOnly(Side.CLIENT)
+  public int getSkyColorByTemp(float currentTemperature) {
+    return -6710785;
+  }
+
+  public WorldGenAbstractTree getRandomTreeFeature(Random rand) {
+    return super.getRandomTreeFeature(rand);
   }
 }
-

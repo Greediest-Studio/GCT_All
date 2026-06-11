@@ -1,12 +1,13 @@
 package com.gmm.gctall.registry;
 
 import com.gmm.gctall.Tags;
-import java.util.function.Supplier;
+import com.gmm.gctall.entity.GctAllEntities;
+import com.gmm.gctall.potion.GctAllPotions;
+import com.gmm.gctall.world.biome.GctAllBiomes;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionType;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.event.RegistryEvent;
@@ -21,60 +22,36 @@ public final class GctAllRegistry {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        registerAll(event, GctAllContent.INSTANCE.getBlocks());
-        com.gmm.gctall.registry.GctBasesBlocks.registerBlocks(event.getRegistry());
-        com.gmm.gctall.registry.GctMacBlocks.registerBlocks(event);
+        GctAllContent.registerBlocks(event);
     }
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        registerAll(event, GctAllContent.INSTANCE.getItems());
-        com.gmm.gctall.registry.GctBasesBlocks.registerItems(event.getRegistry());
-        com.gmm.gctall.registry.GctMacBlocks.registerItems(event);
+        GctAllContent.registerItems(event);
     }
 
     @SubscribeEvent
     public static void registerBiomes(RegistryEvent.Register<Biome> event) {
-        registerAll(event, GctAllContent.INSTANCE.getBiomes());
+        GctAllBiomes.registerBiomes(event);
     }
 
     @SubscribeEvent
     public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
-        registerAll(event, GctAllContent.INSTANCE.getEntities());
+        GctAllEntities.registerEntities(event);
     }
 
     @SubscribeEvent
     public static void registerPotions(RegistryEvent.Register<Potion> event) {
-        registerAll(event, GctAllContent.INSTANCE.getPotions());
+        GctAllPotions.registerPotions(event);
     }
 
     @SubscribeEvent
     public static void registerPotionTypes(RegistryEvent.Register<PotionType> event) {
-        registerAll(event, GctAllContent.INSTANCE.getPotionTypes());
+        GctAllPotions.registerPotionTypes(event);
     }
 
     @SubscribeEvent
     public static void registerSounds(RegistryEvent.Register<SoundEvent> event) {
-        GctAllContent.INSTANCE.registerSounds(event);
-    }
-
-    private static <T extends net.minecraftforge.registries.IForgeRegistryEntry<T>> void registerAll(
-            RegistryEvent.Register<T> event,
-            Iterable<Supplier<T>> entries
-    ) {
-        for (Supplier<T> entry : entries) {
-            event.getRegistry().register(normalizeRegistryName(entry.get()));
-        }
-    }
-
-    private static <T extends net.minecraftforge.registries.IForgeRegistryEntry<T>> T normalizeRegistryName(T entry) {
-        ResourceLocation name = entry.getRegistryName();
-        if (name == null) {
-            throw new IllegalStateException("Missing registry name for " + entry.getClass().getName());
-        }
-        if ("minecraft".equals(name.getNamespace())) {
-            entry.setRegistryName(new ResourceLocation(Tags.MOD_ID, name.getPath()));
-        }
-        return entry;
+        GctAllSounds.registerSounds(event);
     }
 }

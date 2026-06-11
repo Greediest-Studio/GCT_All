@@ -1,9 +1,6 @@
 package com.gmm.gctall.world.structure;
 
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.world.dimension.WorldEverheaven;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -11,15 +8,10 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 
-@Tag
-public class StructureHeavenPortal extends GctAllElement {
-  public StructureHeavenPortal(GctAllContent instance) {
-    super(instance, 222);
-  }
-  
-  public void generateWorld(Random random, int i2, int k2, World world, int dimID, IChunkGenerator cg, IChunkProvider cp) {
+public class StructureHeavenPortal {
+public void generateWorld(Random random, int i2, int k2, World world, int dimID, IChunkGenerator cg, IChunkProvider cp) {
     if (dimID != WorldEverheaven.DIMID)
-      return; 
+      return;
     if (random.nextInt(1000000) + 1 <= 20000) {
       int count = random.nextInt(1) + 1;
       for (int a = 0; a < count; a++) {
@@ -27,8 +19,8 @@ public class StructureHeavenPortal extends GctAllElement {
         int k = k2 + random.nextInt(16) + 8;
         int j = StructureGenerationHelper.findSurfaceY(world, i, k, false);
         StructureGenerationHelper.placeTemplate(world, random, new ResourceLocation("gct_all", "heaven_portal"), new BlockPos(i, j, k));
-      } 
-    } 
+      }
+    }
   }
 }
 

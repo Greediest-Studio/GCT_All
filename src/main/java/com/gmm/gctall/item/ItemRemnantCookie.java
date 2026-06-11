@@ -1,37 +1,69 @@
 package com.gmm.gctall.item;
 
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
+import com.gmm.gctall.Tags;
+import com.gmm.gctall.common.GctAllCreativeTab;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 
-@Tag
-public class ItemRemnantCookie extends GctAllElement {
-  @ObjectHolder("gct_all:remnant_cookie")
-  public static final Item block = null;
-  
-  public ItemRemnantCookie(GctAllContent instance) {
-    super(instance, 111);
-  }
-  
-  public void initElements() {
-    registerItem(ItemFoodCustom::new, "remnant_cookie");
-  }
-  
-  
-  public static class ItemFoodCustom extends GctAllFoodItem {
-    public ItemFoodCustom() {
-      super("remnant_cookie", 3, 0.1F, false, -5.0F);
+public class ItemRemnantCookie extends ItemFood {
+  public static final Item block = new ItemRemnantCookie();
+    private static final float SANITY_CHANGE = -5.0F;
+
+    public ItemRemnantCookie() {
+      super(2, 0.1F, false);
+      setTranslationKey("remnant_cookie");
+      setRegistryName(new ResourceLocation(Tags.MOD_ID, "remnant_cookie"));
+      setCreativeTab(GctAllCreativeTab.TAB);
+      setMaxStackSize(64);
+      setAlwaysEdible();
     }
-    
-    @SideOnly(Side.CLIENT)
-    public boolean hasEffect(ItemStack itemstack) {
-      return true;
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+      return 32;
+    }
+
+    @Override
+    public EnumAction getItemUseAction(ItemStack stack) {
+      return EnumAction.EAT;
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+      ItemStack stack = player.getHeldItem(hand);
+      player.setActiveHand(hand);
+      return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
+
+    @Override
+    public ItemStack onItemUseFinish(ItemStack stack, World world, EntityLivingBase entity) {
+      boolean creativePlayer = entity instanceof EntityPlayer && ((EntityPlayer) entity).capabilities.isCreativeMode;
+      ItemStack originalStack = creativePlayer ? stack.copy() : ItemStack.EMPTY;
+      ItemStack result = super.onItemUseFinish(stack, world, entity);
+      if (creativePlayer) {
+        originalStack.setCount(Math.max(1, originalStack.getCount()));
+        return originalStack;
+      }
+      return result;
+    }
+
+    @Override
+    protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
+      super.onFoodEaten(stack, world, player);
+      if (SANITY_CHANGE != 0.0F) {
+        float sanity = player.getEntityData().getFloat("sanityAbyss") + SANITY_CHANGE;
+        player.getEntityData().setFloat("sanityAbyss", MathHelper.clamp(sanity, -100.0F, 100.0F));
+      }
     }
   }
-}
 

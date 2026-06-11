@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/fire_alloy_block",
+    "up": "gct_all:blocks/fire_alloy_block",
+    "north": "gct_all:blocks/fire_alloy_block",
+    "east": "gct_all:blocks/fire_alloy_block",
+    "south": "gct_all:blocks/fire_alloy_block",
+    "west": "gct_all:blocks/fire_alloy_block",
+    "particle": "gct_all:blocks/fire_alloy_block"
+  }
+}

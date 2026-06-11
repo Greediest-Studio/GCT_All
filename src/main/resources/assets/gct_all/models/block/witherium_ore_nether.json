@@ -1,0 +1,12 @@
+﻿{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_all:blocks/witherium_ore_nether",
+    "up": "gct_all:blocks/witherium_ore_nether",
+    "north": "gct_all:blocks/witherium_ore_nether",
+    "east": "gct_all:blocks/witherium_ore_nether",
+    "south": "gct_all:blocks/witherium_ore_nether",
+    "west": "gct_all:blocks/witherium_ore_nether",
+    "particle": "gct_all:blocks/witherium_ore_nether"
+  }
+}

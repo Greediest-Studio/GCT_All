@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureProWeatherBeholderSkill;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
@@ -54,42 +51,34 @@ import net.minecraftforge.fml.common.registry.EntityEntryBuilder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class EntityWeatherEyevil extends GctAllElement {
+public final class EntityWeatherEyevil {
   public static final int ENTITYID = 31;
-  
-  public static final int ENTITYID_RANGED = 32;
-  
-  public EntityWeatherEyevil(GctAllContent instance) {
-    super(instance, 195);
+
+  public static final int ENTITYID_RANGED = 32;  public static void registerEntities(net.minecraftforge.event.RegistryEvent.Register<EntityEntry> event) {
+    event.getRegistry().register(EntityEntryBuilder.create().entity(WeatherEyevilEntity.class).id(new ResourceLocation("gct_all", "weather_eyevil"), 31).name("weather_eyevil").tracker(256, 3, true).egg(-16763905, -16711681).build());
   }
-  
-  public void initElements() {
-    this.elements.entities
-      .add(() -> EntityEntryBuilder.create().entity(EntityCustom.class).id(new ResourceLocation("gct_all", "weather_eyevil"), 31).name("weather_eyevil").tracker(256, 3, true).egg(-16763905, -16711681).build());
-  }
-  
+
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
     Iterator<Biome> itr = in.iterator();
     ArrayList<Biome> ls = new ArrayList<>();
     while (itr.hasNext())
-      ls.add(itr.next()); 
+      ls.add(itr.next());
     return ls.<Biome>toArray(new Biome[ls.size()]);
   }
-  
+
   @SideOnly(Side.CLIENT)
-  public void preInit(FMLPreInitializationEvent event) {
-    RenderingRegistry.registerEntityRenderingHandler(EntityCustom.class, renderManager -> new RenderLiving(renderManager, new ModelWeatherBeholder(), 1.0F) {
+  public static void registerRenderers(FMLPreInitializationEvent event) {
+    RenderingRegistry.registerEntityRenderingHandler(WeatherEyevilEntity.class, renderManager -> new RenderLiving(renderManager, new ModelWeatherBeholder(), 1.0F) {
           protected ResourceLocation getEntityTexture(Entity entity) {
             return new ResourceLocation("gct_all:textures/weathereyevil.png");
           }
         });
   }
-  
-  public static class EntityCustom extends EntityMob {
+
+  public static class WeatherEyevilEntity extends EntityMob {
     private final BossInfoServer bossInfo;
-    
-    public EntityCustom(World world) {
+
+    public WeatherEyevilEntity(World world) {
       super(world);
       this.bossInfo = new BossInfoServer(getDisplayName(), BossInfo.Color.BLUE, BossInfo.Overlay.PROGRESS);
       setSize(1.0F, 1.5F);
@@ -100,7 +89,7 @@ public class EntityWeatherEyevil extends GctAllElement {
       this.navigator = (PathNavigate)new PathNavigateFlying((EntityLiving)this, this.world);
       this.moveHelper = (EntityMoveHelper)new EntityFlyHelper((EntityLiving)this);
     }
-    
+
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 2.0D, false));
@@ -109,71 +98,71 @@ public class EntityWeatherEyevil extends GctAllElement {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
     }
-    
+
     public EnumCreatureAttribute getCreatureAttribute() {
       return EnumCreatureAttribute.UNDEFINED;
     }
-    
+
     protected boolean canDespawn() {
       return false;
     }
-    
+
     protected Item getDropItem() {
       return null;
     }
-    
+
     public SoundEvent getAmbientSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation(""));
     }
-    
+
     public SoundEvent getHurtSound(DamageSource ds) {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.snowman.hurt"));
     }
-    
+
     public SoundEvent getDeathSound() {
       return (SoundEvent)SoundEvent.REGISTRY.getObject(new ResourceLocation("entity.snowman.death"));
     }
-    
+
     protected float getSoundVolume() {
       return 1.0F;
     }
-    
+
     public void fall(float l, float d) {}
-    
+
     public boolean attackEntityFrom(DamageSource source, float amount) {
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
-        return false; 
+        return false;
       if (source == DamageSource.FALL)
-        return false; 
+        return false;
       if (source == DamageSource.CACTUS)
-        return false; 
+        return false;
       if (source == DamageSource.DROWN)
-        return false; 
+        return false;
       if (source == DamageSource.LIGHTNING_BOLT)
-        return false; 
+        return false;
       return super.attackEntityFrom(source, amount);
     }
-    
+
     public void onDeath(DamageSource source) {
       super.onDeath(source);
       if (!this.world.isRemote) {
-        List<EntityWeatherWaterRod.EntityCustom> waterRods = this.world.getEntities(EntityWeatherWaterRod.EntityCustom.class, entity -> true);
-        for (EntityWeatherWaterRod.EntityCustom waterRod : waterRods)
-          waterRod.setDead(); 
+        List<EntityWeatherWaterRod.WeatherWaterRodEntity> waterRods = this.world.getEntities(EntityWeatherWaterRod.WeatherWaterRodEntity.class, entity -> true);
+        for (EntityWeatherWaterRod.WeatherWaterRodEntity waterRod : waterRods)
+          waterRod.setDead();
       }
     }
-    
+
     @Nullable
     protected ResourceLocation getLootTable() {
       return new ResourceLocation("gct_all:entities/weather_eyevil");
     }
-    
+
     public void onEntityUpdate() {
       super.onEntityUpdate();
       int x = (int)this.posX;
       int y = (int)this.posY;
       int z = (int)this.posZ;
-      EntityCustom entityCustom = this;
+      WeatherEyevilEntity entityCustom = this;
       Map<String, Object> $_dependencies = new HashMap<>();
       $_dependencies.put("x", Integer.valueOf(x));
       $_dependencies.put("y", Integer.valueOf(y));
@@ -181,47 +170,47 @@ public class EntityWeatherEyevil extends GctAllElement {
       $_dependencies.put("world", this.world);
       ProcedureProWeatherBeholderSkill.executeProcedure($_dependencies);
     }
-    
+
     protected void applyEntityAttributes() {
       super.applyEntityAttributes();
       if (getEntityAttribute(SharedMonsterAttributes.ARMOR) != null)
-        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ARMOR).setBaseValue(4.0D);
       if (getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED) != null)
-        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D); 
+        getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.4D);
       if (getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH) != null)
-        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(28000.0D); 
+        getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(28000.0D);
       if (getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE) != null)
-        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D); 
+        getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(12.0D);
       getAttributeMap().registerAttribute(SharedMonsterAttributes.FLYING_SPEED);
       getEntityAttribute(SharedMonsterAttributes.FLYING_SPEED).setBaseValue(0.4D);
     }
-    
+
     public boolean isNonBoss() {
       return false;
     }
-    
+
     public void addTrackingPlayer(EntityPlayerMP player) {
       super.addTrackingPlayer(player);
       this.bossInfo.addPlayer(player);
     }
-    
+
     public void removeTrackingPlayer(EntityPlayerMP player) {
       super.removeTrackingPlayer(player);
       this.bossInfo.removePlayer(player);
     }
-    
+
     public void onUpdate() {
       super.onUpdate();
       setNoGravity(true);
       this.bossInfo.setPercent(getHealth() / getMaxHealth());
     }
-    
+
     protected void updateFallState(double y, boolean onGroundIn, IBlockState state, BlockPos pos) {}
-    
+
     public void setNoGravity(boolean ignored) {
       super.setNoGravity(true);
     }
-    
+
     public void onLivingUpdate() {
       super.onLivingUpdate();
       int i = (int)this.posX;
@@ -233,109 +222,109 @@ public class EntityWeatherEyevil extends GctAllElement {
         double d1 = j + 0.7D + (random.nextFloat() - 0.5D) * 0.5D + 0.5D;
         double d2 = k + 0.5D + (random.nextFloat() - 0.5D) * 0.5D * 20.0D;
         this.world.spawnParticle(EnumParticleTypes.SNOWBALL, d0, d1, d2, 0.0D, 0.0D, 0.0D, new int[0]);
-      } 
+      }
     }
   }
-  
+
   public static class ModelWeatherBeholder extends ModelBase {
     private final ModelRenderer main;
-    
+
     private final ModelRenderer hair5;
-    
+
     private final ModelRenderer cube_r28;
-    
+
     private final ModelRenderer cube_r29;
-    
+
     private final ModelRenderer hair4;
-    
+
     private final ModelRenderer cube_r26;
-    
+
     private final ModelRenderer cube_r27;
-    
+
     private final ModelRenderer hair3;
-    
+
     private final ModelRenderer cube_r24;
-    
+
     private final ModelRenderer cube_r25;
-    
+
     private final ModelRenderer hair2;
-    
+
     private final ModelRenderer cube_r22;
-    
+
     private final ModelRenderer cube_r23;
-    
+
     private final ModelRenderer tentacle9;
-    
+
     private final ModelRenderer cube_r18;
-    
+
     private final ModelRenderer cube_r19;
-    
+
     private final ModelRenderer hair1;
-    
+
     private final ModelRenderer cube_r20;
-    
+
     private final ModelRenderer cube_r21;
-    
+
     private final ModelRenderer tentacle8;
-    
+
     private final ModelRenderer cube_r16;
-    
+
     private final ModelRenderer cube_r17;
-    
+
     private final ModelRenderer tentacle7;
-    
+
     private final ModelRenderer cube_r14;
-    
+
     private final ModelRenderer cube_r15;
-    
+
     private final ModelRenderer tentacle6;
-    
+
     private final ModelRenderer cube_r12;
-    
+
     private final ModelRenderer cube_r13;
-    
+
     private final ModelRenderer tentacle5;
-    
+
     private final ModelRenderer cube_r10;
-    
+
     private final ModelRenderer cube_r11;
-    
+
     private final ModelRenderer tentacle4;
-    
+
     private final ModelRenderer cube_r8;
-    
+
     private final ModelRenderer cube_r9;
-    
+
     private final ModelRenderer tentacle3;
-    
+
     private final ModelRenderer cube_r7;
-    
+
     private final ModelRenderer tentacle2;
-    
+
     private final ModelRenderer cube_r5;
-    
+
     private final ModelRenderer cube_r6;
-    
+
     private final ModelRenderer tentacle1;
-    
+
     private final ModelRenderer cube_r3;
-    
+
     private final ModelRenderer cube_r4;
-    
+
     private final ModelRenderer down;
-    
+
     private final ModelRenderer cube_r1;
-    
+
     private final ModelRenderer cube_r2;
-    
+
     private final ModelRenderer head;
-    
+
     private final ModelRenderer circle1;
-    
+
     private final ModelRenderer circle2;
-    
+
     private final ModelRenderer circle3;
-    
+
     public ModelWeatherBeholder() {
       this.textureWidth = 128;
       this.textureHeight = 128;
@@ -599,20 +588,20 @@ public class EntityWeatherEyevil extends GctAllElement {
       this.circle3.cubeList.add(new ModelBox(this.circle3, 0, 0, 13.0F, -4.0F, 17.0F, 4, 4, 4, 0.0F, false));
       this.circle3.cubeList.add(new ModelBox(this.circle3, 0, 0, -13.0F, -4.0F, 17.0F, 4, 4, 4, 0.0F, false));
     }
-    
+
     public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5) {
       this.main.render(f5);
       this.circle1.render(f5);
       this.circle2.render(f5);
       this.circle3.render(f5);
     }
-    
+
     public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
       modelRenderer.rotateAngleX = x;
       modelRenderer.rotateAngleY = y;
       modelRenderer.rotateAngleZ = z;
     }
-    
+
     public void setRotationAngles(float f, float f1, float f2, float f3, float f4, float f5, Entity e) {
       super.setRotationAngles(f, f1, f2, f3, f4, f5, e);
       this.main.rotateAngleY = f3 / 57.295776F;

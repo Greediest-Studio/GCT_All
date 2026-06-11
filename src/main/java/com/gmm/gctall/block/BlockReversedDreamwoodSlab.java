@@ -3,10 +3,6 @@ package com.gmm.gctall.block;
 import com.gmm.gctall.common.GctAllCreativeTab;
 
 import java.util.Random;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
-import com.gmm.gctall.util.RegistrationHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSlab;
 import net.minecraft.block.SoundType;
@@ -16,7 +12,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemSlab;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -24,128 +19,102 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class BlockReversedDreamwoodSlab extends GctAllElement {
-  @ObjectHolder("gct_all:reversed_dreamwood_slab")
-  public static final Block block = null;
-  
-  @ObjectHolder("gct_all:reversed_dreamwood_slab_double")
-  public static final Block block_slab_double = null;
-  
-  public BlockReversedDreamwoodSlab(GctAllContent instance) {
-    super(instance, 280);
+  public class BlockReversedDreamwoodSlab extends BlockSlab {
+  public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
+  public static final Block block = new BlockReversedDreamwoodSlab();
+  public static final Block block_slab_double = new Double();
+
+  public BlockReversedDreamwoodSlab() {
+    super(Material.ROCK);
+    setTranslationKey("reversed_dreamwood_slab");
+    setSoundType(SoundType.WOOD);
+    setHarvestLevel("axe", 1);
+    setHardness(2.0F);
+    setResistance(2.0F);
+    setLightLevel(0.0F);
+    setLightOpacity(255);
+    setCreativeTab(GctAllCreativeTab.TAB);
+    IBlockState state = this.blockState.getBaseState().withProperty((IProperty)VARIANT, Variant.DEFAULT);
+    if (!isDouble())
+      state = state.withProperty((IProperty)BlockSlab.HALF, (Comparable)BlockSlab.EnumBlockHalf.BOTTOM);
+    setDefaultState(state);
+    this.useNeighborBrightness = !isDouble();
   }
-  
-  public void initElements() {
-    this.elements.blocks.add(() -> (Block)(new BlockCustom()).setRegistryName("reversed_dreamwood_slab"));
-    this.elements.blocks.add(() -> (Block)(new BlockCustom.Double()).setRegistryName("reversed_dreamwood_slab_double"));
-    this.elements.items.add(() -> (Item)(new ItemSlab(block, (BlockSlab)block, (BlockSlab)block_slab_double)).setRegistryName(block.getRegistryName()));
+
+  public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+    return Item.getItemFromBlock(block);
   }
-  
+
+  public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
+    return new ItemStack(block);
+  }
+
+  protected BlockStateContainer createBlockState() {
+    return isDouble() ? new BlockStateContainer((Block)this, new IProperty[] { (IProperty)VARIANT }) : new BlockStateContainer((Block)this, new IProperty[] { (IProperty)HALF, (IProperty)VARIANT });
+  }
+
+  public IBlockState getStateFromMeta(int meta) {
+    if (isDouble())
+      return getDefaultState();
+    return getDefaultState().withProperty((IProperty)HALF, (Comparable)BlockSlab.EnumBlockHalf.values()[meta % 2]);
+  }
+
+  public int getMetaFromState(IBlockState state) {
+    if (isDouble())
+      return 0;
+    return ((BlockSlab.EnumBlockHalf)state.getValue((IProperty)HALF)).ordinal();
+  }
+
+  public String getTranslationKey(int meta) {
+    return getTranslationKey();
+  }
+
+  public IProperty<?> getVariantProperty() {
+    return (IProperty<?>)VARIANT;
+  }
+
+  public Comparable<?> getTypeForItem(ItemStack stack) {
+    return Variant.DEFAULT;
+  }
+
+  public boolean isDouble() {
+    return false;
+  }
+
+  public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+    if (isDouble())
+      return true;
+    return super.doesSideBlockRendering(state, world, pos, face);
+  }
+
+  public enum Variant implements IStringSerializable {
+    DEFAULT;
+
+    public String getName() {
+      return "default";
+    }
+  }
+
   @SideOnly(Side.CLIENT)
-  public void registerModels(ModelRegistryEvent event) {
-    RegistrationHelper.registerBlockItemModel(block, "reversed_dreamwood_slab");
+  public BlockRenderLayer getRenderLayer() {
+    return BlockRenderLayer.CUTOUT;
   }
-  
-  public static class BlockCustom extends BlockSlab {
-    public BlockCustom() {
-      super(Material.ROCK);
-      setTranslationKey("reversed_dreamwood_slab");
-      setSoundType(SoundType.WOOD);
-      setHarvestLevel("axe", 1);
-      setHardness(2.0F);
-      setResistance(2.0F);
-      setLightLevel(0.0F);
-      setLightOpacity(255);
-      setCreativeTab(GctAllCreativeTab.TAB);
-      IBlockState state = this.blockState.getBaseState().withProperty((IProperty)VARIANT, Variant.DEFAULT);
-      if (!isDouble())
-        state = state.withProperty((IProperty)BlockSlab.HALF, (Comparable)BlockSlab.EnumBlockHalf.BOTTOM); 
-      setDefaultState(state);
-      this.useNeighborBrightness = !isDouble();
-    }
-    
-    public static final PropertyEnum<Variant> VARIANT = PropertyEnum.create("variant", Variant.class);
-    
-    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-      return Item.getItemFromBlock(BlockReversedDreamwoodSlab.block);
-    }
-    
-    public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
-      return new ItemStack(BlockReversedDreamwoodSlab.block);
-    }
-    
-    protected BlockStateContainer createBlockState() {
-      return isDouble() ? new BlockStateContainer((Block)this, new IProperty[] { (IProperty)VARIANT }) : new BlockStateContainer((Block)this, new IProperty[] { (IProperty)HALF, (IProperty)VARIANT });
-    }
-    
-    public IBlockState getStateFromMeta(int meta) {
-      if (isDouble())
-        return getDefaultState(); 
-      return getDefaultState().withProperty((IProperty)HALF, (Comparable)BlockSlab.EnumBlockHalf.values()[meta % 2]);
-    }
-    
-    public int getMetaFromState(IBlockState state) {
-      if (isDouble())
-        return 0; 
-      return ((BlockSlab.EnumBlockHalf)state.getValue((IProperty)HALF)).ordinal();
-    }
-    
-    public String getTranslationKey(int meta) {
-      return getTranslationKey();
-    }
-    
-    public IProperty<?> getVariantProperty() {
-      return (IProperty<?>)VARIANT;
-    }
-    
-    public Comparable<?> getTypeForItem(ItemStack stack) {
-      return Variant.DEFAULT;
-    }
-    
-    public boolean isDouble() {
-      return false;
-    }
-    
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
-      if (isDouble())
-        return true; 
-      return super.doesSideBlockRendering(state, world, pos, face);
-    }
-    
-    public enum Variant implements IStringSerializable {
-      DEFAULT;
-      
-      public String getName() {
-        return "default";
-      }
-    }
-    
-    public static class Double extends BlockCustom {
-      public boolean isDouble() {
-        return true;
-      }
-    }
-    
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderLayer() {
-      return BlockRenderLayer.CUTOUT;
-    }
-    
-    public boolean isOpaqueCube(IBlockState state) {
-      return false;
-    }
+
+  public boolean isOpaqueCube(IBlockState state) {
+    return false;
   }
-  
-  public static class Double extends BlockCustom {
+
+  public static class Double extends BlockReversedDreamwoodSlab {
+    public Double() {
+      super();
+    }
+
+    @Override
     public boolean isDouble() {
       return true;
     }
   }
 }
-

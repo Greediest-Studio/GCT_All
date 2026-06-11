@@ -2,9 +2,6 @@ package com.gmm.gctall.block;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.gmm.gctall.registry.GctAllContent;
-import com.gmm.gctall.registry.GctAllElement;
-import com.gmm.gctall.registry.GctAllElement.Tag;
 import com.gmm.gctall.procedure.ProcedureAbyssLiquidMobplayerCollidesBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -27,53 +24,45 @@ import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Tag
-public class BlockAbyssLiquid extends GctAllElement {
-  @ObjectHolder("gct_all:abyss_liquid")
-  public static final Block block = null;
-  
-  @ObjectHolder("gct_all:abyss_liquid")
-  public static final Item item = null;
-  
-  private Fluid fluid;
-  
-  public BlockAbyssLiquid(GctAllContent instance) {
-    super(instance, 39);
-    this
-      .fluid = (new Fluid("abyss_liquid", new ResourceLocation("gct_all:blocks/cwater_still"), new ResourceLocation("gct_all:blocks/cwater_flow"))).setLuminosity(0).setDensity(1000).setViscosity(1000).setGaseous(false);
+public class BlockAbyssLiquid extends BlockFluidClassic {
+  private static final Fluid FLUID = registerFluid();
+
+  public static final Block block = new BlockAbyssLiquid();
+  public static final Item item = new ItemBlock(block);
+
+  public BlockAbyssLiquid() {
+    super(FLUID, Material.WATER);
+    setTranslationKey("abyss_liquid");
   }
-  
-  public void initElements() {
-    final Block[] registeredBlock = new Block[1];
-    registerBlock(() -> {
-      Block fluidBlock = (Block)(new BlockFluidClassic(this.fluid, Material.WATER) {
-          public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
-            super.onEntityCollision(world, pos, state, entity);
-            int x = pos.getX();
-            int y = pos.getY();
-            int z = pos.getZ();
-            Map<String, Object> $_dependencies = new HashMap<>();
-            $_dependencies.put("entity", entity);
-            ProcedureAbyssLiquidMobplayerCollidesBlock.executeProcedure($_dependencies);
-          }
-        }).setTranslationKey("abyss_liquid").setRegistryName("abyss_liquid");
-      registeredBlock[0] = fluidBlock;
-      return fluidBlock;
-    });
-    registerItem(() -> (Item)(new ItemBlock(registeredBlock[0])).setRegistryName("abyss_liquid"));
+
+  public static void preInit(FMLPreInitializationEvent event) {
+    FluidRegistry.addBucketForFluid(FLUID);
   }
-  
-  public void preInit(FMLPreInitializationEvent event) {
-    FluidRegistry.registerFluid(this.fluid);
-    FluidRegistry.addBucketForFluid(this.fluid);
+
+  private static Fluid registerFluid() {
+    Fluid fluid = new Fluid("abyss_liquid",
+        new ResourceLocation("gct_all:blocks/cwater_still"),
+        new ResourceLocation("gct_all:blocks/cwater_flow"))
+        .setLuminosity(0)
+        .setDensity(1000)
+        .setViscosity(1000)
+        .setGaseous(false);
+    return FluidRegistry.registerFluid(fluid) ? fluid : FluidRegistry.getFluid(fluid.getName());
   }
-  
+
+  @Override
+  public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
+    super.onEntityCollision(world, pos, state, entity);
+    Map<String, Object> $_dependencies = new HashMap<>();
+    $_dependencies.put("entity", entity);
+    ProcedureAbyssLiquidMobplayerCollidesBlock.executeProcedure($_dependencies);
+  }
+
   @SideOnly(Side.CLIENT)
-  public void registerModels(ModelRegistryEvent event) {
+  public static void registerModels(ModelRegistryEvent event) {
     ModelBakery.registerItemVariants(item, new ResourceLocation[0]);
     ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
           public ModelResourceLocation getModelLocation(ItemStack stack) {
