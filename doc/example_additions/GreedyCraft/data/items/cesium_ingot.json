@@ -1,0 +1,9 @@
+{
+  "name": "铯锭",
+  "tooltip": "§e2Cs+2H₂O→2CsOH+H₂↑",
+  "ore_dict": [
+    "ingotCesium",
+    "ingotCaesium"
+  ],
+  "type": "additions:simple"
+}

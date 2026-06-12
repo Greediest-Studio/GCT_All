@@ -1,0 +1,26 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "01",
+    "23"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:shalloite"
+    },
+    "1": {
+      "item": "gct_ores:shalloite"
+    },
+    "2": {
+      "item": "gct_ores:shalloite"
+    },
+    "3": {
+      "item": "gct_ores:shalloite"
+    }
+  },
+  "result": {
+    "item": "gct_ores:shalloite_block",
+    "count": 1
+  }
+}

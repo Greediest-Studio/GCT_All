@@ -1,0 +1,30 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0 2",
+    " 4 ",
+    "6 8"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:genite_ingot"
+    },
+    "2": {
+      "item": "gct_ores:genite_ingot"
+    },
+    "4": {
+      "item": "gct_ores:genite_gear"
+    },
+    "6": {
+      "item": "gct_ores:genite_ingot"
+    },
+    "8": {
+      "item": "gct_ores:genite_ingot"
+    }
+  },
+  "result": {
+    "item": "gct_ores:genite_machine_frame",
+    "count": 2
+  }
+}

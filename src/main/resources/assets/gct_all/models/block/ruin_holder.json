@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/modelruinholder",
   "textures": {
     "all": "gct_all:blocks/ruinholder1",

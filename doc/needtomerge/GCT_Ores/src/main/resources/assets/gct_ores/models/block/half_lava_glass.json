@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/lava_still",
+    "up": "gct_ores:blocks/lava_still",
+    "north": "gct_ores:blocks/lava_still",
+    "east": "gct_ores:blocks/lava_still",
+    "south": "gct_ores:blocks/lava_still",
+    "west": "gct_ores:blocks/lava_still",
+    "particle": "gct_ores:blocks/lava_still"
+  }
+}

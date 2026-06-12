@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "additions:chaos_shard_block"
+    }
+  }
+}

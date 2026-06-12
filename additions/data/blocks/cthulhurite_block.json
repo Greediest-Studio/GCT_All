@@ -1,0 +1,13 @@
+{
+    "item_block":  {
+                       "name":  "克苏鲁块",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "克苏鲁块",
+    "material":  "minecraft:metal",
+    "hardness":  4,
+    "resistance":  30,
+    "type":  "additions:simple",
+    "harvest_level":  8,
+    "harvest_tool":  "pickaxe"
+}

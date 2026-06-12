@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "additions:ordered_fusion_core"
+    }
+  }
+}

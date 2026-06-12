@@ -1,0 +1,17 @@
+{
+    "recipe":  {
+                   "group":  "additions",
+                   "type":  "minecraft:crafting_shapeless",
+                   "ingredients":  [
+                                       {
+                                           "type":  "forge:ore_dict",
+                                           "ore":  "ingotCosmilite"
+                                       }
+                                   ],
+                   "result":  {
+                                  "item":  "additions:cosmilite_nugget",
+                                  "count":  9
+                              }
+               },
+    "type":  "additions:crafting_shapeless"
+}

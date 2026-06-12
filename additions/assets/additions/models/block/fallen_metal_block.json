@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/fallen_metal_block",
+    "up": "additions:blocks/fallen_metal_block",
+    "north": "additions:blocks/fallen_metal_block",
+    "east": "additions:blocks/fallen_metal_block",
+    "south": "additions:blocks/fallen_metal_block",
+    "west": "additions:blocks/fallen_metal_block",
+    "particle": "additions:blocks/fallen_metal_block"
+  }
+}
+

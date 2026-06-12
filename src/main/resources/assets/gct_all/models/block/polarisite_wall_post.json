@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/wall_post",
   "textures": {
     "wall": "gct_all:blocks/polarisite_brick",

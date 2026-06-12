@@ -1,0 +1,9 @@
+{
+  "name": "§d权限核心",
+  "type": "additions:simple",
+  "ore_dict": "coreCommand",
+  "tooltip": [
+    "太棒了，这个东西有着至高无上的命令权限！",
+    "用于合成命令方块"
+  ]
+}

@@ -1,4 +1,4 @@
-﻿{
+{
   "deepslate_break": {
     "category": "block",
     "sounds": [
@@ -22,6 +22,92 @@
     "sounds": [
       {
         "name": "gct_all:place",
+        "stream": false
+      }
+    ]
+  },
+  "remnant_ambient": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gct_all:remnant_scream",
+        "stream": false
+      }
+    ]
+  },
+  "zjarugoth_roar": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gct_all:zjarugoth_roar",
+        "stream": false
+      }
+    ]
+  },
+  "shoggoth_ambient": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gct_all:idle1",
+        "stream": false
+      },
+      {
+        "name": "gct_all:idle2",
+        "stream": false
+      },
+      {
+        "name": "gct_all:idle3",
+        "stream": false
+      },
+      {
+        "name": "gct_all:idle4",
+        "stream": false
+      },
+      {
+        "name": "gct_all:idle5",
+        "stream": false
+      }
+    ]
+  },
+  "chant_abyss": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gct_all:chant",
+        "stream": false
+      }
+    ]
+  },
+  "shoggoth_death": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gct_all:death",
+        "stream": false
+      }
+    ]
+  },
+  "shoggoth_hurt": {
+    "category": "master",
+    "sounds": [
+      {
+        "name": "gct_all:hurt1",
+        "stream": false
+      },
+      {
+        "name": "gct_all:hurt2",
+        "stream": false
+      },
+      {
+        "name": "gct_all:hurt3",
+        "stream": false
+      },
+      {
+        "name": "gct_all:hurt4",
+        "stream": false
+      },
+      {
+        "name": "gct_all:hurt5",
         "stream": false
       }
     ]

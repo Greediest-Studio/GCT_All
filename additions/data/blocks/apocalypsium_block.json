@@ -1,0 +1,13 @@
+{
+    "item_block":  {
+                       "name":  "§4天启块",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "§4天启块",
+    "material":  "minecraft:metal",
+    "hardness":  20,
+    "resistance":  2000,
+    "type":  "additions:simple",
+    "harvest_level":  5,
+    "harvest_tool":  "pickaxe"
+}

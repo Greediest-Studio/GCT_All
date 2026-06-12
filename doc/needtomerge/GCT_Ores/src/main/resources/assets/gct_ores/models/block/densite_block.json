@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/densite_block",
+    "up": "gct_ores:blocks/densite_block",
+    "north": "gct_ores:blocks/densite_block",
+    "east": "gct_ores:blocks/densite_block",
+    "south": "gct_ores:blocks/densite_block",
+    "west": "gct_ores:blocks/densite_block",
+    "particle": "gct_ores:blocks/densite_block"
+  }
+}

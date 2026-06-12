@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/cube",
   "textures": {
     "down": "gct_all:blocks/corruptrock",

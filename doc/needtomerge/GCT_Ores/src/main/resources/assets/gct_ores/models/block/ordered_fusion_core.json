@@ -1,0 +1,12 @@
+{
+  "parent": "gct_ores:custom/modelorderfusion",
+  "textures": {
+    "all": "gct_ores:blocks/ordered_fusion_round",
+    "particle": "gct_ores:blocks/ordered_fusion_round",
+    "0": "gct_ores:blocks/order_fusion_core",
+    "1": "gct_ores:blocks/order_fusion_rod_ud",
+    "2": "gct_ores:blocks/order_fusion_rod_lr",
+    "3": "gct_ores:blocks/order_fusion_rod_fb",
+    "4": "gct_ores:blocks/order_fusion_center"
+  }
+}

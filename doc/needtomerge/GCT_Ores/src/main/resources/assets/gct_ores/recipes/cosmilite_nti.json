@@ -1,0 +1,37 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    },
+    {
+      "item": "gct_ores:cosmilite_nugget"
+    }
+  ],
+  "result": {
+    "item": "additions:cosmilite_ingot",
+    "count": 1
+  }
+}

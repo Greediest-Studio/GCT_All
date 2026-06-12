@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/ruled_draconium_block_top",
+    "up": "additions:blocks/ruled_draconium_block_top",
+    "north": "additions:blocks/ruled_draconium_block_side",
+    "east": "additions:blocks/ruled_draconium_block_side",
+    "south": "additions:blocks/ruled_draconium_block_side",
+    "west": "additions:blocks/ruled_draconium_block_side",
+    "particle": "additions:blocks/ruled_draconium_block_top"
+  }
+}
+

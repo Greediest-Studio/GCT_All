@@ -1,6 +1,5 @@
-﻿{
+{
   "credit": "Made with Blockbench",
-  "parent": "finallium_container",
   "elements": [
     {
       "name": "core",

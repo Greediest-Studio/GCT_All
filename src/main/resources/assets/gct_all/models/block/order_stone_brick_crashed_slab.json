@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/half_slab",
   "textures": {
     "bottom": "gct_all:blocks/order_stonebrickcrashed",

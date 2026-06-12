@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/upper_slab",
   "textures": {
     "bottom": "gct_all:blocks/solok_plank",

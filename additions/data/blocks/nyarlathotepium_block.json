@@ -1,0 +1,13 @@
+{
+    "item_block":  {
+                       "name":  "奈亚拉托提普块",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "奈亚拉托提普块",
+    "material":  "minecraft:metal",
+    "hardness":  15,
+    "resistance":  2000,
+    "type":  "additions:simple",
+    "harvest_level":  11,
+    "harvest_tool":  "pickaxe"
+}

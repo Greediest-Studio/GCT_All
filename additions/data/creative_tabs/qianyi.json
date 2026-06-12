@@ -1,0 +1,632 @@
+{
+  "name": "§d迁移",
+  "tab_item": {
+    "item": "minecraft:grass"
+  },
+  "items": [
+    {
+      "item": "additions:end_chromium_ore"
+    },
+    {
+      "item": "additions:end_manganese_ore"
+    },
+    {
+      "item": "additions:nether_chromium_ore"
+    },
+    {
+      "item": "additions:nether_manganese_ore"
+    },
+    {
+      "item": "additions:apocalypsium_block"
+    },
+    {
+      "item": "additions:apocalypsium_ingot"
+    },
+    {
+      "item": "additions:apocalypsium_nugget"
+    },
+    {
+      "item": "additions:apocalypsium_dust"
+    },
+    {
+      "item": "additions:apocalypsium_gear"
+    },
+    {
+      "item": "additions:apocalypsium_plate"
+    },
+    {
+      "item": "additions:azathothium_block"
+    },
+    {
+      "item": "additions:azathothium_ingot"
+    },
+    {
+      "item": "additions:cthulhurite_block"
+    },
+    {
+      "item": "additions:cthulhurite_ingot"
+    },
+    {
+      "item": "additions:nyarlathotepium_block"
+    },
+    {
+      "item": "additions:nyarlathotepium_ingot"
+    },
+    {
+      "item": "additions:shubniggurathium_block"
+    },
+    {
+      "item": "additions:shubniggurathium_ingot"
+    },
+    {
+      "item": "additions:yogsothothium_block"
+    },
+    {
+      "item": "additions:yogsothothium_ingot"
+    },
+    {
+      "item": "additions:sanite_block"
+    },
+    {
+      "item": "additions:sanite_ingot"
+    },
+    {
+      "item": "additions:balanced_matrix_block"
+    },
+    {
+      "item": "additions:balanced_matrix_ingot"
+    },
+    {
+      "item": "additions:chaos_shard_block"
+    },
+    {
+      "item": "additions:chaotic_draconium_block"
+    },
+    {
+      "item": "additions:chaotic_draconium_ingot"
+    },
+    {
+      "item": "additions:chaotic_draconium_nugget"
+    },
+    {
+      "item": "additions:chaotic_draconium_dust"
+    },
+    {
+      "item": "additions:awakened_draconium_dust"
+    },
+    {
+      "item": "additions:chaotic_draconium_gear"
+    },
+    {
+      "item": "additions:chaotic_draconium_plate"
+    },
+    {
+      "item": "additions:ruled_draconium_block"
+    },
+    {
+      "item": "additions:ruled_draconium_ingot"
+    },
+    {
+      "item": "additions:ruled_draconium_nugget"
+    },
+    {
+      "item": "additions:ruled_draconium_dust"
+    },
+    {
+      "item": "additions:ruled_draconium_gear"
+    },
+    {
+      "item": "additions:ruled_draconium_plate"
+    },
+    {
+      "item": "additions:densite_block"
+    },
+    {
+      "item": "additions:densite_ingot"
+    },
+    {
+      "item": "additions:densite_nugget"
+    },
+    {
+      "item": "additions:densite_dust"
+    },
+    {
+      "item": "additions:densite_gear"
+    },
+    {
+      "item": "additions:densite_plate"
+    },
+    {
+      "item": "additions:equipment_witherium_block"
+    },
+    {
+      "item": "additions:equipment_witherium_ingot"
+    },
+    {
+      "item": "additions:equipment_witherium_nugget"
+    },
+    {
+      "item": "additions:equipment_witherium_dust"
+    },
+    {
+      "item": "additions:equipment_witherium_gear"
+    },
+    {
+      "item": "additions:equipment_witherium_plate"
+    },
+    {
+      "item": "additions:everite_block"
+    },
+    {
+      "item": "additions:everite_ingot"
+    },
+    {
+      "item": "additions:everite_nugget"
+    },
+    {
+      "item": "additions:everite_dust"
+    },
+    {
+      "item": "additions:everite_gear"
+    },
+    {
+      "item": "additions:everite_plate"
+    },
+    {
+      "item": "additions:everite_machine_frame"
+    },
+    {
+      "item": "additions:fallen_metal_block"
+    },
+    {
+      "item": "additions:fallen_metal_ingot"
+    },
+    {
+      "item": "additions:fallen_metal_nugget"
+    },
+    {
+      "item": "additions:fallen_metal_dust"
+    },
+    {
+      "item": "additions:fallen_metal_gear"
+    },
+    {
+      "item": "additions:fallen_metal_plate"
+    },
+    {
+      "item": "additions:fire_alloy_block"
+    },
+    {
+      "item": "additions:fire_alloy_ingot"
+    },
+    {
+      "item": "additions:fire_alloy_nugget"
+    },
+    {
+      "item": "additions:fire_alloy_dust"
+    },
+    {
+      "item": "additions:fire_alloy_gear"
+    },
+    {
+      "item": "additions:fire_alloy_plate"
+    },
+    {
+      "item": "additions:genite_block"
+    },
+    {
+      "item": "additions:genite_ingot"
+    },
+    {
+      "item": "additions:genite_nugget"
+    },
+    {
+      "item": "additions:genite_dust"
+    },
+    {
+      "item": "additions:genite_gear"
+    },
+    {
+      "item": "additions:genite_plate"
+    },
+    {
+      "item": "additions:genite_machine_frame"
+    },
+    {
+      "item": "additions:ice_alloy_block"
+    },
+    {
+      "item": "additions:ice_alloy_ingot"
+    },
+    {
+      "item": "additions:ice_alloy_nugget"
+    },
+    {
+      "item": "additions:ice_alloy_dust"
+    },
+    {
+      "item": "additions:ice_alloy_gear"
+    },
+    {
+      "item": "additions:ice_alloy_plate"
+    },
+    {
+      "item": "additions:ordered_metal_block"
+    },
+    {
+      "item": "additions:ordered_metal_ingot"
+    },
+    {
+      "item": "additions:ordered_metal_nugget"
+    },
+    {
+      "item": "additions:ordered_metal_dust"
+    },
+    {
+      "item": "additions:ordered_metal_gear"
+    },
+    {
+      "item": "additions:ordered_metal_plate"
+    },
+    {
+      "item": "additions:ordered_fusion_core"
+    },
+    {
+      "item": "additions:reditrite_block"
+    },
+    {
+      "item": "additions:reditrite_ingot"
+    },
+    {
+      "item": "additions:reditrite_nugget"
+    },
+    {
+      "item": "additions:reditrite_dust"
+    },
+    {
+      "item": "additions:reditrite_gear"
+    },
+    {
+      "item": "additions:reditrite_plate"
+    },
+    {
+      "item": "additions:relifed_metal_block"
+    },
+    {
+      "item": "additions:relifed_metal_ingot"
+    },
+    {
+      "item": "additions:relifed_metal_nugget"
+    },
+    {
+      "item": "additions:relifed_metal_dust"
+    },
+    {
+      "item": "additions:relifed_metal_gear"
+    },
+    {
+      "item": "additions:relifed_metal_plate"
+    },
+    {
+      "item": "additions:relifed_witherium_block"
+    },
+    {
+      "item": "additions:relifed_witherium_ingot"
+    },
+    {
+      "item": "additions:relifed_witherium_nugget"
+    },
+    {
+      "item": "additions:relifed_witherium_dust"
+    },
+    {
+      "item": "additions:relifed_witherium_gear"
+    },
+    {
+      "item": "additions:relifed_witherium_plate"
+    },
+    {
+      "item": "additions:sky_alloy_block"
+    },
+    {
+      "item": "additions:sky_alloy_ingot"
+    },
+    {
+      "item": "additions:sky_alloy_nugget"
+    },
+    {
+      "item": "additions:sky_alloy_dust"
+    },
+    {
+      "item": "additions:sky_alloy_gear"
+    },
+    {
+      "item": "additions:sky_alloy_plate"
+    },
+    {
+      "item": "additions:stormy_metal_block"
+    },
+    {
+      "item": "additions:stormy_metal_ingot"
+    },
+    {
+      "item": "additions:stormy_metal_nugget"
+    },
+    {
+      "item": "additions:stormy_metal_dust"
+    },
+    {
+      "item": "additions:stormy_metal_gear"
+    },
+    {
+      "item": "additions:stormy_metal_plate"
+    },
+    {
+      "item": "additions:stormy_witherium_block"
+    },
+    {
+      "item": "additions:stormy_witherium_ingot"
+    },
+    {
+      "item": "additions:stormy_witherium_nugget"
+    },
+    {
+      "item": "additions:stormy_witherium_dust"
+    },
+    {
+      "item": "additions:stormy_witherium_gear"
+    },
+    {
+      "item": "additions:stormy_witherium_plate"
+    },
+    {
+      "item": "additions:stormy_shard_block"
+    },
+    {
+      "item": "additions:stormy_fragment_tiny"
+    },
+    {
+      "item": "additions:stormy_fragment_small"
+    },
+    {
+      "item": "additions:stormy_fragment_large"
+    },
+    {
+      "item": "additions:stormy_shard"
+    },
+    {
+      "item": "additions:stormy_core"
+    },
+    {
+      "item": "additions:witheric_core"
+    },
+    {
+      "item": "additions:fallen_core"
+    },
+    {
+      "item": "additions:relifed_core"
+    },
+    {
+      "item": "additions:manasteel_machine_frame"
+    },
+    {
+      "item": "additions:elemetiumsteel_machine_frame"
+    },
+    {
+      "item": "additions:terrasteel_machine_frame"
+    },
+    {
+      "item": "additions:orichalcos_machine_frame"
+    },
+    {
+      "item": "additions:gaia_steel_machine_frame"
+    },
+    {
+      "item": "additions:gaia_spirit_machine_frame"
+    },
+    {
+      "item": "additions:command_core"
+    },
+    {
+      "item": "additions:blue_print_empty"
+    },
+    {
+      "item": "additions:blue_print_forge"
+    },
+    {
+      "item": "additions:finallium_ingot"
+    },
+    {
+      "item": "additions:half_lava_glass"
+    },
+    {
+      "item": "additions:mana_block"
+    },
+    {
+      "item": "additions:botanical_soul"
+    },
+    {
+      "item": "additions:botanical_ingot"
+    },
+    {
+      "item": "additions:botanical_ingot_awakened"
+    },
+    {
+      "item": "additions:begonium_ingot"
+    },
+    {
+      "item": "additions:carnationium_ingot"
+    },
+    {
+      "item": "additions:chrysanthemium_ingot"
+    },
+    {
+      "item": "additions:dandelionium_ingot"
+    },
+    {
+      "item": "additions:myosotisium_ingot"
+    },
+    {
+      "item": "additions:rosium_ingot"
+    },
+    {
+      "item": "additions:hermaphroditic_artifact"
+    },
+    {
+      "item": "additions:gaia_heart"
+    },
+    {
+      "item": "additions:elementine_ingot"
+    },
+    {
+      "item": "additions:greed_ingot"
+    },
+    {
+      "item": "additions:wavite_ingot"
+    },
+    {
+      "item": "additions:manasteel_fusionplate"
+    },
+    {
+      "item": "additions:elementium_fusionplate"
+    },
+    {
+      "item": "additions:orichalcos_fusionplate"
+    },
+    {
+      "item": "additions:naturalline"
+    },
+    {
+      "item": "additions:essenceofdarkrealm"
+    },
+    {
+      "item": "additions:essence_of_warped_ruin"
+    },
+    {
+      "item": "additions:abyss_wand"
+    },
+    {
+      "item": "additions:eye_of_abyss"
+    },
+    {
+      "item": "additions:shoggoth_slimeball"
+    },
+    {
+      "item": "additions:shoggoth_complex_crystal"
+    },
+    {
+      "item": "additions:shoggy_slime"
+    },
+    {
+      "item": "additions:shoggy_slime_purified"
+    },
+    {
+      "item": "additions:lumixeium_dust"
+    },
+    {
+      "item": "additions:naturaeum_dust"
+    },
+    {
+      "item": "additions:noxexeum_dust"
+    },
+    {
+      "item": "additions:tonitruium_dust"
+    },
+    {
+      "item": "additions:adeninite_nugget"
+    },
+    {
+      "item": "additions:aetherium_nugget"
+    },
+    {
+      "item": "additions:snowingium_nugget"
+    },
+    {
+      "item": "additions:bnightium_nugget"
+    },
+    {
+      "item": "additions:canopium_nugget"
+    },
+    {
+      "item": "additions:cosmilite_nugget"
+    },
+    {
+      "item": "additions:freezite_nugget"
+    },
+    {
+      "item": "additions:guaninite_nugget"
+    },
+    {
+      "item": "additions:lavarite_nugget"
+    },
+    {
+      "item": "additions:mistium_nugget"
+    },
+    {
+      "item": "additions:oceanium_nugget"
+    },
+    {
+      "item": "additions:plasmarite_nugget"
+    },
+    {
+      "item": "additions:thyminite_nugget"
+    },
+    {
+      "item": "additions:kabalah_ring_ain"
+    },
+    {
+      "item": "additions:kabalah_ring_aur"
+    },
+    {
+      "item": "additions:kabalah_ring_soph"
+    },
+    {
+      "item": "additions:rune_active_1"
+    },
+    {
+      "item": "additions:rune_active_2"
+    },
+    {
+      "item": "additions:rune_active_3"
+    },
+    {
+      "item": "additions:rune_active_4"
+    },
+    {
+      "item": "additions:rune_active_5"
+    },
+    {
+      "item": "additions:rune_active_6"
+    },
+    {
+      "item": "additions:rune_active_7"
+    },
+    {
+      "item": "additions:rune_active_8"
+    },
+    {
+      "item": "additions:rune_active_9"
+    },
+    {
+      "item": "additions:rune_active_10"
+    },
+    {
+      "item": "additions:photovoltaic_cell_vii"
+    },
+    {
+      "item": "additions:photovoltaic_cell_viii"
+    },
+    {
+      "item": "additions:photovoltaic_cell_ix"
+    },
+    {
+      "item": "additions:photovoltaic_cell_x"
+    },
+    {
+      "item": "additions:photovoltaic_cell_xi"
+    },
+    {
+      "item": "additions:photovoltaic_cell_xii"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:reditrite_dust"
+              },
+    "output":  {
+                   "item":  "additions:reditrite_ingot"
+               },
+    "type":  "additions:smelting"
+}

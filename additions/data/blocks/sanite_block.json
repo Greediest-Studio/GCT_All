@@ -1,0 +1,13 @@
+{
+    "item_block":  {
+                       "name":  "灵神钢块",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "灵神钢块",
+    "material":  "minecraft:metal",
+    "hardness":  5,
+    "resistance":  30,
+    "type":  "additions:simple",
+    "harvest_level":  8,
+    "harvest_tool":  "pickaxe"
+}

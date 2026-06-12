@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/wall_side",
   "textures": {
     "wall": "gct_all:blocks/primordial_stone",

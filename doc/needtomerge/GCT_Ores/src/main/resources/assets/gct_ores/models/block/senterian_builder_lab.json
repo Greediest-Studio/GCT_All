@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/senterian_builder",
+    "up": "gct_ores:blocks/senterian_builder",
+    "north": "gct_ores:blocks/senterian_builder",
+    "east": "gct_ores:blocks/senterian_builder",
+    "south": "gct_ores:blocks/senterian_builder",
+    "west": "gct_ores:blocks/senterian_builder",
+    "particle": "gct_ores:blocks/senterian_builder"
+  }
+}

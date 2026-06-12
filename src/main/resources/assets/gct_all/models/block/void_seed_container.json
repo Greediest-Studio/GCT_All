@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/modelvoidseedcontainer",
   "textures": {
     "all": "gct_all:blocks/ruinholder2",

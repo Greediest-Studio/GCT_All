@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/nyarlathotepium_block",
+    "up": "additions:blocks/nyarlathotepium_block",
+    "north": "additions:blocks/nyarlathotepium_block",
+    "east": "additions:blocks/nyarlathotepium_block",
+    "south": "additions:blocks/nyarlathotepium_block",
+    "west": "additions:blocks/nyarlathotepium_block",
+    "particle": "additions:blocks/nyarlathotepium_block"
+  }
+}

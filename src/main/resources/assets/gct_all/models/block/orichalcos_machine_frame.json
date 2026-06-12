@@ -1,8 +1,0 @@
-﻿{
-  "parent": "gct_all:custom/modelmachineblockeverite",
-  "textures": {
-    "all": "gct_all:blocks/blockorichalcos",
-    "particle": "gct_all:blocks/blockorichalcos",
-    "0": "gct_all:blocks/blockorichalcos"
-  }
-}

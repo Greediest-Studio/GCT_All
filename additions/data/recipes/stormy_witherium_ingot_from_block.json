@@ -1,0 +1,15 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shapeless",
+                   "ingredients":  [
+                                       {
+                                           "item":  "additions:stormy_witherium_block"
+                                       }
+                                   ],
+                   "result":  {
+                                  "item":  "additions:stormy_witherium_ingot",
+                                  "count":  9
+                              }
+               },
+    "type":  "additions:crafting_shapeless"
+}

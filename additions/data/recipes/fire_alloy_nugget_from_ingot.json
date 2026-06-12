@@ -1,0 +1,15 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shapeless",
+                   "ingredients":  [
+                                       {
+                                           "item":  "additions:fire_alloy_ingot"
+                                       }
+                                   ],
+                   "result":  {
+                                  "item":  "additions:fire_alloy_nugget",
+                                  "count":  9
+                              }
+               },
+    "type":  "additions:crafting_shapeless"
+}

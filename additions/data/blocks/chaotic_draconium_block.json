@@ -1,0 +1,14 @@
+{
+    "item_block":  {
+                       "name":  "混沌龙块",
+                       "type":  "additions:block_simple",
+                       "ore_dict":  "blockDraconiumChaotic"
+                   },
+    "name":  "混沌龙块",
+    "material":  "minecraft:metal",
+    "hardness":  15,
+    "resistance":  10,
+    "type":  "additions:simple",
+    "harvest_level":  4,
+    "harvest_tool":  "pickaxe"
+}

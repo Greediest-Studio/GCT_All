@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/cthulhurite_block",
+    "up": "additions:blocks/cthulhurite_block",
+    "north": "additions:blocks/cthulhurite_block",
+    "east": "additions:blocks/cthulhurite_block",
+    "south": "additions:blocks/cthulhurite_block",
+    "west": "additions:blocks/cthulhurite_block",
+    "particle": "additions:blocks/cthulhurite_block"
+  }
+}

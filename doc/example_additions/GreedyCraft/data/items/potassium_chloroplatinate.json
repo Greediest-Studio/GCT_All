@@ -1,0 +1,8 @@
+{
+  "name": "氯铂酸钾",
+  "ore_dict": [
+    "dustPotassiumChloroplatinate",
+    "dustPotassiumChloroplatinate(IV)"
+  ],
+  "type": "additions:simple"
+}

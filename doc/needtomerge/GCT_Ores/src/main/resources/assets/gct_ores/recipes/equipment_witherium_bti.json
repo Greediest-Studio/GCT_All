@@ -1,0 +1,13 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_ores:equipment_witherium_block"
+    }
+  ],
+  "result": {
+    "item": "gct_ores:equipment_witherium_ingot",
+    "count": 9
+  }
+}

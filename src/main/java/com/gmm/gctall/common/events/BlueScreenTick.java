@@ -1,0 +1,15 @@
+package com.gmm.gctall.common.events;
+
+import com.gmm.gctall.common.potions.PotionBlueScreen;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+
+public final class BlueScreenTick {
+  private BlueScreenTick() {
+  }
+
+  public static boolean run(Entity entity) {
+    return entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPotionActive(PotionBlueScreen.potion);
+  }
+}
+

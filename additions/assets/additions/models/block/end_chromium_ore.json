@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/end_chromium",
+    "up": "additions:blocks/end_chromium",
+    "north": "additions:blocks/end_chromium",
+    "east": "additions:blocks/end_chromium",
+    "south": "additions:blocks/end_chromium",
+    "west": "additions:blocks/end_chromium",
+    "particle": "additions:blocks/end_chromium"
+  }
+}

@@ -1,0 +1,32 @@
+package com.gmm.gctall.common.events;
+
+import com.gmm.gctall.common.blocks.BlockBesideVoidPortal1;
+import com.gmm.gctall.common.blocks.BlockBesideVoidPortal2;
+import com.gmm.gctall.common.blocks.BlockBesideVoidPortal3;
+import com.gmm.gctall.common.util.ServerCommandHelper;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+
+public final class BesideVoidPortalDestroy2 {
+  private BesideVoidPortalDestroy2() {
+  }
+
+  public static void run(World world, int x, int y, int z) {
+    if (world.getBlockState(new BlockPos(x + 0, y + 3, z + 0)).getBlock() == BlockBesideVoidPortal1.block
+      .getDefaultState().getBlock() || world
+      .getBlockState(new BlockPos(x + 0, y + 2, z + 0)).getBlock() == BlockBesideVoidPortal2.block
+      .getDefaultState().getBlock() || world
+      .getBlockState(new BlockPos(x + 0, y + 1, z + 0)).getBlock() == BlockBesideVoidPortal3.block
+      .getDefaultState().getBlock()) {
+      world.setBlockState(new BlockPos(x, y + 1, z), Blocks.AIR.getDefaultState(), 3);
+      world.setBlockState(new BlockPos(x, y + 2, z), Blocks.AIR.getDefaultState(), 3);
+      world.setBlockState(new BlockPos(x, y + 3, z), Blocks.AIR.getDefaultState(), 3);
+      if (!world.isRemote)
+        world.createExplosion(null, x, y, z, 4.0F, true);
+      for (int i = 0; i < 4; i++)
+        ServerCommandHelper.run(world, x, y, z, "summon thaumcraft:cultistcleric ~ ~1 ~");
+    }
+  }
+}
+

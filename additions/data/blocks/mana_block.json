@@ -1,0 +1,12 @@
+{
+    "item_block":  {
+                       "name":  "固态魔力块",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "固态魔力块",
+    "material":  "minecraft:stone",
+    "hardness":  1,
+    "resistance":  10,
+    "type":  "additions:simple",
+    "light_level":  0.33333334
+}

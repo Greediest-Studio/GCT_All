@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/ice_alloy_block",
+    "up": "additions:blocks/ice_alloy_block",
+    "north": "additions:blocks/ice_alloy_block",
+    "east": "additions:blocks/ice_alloy_block",
+    "south": "additions:blocks/ice_alloy_block",
+    "west": "additions:blocks/ice_alloy_block",
+    "particle": "additions:blocks/ice_alloy_block"
+  }
+}
+

@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:equipment_witherium_dust"
+              },
+    "output":  {
+                   "item":  "additions:equipment_witherium_ingot"
+               },
+    "type":  "additions:smelting"
+}

@@ -1,0 +1,5 @@
+{
+    "name":  "秩序金属粒",
+    "type":  "additions:simple",
+    "ore_dict":  "nuggetOrderedMetal"
+}

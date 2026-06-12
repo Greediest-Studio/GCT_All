@@ -1,0 +1,8 @@
+{
+  "name": "低密度聚乙烯片",
+  "ore_dict": [
+    "ingotPolyethyleneLowDensity",
+    "sheetLDPE"
+  ],
+  "type": "additions:simple"
+}

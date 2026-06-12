@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/stormy_witherium_block",
+    "up": "additions:blocks/stormy_witherium_block",
+    "north": "additions:blocks/stormy_witherium_block",
+    "east": "additions:blocks/stormy_witherium_block",
+    "south": "additions:blocks/stormy_witherium_block",
+    "west": "additions:blocks/stormy_witherium_block",
+    "particle": "additions:blocks/stormy_witherium_block"
+  }
+}
+

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/ruled_draconium_block_top",
+    "up": "gct_ores:blocks/ruled_draconium_block_top",
+    "north": "gct_ores:blocks/ruled_draconium_block_side",
+    "east": "gct_ores:blocks/ruled_draconium_block_side",
+    "south": "gct_ores:blocks/ruled_draconium_block_side",
+    "west": "gct_ores:blocks/ruled_draconium_block_side",
+    "particle": "gct_ores:blocks/ruled_draconium_block_top"
+  }
+}

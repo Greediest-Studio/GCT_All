@@ -1,0 +1,15 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shapeless",
+                   "ingredients":  [
+                                       {
+                                           "item":  "additions:densite_ingot"
+                                       }
+                                   ],
+                   "result":  {
+                                  "item":  "additions:densite_nugget",
+                                  "count":  9
+                              }
+               },
+    "type":  "additions:crafting_shapeless"
+}

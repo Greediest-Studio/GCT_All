@@ -1,0 +1,15 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shapeless",
+                   "ingredients":  [
+                                       {
+                                           "item":  "additions:relifed_metal_ingot"
+                                       }
+                                   ],
+                   "result":  {
+                                  "item":  "additions:relifed_metal_nugget",
+                                  "count":  9
+                              }
+               },
+    "type":  "additions:crafting_shapeless"
+}

@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/sanitesiphon",
   "textures": {
     "0": "gct_all:blocks/aby_sanite_block"

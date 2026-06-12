@@ -1,0 +1,14 @@
+{
+    "item_block":  {
+                       "name":  "下界锰矿石",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "下界锰矿石",
+    "material":  "minecraft:stone",
+    "hardness":  4.5,
+    "resistance":  200,
+    "type":  "additions:simple",
+    "harvest_level":  3,
+    "harvest_tool":  "pickaxe",
+    "light_opacity":  15
+}

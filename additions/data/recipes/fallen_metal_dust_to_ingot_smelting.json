@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:fallen_metal_dust"
+              },
+    "output":  {
+                   "item":  "additions:fallen_metal_ingot"
+               },
+    "type":  "additions:smelting"
+}

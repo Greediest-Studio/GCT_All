@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "additions:stormy_shard_block"
+    }
+  }
+}

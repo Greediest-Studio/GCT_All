@@ -1,0 +1,22 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "1": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "2": {
+      "item": "gct_ores:order_stone_brick"
+    }
+  },
+  "result": {
+    "item": "gct_ores:order_stone_brick_crashed_slab",
+    "count": 6
+  }
+}

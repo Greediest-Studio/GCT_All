@@ -1,0 +1,20 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shaped",
+                   "pattern":  [
+                                   "NNN",
+                                   "NNN",
+                                   "NNN"
+                               ],
+                   "key":  {
+                               "N":  {
+                                         "item":  "additions:equipment_witherium_nugget"
+                                     }
+                           },
+                   "result":  {
+                                  "item":  "additions:equipment_witherium_ingot",
+                                  "count":  1
+                              }
+               },
+    "type":  "additions:crafting_shaped"
+}

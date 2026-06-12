@@ -1,0 +1,15 @@
+{
+  "recipe": {
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "item": "additions:nyarlathotepium_block"
+      }
+    ],
+    "result": {
+      "item": "additions:nyarlathotepium_ingot",
+      "count": 9
+    }
+  },
+  "type": "additions:crafting_shapeless"
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/chaos_shard_block",
+    "up": "additions:blocks/chaos_shard_block",
+    "north": "additions:blocks/chaos_shard_block",
+    "east": "additions:blocks/chaos_shard_block",
+    "south": "additions:blocks/chaos_shard_block",
+    "west": "additions:blocks/chaos_shard_block",
+    "particle": "additions:blocks/chaos_shard_block"
+  }
+}

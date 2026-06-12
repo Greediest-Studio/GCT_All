@@ -1,0 +1,8 @@
+{
+  "name": "§6福袋",
+  "shines": true,
+  "tooltip": [
+    "§d§l有可能开出一些实用(划掉)奇奇怪怪的物品"
+  ],
+  "type": "additions:simple"
+}

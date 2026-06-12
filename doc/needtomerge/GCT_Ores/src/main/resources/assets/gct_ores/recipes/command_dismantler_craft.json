@@ -1,0 +1,34 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " 12",
+    " 45",
+    "6  "
+  ],
+  "key": {
+    "1": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "2": {
+      "item": "gct_ores:everite_ingot"
+    },
+    "4": {
+      "type": "forge:ore_dict",
+      "ore": "rodDiamond"
+    },
+    "5": {
+      "type": "forge:ore_dict",
+      "ore": "gemDiamond"
+    },
+    "6": {
+      "type": "forge:ore_dict",
+      "ore": "rodDiamond"
+    }
+  },
+  "result": {
+    "item": "gct_ores:command_dismantler",
+    "count": 1
+  }
+}

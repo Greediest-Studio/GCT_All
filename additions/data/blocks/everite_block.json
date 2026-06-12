@@ -1,0 +1,14 @@
+{
+    "item_block":  {
+                       "name":  "§e万§4化§b块",
+                       "type":  "additions:block_simple",
+                       "ore_dict":  "blockEverite"
+                   },
+    "name":  "§e万§4化§b块",
+    "material":  "minecraft:metal",
+    "hardness":  15,
+    "resistance":  10,
+    "type":  "additions:simple",
+    "harvest_level":  4,
+    "harvest_tool":  "pickaxe"
+}

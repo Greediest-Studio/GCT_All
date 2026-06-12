@@ -1,4 +1,4 @@
-﻿{
+{
   "variants": {
     "facing=east,half=bottom,shape=straight": {
       "model": "gct_all:reversed_dreamwood_stairs"

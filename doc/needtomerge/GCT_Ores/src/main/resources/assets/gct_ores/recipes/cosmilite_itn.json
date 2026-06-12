@@ -1,0 +1,14 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "type": "forge:ore_dict",
+      "ore": "ingotCosmilite"
+    }
+  ],
+  "result": {
+    "item": "gct_ores:cosmilite_nugget",
+    "count": 9
+  }
+}

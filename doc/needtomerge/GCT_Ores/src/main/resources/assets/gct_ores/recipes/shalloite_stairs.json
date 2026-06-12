@@ -1,0 +1,33 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0  ",
+    "34 ",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:shalloite_block"
+    },
+    "3": {
+      "item": "gct_ores:shalloite_block"
+    },
+    "4": {
+      "item": "gct_ores:shalloite_block"
+    },
+    "6": {
+      "item": "gct_ores:shalloite_block"
+    },
+    "7": {
+      "item": "gct_ores:shalloite_block"
+    },
+    "8": {
+      "item": "gct_ores:shalloite_block"
+    }
+  },
+  "result": {
+    "item": "gct_ores:shalloite_stair",
+    "count": 4
+  }
+}

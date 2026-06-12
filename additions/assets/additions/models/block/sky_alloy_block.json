@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/sky_alloy_block",
+    "up": "additions:blocks/sky_alloy_block",
+    "north": "additions:blocks/sky_alloy_block",
+    "east": "additions:blocks/sky_alloy_block",
+    "south": "additions:blocks/sky_alloy_block",
+    "west": "additions:blocks/sky_alloy_block",
+    "particle": "additions:blocks/sky_alloy_block"
+  }
+}
+

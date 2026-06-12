@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/finallium_container_active",
   "textures": {
     "all": "gct_all:blocks/finallium_block",

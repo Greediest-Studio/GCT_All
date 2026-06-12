@@ -1,0 +1,6 @@
+{
+  "name": "铷锭",
+  "tooltip": "§c2Rb+2H₂O→2RbOH+H₂↑",
+  "ore_dict": "ingotRubidium",
+  "type": "additions:simple"
+}

@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:ice_alloy_dust"
+              },
+    "output":  {
+                   "item":  "additions:ice_alloy_ingot"
+               },
+    "type":  "additions:smelting"
+}

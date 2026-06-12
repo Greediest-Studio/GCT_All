@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=bottom,variant=default": {
+      "model": "gct_ores:shalloite_slab"
+    },
+    "half=top,variant=default": {
+      "model": "gct_ores:shalloite_slab_top"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "01",
+    "23"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:rainboquartz"
+    },
+    "1": {
+      "item": "gct_ores:rainboquartz"
+    },
+    "2": {
+      "item": "gct_ores:rainboquartz"
+    },
+    "3": {
+      "item": "gct_ores:rainboquartz"
+    }
+  },
+  "result": {
+    "item": "gct_ores:rainboquartz_block",
+    "count": 1
+  }
+}

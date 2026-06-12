@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/densite_block",
+    "up": "additions:blocks/densite_block",
+    "north": "additions:blocks/densite_block",
+    "east": "additions:blocks/densite_block",
+    "south": "additions:blocks/densite_block",
+    "west": "additions:blocks/densite_block",
+    "particle": "additions:blocks/densite_block"
+  }
+}
+

@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/modelbesidevoidportalup",
   "textures": {
     "all": "gct_all:blocks/besidevoid_portal",

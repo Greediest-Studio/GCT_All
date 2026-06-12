@@ -1,0 +1,8 @@
+{
+  "parent": "gct_ores:custom/modelmachineblockeverite",
+  "textures": {
+    "all": "gct_ores:blocks/everite_block",
+    "particle": "gct_ores:blocks/everite_block",
+    "0": "gct_ores:blocks/everite_block"
+  }
+}

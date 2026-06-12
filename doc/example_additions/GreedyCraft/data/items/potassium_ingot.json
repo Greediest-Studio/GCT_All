@@ -1,0 +1,6 @@
+{
+  "name": "§f钾锭",
+  "tooltip": "§f2K+2H₂O→2KOH+H₂↑",
+  "ore_dict": "ingotPotassium",
+  "type": "additions:simple"
+}

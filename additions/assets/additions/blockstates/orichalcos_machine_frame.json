@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "additions:orichalcos_machine_frame"
+    }
+  }
+}

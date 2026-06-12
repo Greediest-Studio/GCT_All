@@ -1,0 +1,13 @@
+{
+    "item_block":  {
+                       "name":  "莎布·尼古拉丝块",
+                       "type":  "additions:block_simple"
+                   },
+    "name":  "莎布·尼古拉丝块",
+    "material":  "minecraft:metal",
+    "hardness":  15,
+    "resistance":  2000,
+    "type":  "additions:simple",
+    "harvest_level":  11,
+    "harvest_tool":  "pickaxe"
+}

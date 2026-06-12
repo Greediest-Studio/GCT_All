@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/equipment_witherium_block",
+    "up": "gct_ores:blocks/equipment_witherium_block",
+    "north": "gct_ores:blocks/equipment_witherium_block",
+    "east": "gct_ores:blocks/equipment_witherium_block",
+    "south": "gct_ores:blocks/equipment_witherium_block",
+    "west": "gct_ores:blocks/equipment_witherium_block",
+    "particle": "gct_ores:blocks/equipment_witherium_block"
+  }
+}

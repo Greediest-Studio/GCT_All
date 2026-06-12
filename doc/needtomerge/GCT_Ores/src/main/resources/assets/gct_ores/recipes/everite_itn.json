@@ -1,0 +1,16 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:everite_ingot"
+    }
+  },
+  "result": {
+    "item": "gct_ores:everite_nugget",
+    "count": 9
+  }
+}

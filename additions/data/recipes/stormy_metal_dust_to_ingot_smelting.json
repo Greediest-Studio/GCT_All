@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:stormy_metal_dust"
+              },
+    "output":  {
+                   "item":  "additions:stormy_metal_ingot"
+               },
+    "type":  "additions:smelting"
+}

@@ -1,8 +1,0 @@
-﻿{
-  "parent": "gct_all:custom/modelmachineblockeverite",
-  "textures": {
-    "all": "gct_all:blocks/gaia_spirit_block",
-    "particle": "gct_all:blocks/gaia_spirit_block",
-    "0": "gct_all:blocks/gaia_spirit_block"
-  }
-}

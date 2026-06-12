@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:stormy_witherium_dust"
+              },
+    "output":  {
+                   "item":  "additions:stormy_witherium_ingot"
+               },
+    "type":  "additions:smelting"
+}

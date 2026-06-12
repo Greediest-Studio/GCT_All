@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/sanite_block",
+    "up": "additions:blocks/sanite_block",
+    "north": "additions:blocks/sanite_block",
+    "east": "additions:blocks/sanite_block",
+    "south": "additions:blocks/sanite_block",
+    "west": "additions:blocks/sanite_block",
+    "particle": "additions:blocks/sanite_block"
+  }
+}

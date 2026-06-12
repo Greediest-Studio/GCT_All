@@ -1,0 +1,12 @@
+{
+  "parent": "additions:custom/modelorderfusion",
+  "textures": {
+    "all": "additions:blocks/order_fusion_core",
+    "particle": "additions:blocks/order_fusion_core",
+    "0": "additions:blocks/order_fusion_core",
+    "1": "additions:blocks/order_fusion_rod_ud",
+    "2": "additions:blocks/order_fusion_rod_lr",
+    "3": "additions:blocks/order_fusion_rod_fb",
+    "4": "additions:blocks/order_fusion_center"
+  }
+}

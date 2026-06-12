@@ -7,10 +7,12 @@
   ],
   "key": {
     "0": {
-      "item": "gct_all:shalloite_slab"
+      "item": "gct_all:shalloite_slab",
+      "data": 0
     },
     "1": {
-      "item": "gct_all:shalloite_slab"
+      "item": "gct_all:shalloite_slab",
+      "data": 0
     }
   },
   "result": {

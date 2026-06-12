@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/reditrite_block",
+    "up": "additions:blocks/reditrite_block",
+    "north": "additions:blocks/reditrite_block",
+    "east": "additions:blocks/reditrite_block",
+    "south": "additions:blocks/reditrite_block",
+    "west": "additions:blocks/reditrite_block",
+    "particle": "additions:blocks/reditrite_block"
+  }
+}
+

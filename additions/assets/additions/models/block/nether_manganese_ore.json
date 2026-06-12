@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/nether_manganese",
+    "up": "additions:blocks/nether_manganese",
+    "north": "additions:blocks/nether_manganese",
+    "east": "additions:blocks/nether_manganese",
+    "south": "additions:blocks/nether_manganese",
+    "west": "additions:blocks/nether_manganese",
+    "particle": "additions:blocks/nether_manganese"
+  }
+}

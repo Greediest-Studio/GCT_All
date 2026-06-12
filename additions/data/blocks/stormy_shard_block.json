@@ -1,0 +1,20 @@
+{
+  "item_block": {
+    "name": "风暴晶块",
+    "ore_dict": "blockStormyShard",
+    "type": "additions:block_simple"
+  },
+  "name": "风暴晶块",
+  "material": "minecraft:rock",
+  "place_sound": "minecraft:block.glass.place",
+  "break_sound": "minecraft:block.glass.break",
+  "hit_sound": "minecraft:block.glass.hit",
+  "step_sound": "minecraft:block.glass.step",
+  "fall_sound": "minecraft:block.glass.fall",
+  "hardness": 10,
+  "resistance": 4000,
+  "harvest_level": 10,
+  "harvest_tool": "pickaxe",
+  "light_opacity": 15,
+  "type": "additions:simple"
+}

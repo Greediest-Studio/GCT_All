@@ -1,0 +1,37 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    },
+    {
+      "item": "gct_ores:equipment_witherium_nugget"
+    }
+  ],
+  "result": {
+    "item": "gct_ores:equipment_witherium_ingot",
+    "count": 1
+  }
+}

@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:chaotic_draconium_dust"
+              },
+    "output":  {
+                   "item":  "additions:chaotic_draconium_ingot"
+               },
+    "type":  "additions:smelting"
+}

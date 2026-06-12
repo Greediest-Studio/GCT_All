@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/fence_side",
   "textures": {
     "texture": "gct_all:blocks/wildplain_plank",

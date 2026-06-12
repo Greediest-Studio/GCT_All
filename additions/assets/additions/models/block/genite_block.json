@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/genite_block",
+    "up": "additions:blocks/genite_block",
+    "north": "additions:blocks/genite_block",
+    "east": "additions:blocks/genite_block",
+    "south": "additions:blocks/genite_block",
+    "west": "additions:blocks/genite_block",
+    "particle": "additions:blocks/genite_block"
+  }
+}
+

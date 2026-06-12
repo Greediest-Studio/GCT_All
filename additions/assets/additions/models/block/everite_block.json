@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/everite_block",
+    "up": "additions:blocks/everite_block",
+    "north": "additions:blocks/everite_block",
+    "east": "additions:blocks/everite_block",
+    "south": "additions:blocks/everite_block",
+    "west": "additions:blocks/everite_block",
+    "particle": "additions:blocks/everite_block"
+  }
+}
+

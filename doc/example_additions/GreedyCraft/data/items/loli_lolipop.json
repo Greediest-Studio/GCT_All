@@ -1,0 +1,11 @@
+{
+  "name": "§d萝莉牌棒棒糖",
+  "tooltip": [
+    "§b§o吃了就是小萝莉了哦~"
+  ],
+  "ore_dict": "foodLolipop",
+  "hunger": 10,
+  "saturation": 0.6,
+  "always_edible": true,
+  "type": "additions:food"
+}

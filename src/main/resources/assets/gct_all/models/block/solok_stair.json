@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/stairs",
   "textures": {
     "bottom": "gct_all:blocks/solok_plank",

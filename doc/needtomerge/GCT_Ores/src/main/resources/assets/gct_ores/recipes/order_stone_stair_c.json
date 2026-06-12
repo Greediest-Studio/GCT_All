@@ -1,0 +1,33 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "0  ",
+    "34 ",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "3": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "4": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "6": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "7": {
+      "item": "gct_ores:order_stone_brick"
+    },
+    "8": {
+      "item": "gct_ores:order_stone_brick"
+    }
+  },
+  "result": {
+    "item": "gct_ores:order_stone_brick_stair",
+    "count": 4
+  }
+}

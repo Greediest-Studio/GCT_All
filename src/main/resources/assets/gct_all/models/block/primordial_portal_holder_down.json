@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/modelportalholderdown",
   "textures": {
     "all": "gct_all:blocks/portalholder_up1",

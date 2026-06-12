@@ -1,0 +1,42 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345",
+    "678"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "1": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "2": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "3": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "4": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "5": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "6": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "7": {
+      "item": "gct_ores:sky_alloy_ingot"
+    },
+    "8": {
+      "item": "gct_ores:sky_alloy_ingot"
+    }
+  },
+  "result": {
+    "item": "gct_ores:sky_alloy_block",
+    "count": 1
+  }
+}

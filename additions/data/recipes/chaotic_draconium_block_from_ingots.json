@@ -1,0 +1,20 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shaped",
+                   "pattern":  [
+                                   "III",
+                                   "III",
+                                   "III"
+                               ],
+                   "key":  {
+                               "I":  {
+                                         "item":  "additions:chaotic_draconium_ingot"
+                                     }
+                           },
+                   "result":  {
+                                  "item":  "additions:chaotic_draconium_block",
+                                  "count":  1
+                              }
+               },
+    "type":  "additions:crafting_shaped"
+}

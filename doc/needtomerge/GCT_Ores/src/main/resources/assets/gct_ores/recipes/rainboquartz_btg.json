@@ -1,0 +1,13 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_ores:rainboquartz_block"
+    }
+  ],
+  "result": {
+    "item": "gct_ores:rainboquartz",
+    "count": 4
+  }
+}

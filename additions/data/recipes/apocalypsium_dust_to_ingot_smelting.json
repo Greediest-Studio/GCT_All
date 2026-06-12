@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:apocalypsium_dust"
+              },
+    "output":  {
+                   "item":  "additions:apocalypsium_ingot"
+               },
+    "type":  "additions:smelting"
+}

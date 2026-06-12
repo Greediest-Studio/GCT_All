@@ -1,0 +1,7 @@
+{
+    "variants":  {
+                     "normal":  {
+                                    "model":  "additions:balanced_matrix_block"
+                                }
+                 }
+}

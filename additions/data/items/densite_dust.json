@@ -1,0 +1,5 @@
+{
+    "name":  "密度合金粉",
+    "type":  "additions:simple",
+    "ore_dict":  "dustDensite"
+}

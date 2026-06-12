@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:sky_alloy_dust"
+              },
+    "output":  {
+                   "item":  "additions:sky_alloy_ingot"
+               },
+    "type":  "additions:smelting"
+}

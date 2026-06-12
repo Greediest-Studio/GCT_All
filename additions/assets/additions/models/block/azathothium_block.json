@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/azathothium_block",
+    "up": "additions:blocks/azathothium_block",
+    "north": "additions:blocks/azathothium_block",
+    "east": "additions:blocks/azathothium_block",
+    "south": "additions:blocks/azathothium_block",
+    "west": "additions:blocks/azathothium_block",
+    "particle": "additions:blocks/azathothium_block"
+  }
+}

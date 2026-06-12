@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/end_manganese",
+    "up": "additions:blocks/end_manganese",
+    "north": "additions:blocks/end_manganese",
+    "east": "additions:blocks/end_manganese",
+    "south": "additions:blocks/end_manganese",
+    "west": "additions:blocks/end_manganese",
+    "particle": "additions:blocks/end_manganese"
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "item_block":  {
+                       "name":  "复活凋灵块",
+                       "type":  "additions:block_simple",
+                       "ore_dict":  "blockWitheriumRelifed"
+                   },
+    "name":  "复活凋灵块",
+    "material":  "minecraft:metal",
+    "hardness":  15,
+    "resistance":  10,
+    "type":  "additions:simple",
+    "harvest_level":  4,
+    "harvest_tool":  "pickaxe"
+}

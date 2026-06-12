@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/everite_block",
+    "up": "gct_ores:blocks/everite_block",
+    "north": "gct_ores:blocks/everite_block",
+    "east": "gct_ores:blocks/everite_block",
+    "south": "gct_ores:blocks/everite_block",
+    "west": "gct_ores:blocks/everite_block",
+    "particle": "gct_ores:blocks/everite_block"
+  }
+}

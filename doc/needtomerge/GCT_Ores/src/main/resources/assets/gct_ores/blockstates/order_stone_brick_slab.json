@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=bottom,variant=default": {
+      "model": "gct_ores:order_stone_brick_slab"
+    },
+    "half=top,variant=default": {
+      "model": "gct_ores:order_stone_brick_slab_top"
+    }
+  }
+}

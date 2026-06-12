@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:densite_dust"
+              },
+    "output":  {
+                   "item":  "additions:densite_ingot"
+               },
+    "type":  "additions:smelting"
+}

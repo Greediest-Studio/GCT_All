@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/order_crystal_block",
+    "up": "gct_ores:blocks/order_crystal_block",
+    "north": "gct_ores:blocks/order_crystal_block",
+    "east": "gct_ores:blocks/order_crystal_block",
+    "south": "gct_ores:blocks/order_crystal_block",
+    "west": "gct_ores:blocks/order_crystal_block",
+    "particle": "gct_ores:blocks/order_crystal_block"
+  }
+}

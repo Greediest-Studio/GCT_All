@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "block/fence_inventory",
   "textures": {
     "texture": "gct_all:blocks/mana_plank",

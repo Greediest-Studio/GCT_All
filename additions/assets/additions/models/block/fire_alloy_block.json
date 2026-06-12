@@ -1,0 +1,13 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/fire_alloy_block",
+    "up": "additions:blocks/fire_alloy_block",
+    "north": "additions:blocks/fire_alloy_block",
+    "east": "additions:blocks/fire_alloy_block",
+    "south": "additions:blocks/fire_alloy_block",
+    "west": "additions:blocks/fire_alloy_block",
+    "particle": "additions:blocks/fire_alloy_block"
+  }
+}
+

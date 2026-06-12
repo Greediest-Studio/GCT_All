@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "variant=default": {
+      "model": "gct_ores:shalloite_slab_double"
+    }
+  }
+}

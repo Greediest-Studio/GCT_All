@@ -1,4 +1,4 @@
-﻿{
+{
   "parent": "gct_all:custom/earthboundcore",
   "textures": {
     "all": "gct_all:blocks/infused_iron_block",

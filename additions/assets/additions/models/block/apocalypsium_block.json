@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/apocalypsium_block",
+    "up": "additions:blocks/apocalypsium_block",
+    "north": "additions:blocks/apocalypsium_block",
+    "east": "additions:blocks/apocalypsium_block",
+    "south": "additions:blocks/apocalypsium_block",
+    "west": "additions:blocks/apocalypsium_block",
+    "particle": "additions:blocks/apocalypsium_block"
+  }
+}

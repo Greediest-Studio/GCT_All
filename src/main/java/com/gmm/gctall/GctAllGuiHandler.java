@@ -1,7 +1,7 @@
 package com.gmm.gctall;
 
-import com.gmm.gctall.gui.GuiGUISanityAltar;
-import com.gmm.gctall.gui.GuiEarthbound;
+import com.gmm.gctall.client.gui.GuiGUISanityAltar;
+import com.gmm.gctall.client.gui.GuiEarthbound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;

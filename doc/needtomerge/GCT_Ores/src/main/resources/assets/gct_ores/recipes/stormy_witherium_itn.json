@@ -1,0 +1,13 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "gct_ores:stormy_witherium_ingot"
+    }
+  ],
+  "result": {
+    "item": "gct_ores:stormy_witherium_nugget",
+    "count": 9
+  }
+}

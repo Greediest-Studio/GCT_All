@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "additions:blocks/nether_chromium",
+    "up": "additions:blocks/nether_chromium",
+    "north": "additions:blocks/nether_chromium",
+    "east": "additions:blocks/nether_chromium",
+    "south": "additions:blocks/nether_chromium",
+    "west": "additions:blocks/nether_chromium",
+    "particle": "additions:blocks/nether_chromium"
+  }
+}

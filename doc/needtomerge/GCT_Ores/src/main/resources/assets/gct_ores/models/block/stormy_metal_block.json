@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/stormy_metal_block",
+    "up": "gct_ores:blocks/stormy_metal_block",
+    "north": "gct_ores:blocks/stormy_metal_block",
+    "east": "gct_ores:blocks/stormy_metal_block",
+    "south": "gct_ores:blocks/stormy_metal_block",
+    "west": "gct_ores:blocks/stormy_metal_block",
+    "particle": "gct_ores:blocks/stormy_metal_block"
+  }
+}

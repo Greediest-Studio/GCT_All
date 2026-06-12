@@ -1,0 +1,8 @@
+{
+  "name": "§9尼龙-6丝",
+  "ore_dict": [
+    "stringNylon6",
+    "nuggetNylon6"
+  ],
+  "type": "additions:simple"
+}

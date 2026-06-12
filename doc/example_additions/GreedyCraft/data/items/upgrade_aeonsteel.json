@@ -1,0 +1,6 @@
+{
+  "name": "§3模块化电容-恒钢",
+  "max_stack": 1,
+  "ore_dict": "modularUpgradeAeonsteel",
+  "type": "additions:simple"
+}

@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:genite_dust"
+              },
+    "output":  {
+                   "item":  "additions:genite_ingot"
+               },
+    "type":  "additions:smelting"
+}

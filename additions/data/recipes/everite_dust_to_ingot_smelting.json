@@ -1,0 +1,9 @@
+{
+    "input":  {
+                  "item":  "additions:everite_dust"
+              },
+    "output":  {
+                   "item":  "additions:everite_ingot"
+               },
+    "type":  "additions:smelting"
+}

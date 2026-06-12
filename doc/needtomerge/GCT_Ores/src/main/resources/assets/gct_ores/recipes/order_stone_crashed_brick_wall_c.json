@@ -1,0 +1,32 @@
+{
+  "group": "gct_ores",
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "012",
+    "345"
+  ],
+  "key": {
+    "0": {
+      "item": "gct_ores:order_stone_brick_crashed"
+    },
+    "1": {
+      "item": "gct_ores:order_stone_brick_crashed"
+    },
+    "2": {
+      "item": "gct_ores:order_stone_brick_crashed"
+    },
+    "3": {
+      "item": "gct_ores:order_stone_brick_crashed"
+    },
+    "4": {
+      "item": "gct_ores:order_stone_brick_crashed"
+    },
+    "5": {
+      "item": "gct_ores:order_stone_brick_crashed"
+    }
+  },
+  "result": {
+    "item": "gct_ores:order_stone_brick_crashed_wall",
+    "count": 6
+  }
+}

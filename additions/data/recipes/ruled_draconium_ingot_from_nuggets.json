@@ -1,0 +1,20 @@
+{
+    "recipe":  {
+                   "type":  "minecraft:crafting_shaped",
+                   "pattern":  [
+                                   "NNN",
+                                   "NNN",
+                                   "NNN"
+                               ],
+                   "key":  {
+                               "N":  {
+                                         "item":  "additions:ruled_draconium_nugget"
+                                     }
+                           },
+                   "result":  {
+                                  "item":  "additions:ruled_draconium_ingot",
+                                  "count":  1
+                              }
+               },
+    "type":  "additions:crafting_shaped"
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "axis=z": {
+      "model": "gct_ores:orderland_portal_ew"
+    },
+    "axis=x": {
+      "model": "gct_ores:orderland_portal_ns"
+    },
+    "inventory": {
+      "model": "gct_ores:orderland_portal_ns"
+    }
+  }
+}

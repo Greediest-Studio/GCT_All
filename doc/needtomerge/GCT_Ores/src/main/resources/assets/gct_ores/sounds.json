@@ -1,0 +1,29 @@
+{
+  "deepslate_break": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "gct_ores:break",
+        "stream": false
+      }
+    ]
+  },
+  "deepslate_step": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "gct_ores:step",
+        "stream": false
+      }
+    ]
+  },
+  "deepslate_place": {
+    "category": "block",
+    "sounds": [
+      {
+        "name": "gct_ores:place",
+        "stream": false
+      }
+    ]
+  }
+}

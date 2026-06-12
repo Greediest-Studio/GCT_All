@@ -1,0 +1,6 @@
+{
+  "name": "§f钠锭",
+  "tooltip": "§f2Na+2H₂O→2NaOH+H₂↑",
+  "ore_dict": "ingotSodium",
+  "type": "additions:simple"
+}

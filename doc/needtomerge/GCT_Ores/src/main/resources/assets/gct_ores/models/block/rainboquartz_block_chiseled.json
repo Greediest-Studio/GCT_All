@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "down": "gct_ores:blocks/rainboquartz_block_chiseled",
+    "up": "gct_ores:blocks/rainboquartz_block_chiseled",
+    "north": "gct_ores:blocks/rainboquartz_block_chiseled",
+    "east": "gct_ores:blocks/rainboquartz_block_chiseled",
+    "south": "gct_ores:blocks/rainboquartz_block_chiseled",
+    "west": "gct_ores:blocks/rainboquartz_block_chiseled",
+    "particle": "gct_ores:blocks/rainboquartz_block_chiseled"
+  }
+}

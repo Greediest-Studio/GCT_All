@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "normal": {
+      "model": "additions:ordered_metal_block"
+    }
+  }
+}
+
