@@ -5,9 +5,9 @@ import com.gmm.gctall.misc.registry.GctAllItems;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import com.gmm.gctall.common.events.ZjarugothEntityDies;
-import com.gmm.gctall.common.events.ZjarugothEntityIsHurt;
-import com.gmm.gctall.common.events.ZjarugothOnEntityTickUpdate;
+import com.gmm.gctall.common.blocks.BlockBlueFire;
+import com.gmm.gctall.common.potions.PotionStop;
+import com.gmm.gctall.common.potions.PotionZjarugothDamage;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -34,14 +34,19 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryNamespaced;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
 import net.minecraft.world.World;
@@ -166,10 +171,9 @@ public final class EntityZjarugoth {
     public void fall(float l, float d) {}
 
     public boolean attackEntityFrom(DamageSource source, float amount) {
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ZjarugothEntityIsHurt.run(this.world, x, y, z);
+      if (!this.world.isRemote && this.rand.nextDouble() < 0.02D) {
+        applyPotionToNearbyPlayers(128.0D, PotionStop.potion, 60, 0, false, false);
+      }
       if (source.getImmediateSource() instanceof net.minecraft.entity.projectile.EntityPotion)
         return false;
       if (source == DamageSource.FALL)
@@ -185,18 +189,90 @@ public final class EntityZjarugoth {
 
     public void onDeath(DamageSource source) {
       super.onDeath(source);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ZjarugothEntityDies.run(this.world, x, y, z);
+      sendMessageToNearbyPlayers(64.0D, "<Zjarugoth>不好意思，我似乎不是一个合格的旧日支配者。");
     }
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ZjarugothOnEntityTickUpdate.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        clearNearbyZjarugothPotions();
+        runZjarugothSkills();
+      }
+    }
+
+    private void clearNearbyZjarugothPotions() {
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(10.0D);
+      for (ZjarugothEntity entity : this.world.getEntitiesWithinAABB(ZjarugothEntity.class, area,
+          entity -> entity.getDistanceSq(this) <= 100.0D)) {
+        entity.clearActivePotions();
+      }
+    }
+
+    private void runZjarugothSkills() {
+      if (this.rand.nextDouble() < 0.005D) {
+        sendMessageToNearbyPlayers(64.0D, "<Zjarugoth>哈，你似乎认为我比扎哈尔那家伙弱？");
+      }
+      if (this.rand.nextDouble() < 0.008D) {
+        sendMessageToNearbyPlayers(64.0D, "<Zjarugoth>Ymg' uaaah ya lloigazath!");
+        createRandomExplosion();
+      }
+      if (this.rand.nextDouble() < 0.008D) {
+        sendMessageToNearbyPlayers(64.0D, "<Zjarugoth>Ymg' uaaah ya lloigazath!");
+        applyPotionToNearbyPlayers(64.0D, PotionZjarugothDamage.potion, 1, 0, false, false);
+        SoundEvent roar = SoundEvent.REGISTRY.getObject(new ResourceLocation("gct_all:zjarugoth_roar"));
+        if (roar != null) {
+          this.world.playSound(null, this.posX, this.posY, this.posZ, roar, SoundCategory.NEUTRAL, 4.0F, 1.0F);
+        }
+      }
+      if (this.rand.nextDouble() < 0.002D) {
+        sendMessageToNearbyPlayers(64.0D, "<Zjarugoth>Fm'latghor, fm'latgh!");
+        placeBlueFireRing();
+      }
+    }
+
+    private void createRandomExplosion() {
+      int x = (int)this.posX + (this.rand.nextBoolean() ? 6 : -6) + this.rand.nextInt(10);
+      int y = (int)this.posY - 5 + this.rand.nextInt(10);
+      int z = (int)this.posZ + (this.rand.nextBoolean() ? 6 : -6) + this.rand.nextInt(10);
+      this.world.createExplosion(null, x, y, z, 4.0F, true);
+    }
+
+    private void placeBlueFireRing() {
+      BlockPos center = getPosition().up(6);
+      int[][] offsets = {
+          { 3, 0 }, { 3, 1 }, { 3, -1 }, { -3, 0 }, { -3, 1 }, { -3, -1 },
+          { 0, 3 }, { 1, 3 }, { -1, 3 }, { 0, -3 }, { 1, -3 }, { -1, -3 },
+          { 2, 2 }, { -2, 2 }, { 2, -2 }, { -2, -2 }
+      };
+      for (int[] offset : offsets) {
+        this.world.setBlockState(center.add(offset[0], 0, offset[1]), BlockBlueFire.block.getDefaultState(), 3);
+      }
+    }
+
+    private void sendMessageToNearbyPlayers(double radius, String message) {
+      if (this.world.isRemote) {
+        return;
+      }
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(radius);
+      double maxDistance = radius * radius;
+      TextComponentString component = new TextComponentString(message);
+      for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class, area,
+          player -> player.getDistanceSq(this) <= maxDistance)) {
+        player.sendMessage(component);
+      }
+    }
+
+    private void applyPotionToNearbyPlayers(double radius, Potion potion, int ticks, int amplifier,
+        boolean ambient, boolean particles) {
+      if (this.world.isRemote || potion == null) {
+        return;
+      }
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(radius);
+      double maxDistance = radius * radius;
+      for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class, area,
+          player -> player.getDistanceSq(this) <= maxDistance)) {
+        player.addPotionEffect(new PotionEffect(potion, ticks, amplifier, ambient, particles));
+      }
     }
 
     protected void applyEntityAttributes() {

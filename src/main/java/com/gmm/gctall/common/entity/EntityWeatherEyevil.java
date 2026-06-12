@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.common.events.WeatherBeholderSkill;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -30,12 +29,15 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.BossInfo;
@@ -151,11 +153,56 @@ public final class EntityWeatherEyevil {
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      WeatherEyevilEntity entityCustom = this;
-      WeatherBeholderSkill.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        runWeatherSkills();
+      }
+    }
+
+    private void runWeatherSkills() {
+      if (this.rand.nextDouble() < 0.008D) {
+        spawnWaterRod();
+        spawnWaterRod();
+      }
+
+      Potion frosty = Potion.REGISTRY.getObject(new ResourceLocation("twilightforest", "frosty"));
+      if (this.rand.nextDouble() < 0.005D) {
+        applyFrostyToNearestPlayer(frosty, 60, 6);
+      }
+      if (this.rand.nextDouble() < 0.005D) {
+        applyFrostyToNearestPlayer(frosty, 400, 0);
+      }
+    }
+
+    private void spawnWaterRod() {
+      EntityWeatherWaterRod.WeatherWaterRodEntity waterRod =
+          new EntityWeatherWaterRod.WeatherWaterRodEntity(this.world);
+      waterRod.setLocationAndAngles(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch);
+      this.world.spawnEntity(waterRod);
+    }
+
+    private void applyFrostyToNearestPlayer(Potion frosty, int ticks, int amplifier) {
+      if (frosty == null) {
+        return;
+      }
+      EntityPlayer player = getNearestPlayer(32.0D);
+      if (player != null) {
+        player.addPotionEffect(new PotionEffect(frosty, ticks, amplifier, false, true));
+      }
+    }
+
+    private EntityPlayer getNearestPlayer(double radius) {
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(radius);
+      double bestDistance = radius * radius;
+      EntityPlayer nearest = null;
+      for (EntityPlayer player : this.world.getEntitiesWithinAABB(EntityPlayer.class, area,
+          player -> player.getDistanceSq(this) <= radius * radius)) {
+        double distance = player.getDistanceSq(this);
+        if (distance <= bestDistance) {
+          bestDistance = distance;
+          nearest = player;
+        }
+      }
+      return nearest;
     }
 
     protected void applyEntityAttributes() {

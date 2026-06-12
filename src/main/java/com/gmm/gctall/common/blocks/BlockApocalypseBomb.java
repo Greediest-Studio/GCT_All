@@ -3,7 +3,6 @@ package com.gmm.gctall.common.blocks;
 import com.gmm.gctall.misc.GctAllCreativeTab;
 
 import java.util.Random;
-import com.gmm.gctall.common.events.ApocalypseBomb;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -38,19 +37,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
   public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
     super.onBlockAdded(world, pos, state);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      ApocalypseBomb.run(world, x, y, z);
+    explode(world, pos);
   }
 
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos) {
     super.neighborChanged(state, world, pos, neighborBlock, fromPos);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-    if (world.getRedstonePowerFromNeighbors(new BlockPos(x, y, z)) > 0) {
-      ApocalypseBomb.run(world, x, y, z);
+    if (world.getRedstonePowerFromNeighbors(pos) > 0) {
+      explode(world, pos);
     }
   }
 
@@ -74,33 +67,27 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
   public void onExplosionDestroy(World world, BlockPos pos, Explosion e) {
     super.onExplosionDestroy(world, pos, e);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      ApocalypseBomb.run(world, x, y, z);
+    explode(world, pos);
   }
 
   public void onBlockClicked(World world, BlockPos pos, EntityPlayer entity) {
     super.onBlockClicked(world, pos, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      ApocalypseBomb.run(world, x, y, z);
+    explode(world, pos);
   }
 
   public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
     super.onEntityCollision(world, pos, state, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      ApocalypseBomb.run(world, x, y, z);
+    explode(world, pos);
   }
 
   public void onEntityWalk(World world, BlockPos pos, Entity entity) {
     super.onEntityWalk(world, pos, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      ApocalypseBomb.run(world, x, y, z);
+    explode(world, pos);
+  }
+
+  private void explode(World world, BlockPos pos) {
+    if (!world.isRemote) {
+      world.createExplosion(null, pos.getX(), pos.getY(), pos.getZ(), 3.0F, true);
+    }
   }
 }

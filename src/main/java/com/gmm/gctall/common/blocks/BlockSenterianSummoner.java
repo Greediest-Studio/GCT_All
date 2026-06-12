@@ -98,14 +98,22 @@ public class BlockSenterianSummoner extends Block implements ITileEntityProvider
     @Override
     public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         super.onBlockAdded(world, pos, state);
-        world.scheduleUpdate(pos, this, tickRate(world));
+        if (!world.isRemote) {
+            world.scheduleUpdate(pos, this, tickRate(world));
+        }
     }
 
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
         super.updateTick(world, pos, state, random);
-      SenterianSummonerSummon.run(world, pos.getX(), pos.getY(), pos.getZ());
-        world.scheduleUpdate(pos, this, tickRate(world));
+        if (!world.isRemote && !SenterianSummonerSummon.run(world, pos.getX(), pos.getY(), pos.getZ())) {
+            world.scheduleUpdate(pos, this, tickRate(world));
+        }
+    }
+
+    @Override
+    public int tickRate(World worldIn) {
+        return 40;
     }
 
     public static class SenterianSummonerTileEntity extends TileEntityLockableLoot {

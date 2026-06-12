@@ -2,8 +2,6 @@ package com.gmm.gctall.common.entity;
 
 import com.gmm.gctall.misc.registry.GctAllItems;
 
-import com.gmm.gctall.common.events.ShadowBaseEntityIsHurt;
-import com.gmm.gctall.common.events.ShadowBaseOnEntityTickUpdate;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -12,6 +10,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -20,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -81,18 +81,42 @@ public final class EntityShadowBase {
 
     public void onDeath(DamageSource source) {
       super.onDeath(source);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ShadowBaseEntityIsHurt.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        spawnAbyssalcraftShadow();
+      }
     }
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ShadowBaseOnEntityTickUpdate.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        clearNearbyShadowBasePotions();
+      }
+    }
+
+    private void spawnAbyssalcraftShadow() {
+      String entityId;
+      double roll = this.rand.nextDouble();
+      if (roll < 0.7D) {
+        entityId = "abyssalcraft:shadowcreature";
+      } else if (roll < 0.91D) {
+        entityId = "abyssalcraft:shadowmonster";
+      } else {
+        entityId = "abyssalcraft:shadowbeast";
+      }
+
+      Entity entity = EntityList.createEntityByIDFromName(new ResourceLocation(entityId), this.world);
+      if (entity != null) {
+        entity.setLocationAndAngles(this.posX, this.posY + 1.0D, this.posZ, this.rotationYaw, this.rotationPitch);
+        this.world.spawnEntity(entity);
+      }
+    }
+
+    private void clearNearbyShadowBasePotions() {
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(64.0D);
+      for (ShadowBaseEntity entity : this.world.getEntitiesWithinAABB(ShadowBaseEntity.class, area,
+          entity -> entity.getDistanceSq(this) <= 4096.0D)) {
+        entity.clearActivePotions();
+      }
     }
 
     protected void applyEntityAttributes() {

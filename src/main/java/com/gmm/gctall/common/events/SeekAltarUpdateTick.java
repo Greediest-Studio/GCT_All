@@ -12,7 +12,6 @@ import com.gmm.gctall.common.blocks.BlockYogsothothiumOre;
 import com.gmm.gctall.common.blocks.BlockYogsothothiumOreComplex;
 import com.gmm.gctall.common.entity.EntityZjarugoth;
 import com.gmm.gctall.common.potions.PotionAbyssPlague;
-import com.gmm.gctall.common.util.ServerCommands;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
@@ -22,7 +21,9 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 
@@ -102,10 +103,7 @@ public final class SeekAltarUpdateTick {
     private static void processZjarugothSummon(World world, BlockPos altarPos, TileEntity altar) {
         if (hasPotEnergy(world, altarPos)) {
             consumePotEnergy(world, altarPos);
-            if (!world.isRemote && world.getMinecraftServer() != null) {
-                ServerCommands.run(world, altarPos.getX(), altarPos.getY(), altarPos.getZ(),
-                        "tellraw @a[r=64] [\"\",{\"text\":\"<Zjarugoth>Ahf' ymg' ah ah geb? llll epgoka ehye!\"}]");
-            }
+            sendMessageToNearbyPlayers(world, altarPos, 64.0D, "<Zjarugoth>Ahf' ymg' ah ah geb? llll epgoka ehye!");
             if (!world.isRemote) {
                 EntityZjarugoth.ZjarugothEntity zjarugoth = new EntityZjarugoth.ZjarugothEntity(world);
                 zjarugoth.setLocationAndAngles(altarPos.getX(), altarPos.getY() + 16, altarPos.getZ(),
@@ -199,6 +197,19 @@ public final class SeekAltarUpdateTick {
 
     private static void notify(World world, BlockPos pos) {
         world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+    }
+
+    private static void sendMessageToNearbyPlayers(World world, BlockPos pos, double radius, String message) {
+        if (world.isRemote) {
+            return;
+        }
+        TextComponentString component = new TextComponentString(message);
+        AxisAlignedBB area = new AxisAlignedBB(pos).grow(radius);
+        double maxDistance = radius * radius;
+        for (EntityPlayer player : world.getEntitiesWithinAABB(EntityPlayer.class, area,
+                player -> player.getDistanceSq(pos) <= maxDistance)) {
+            player.sendMessage(component);
+        }
     }
 
     private static final class OreRecipe {

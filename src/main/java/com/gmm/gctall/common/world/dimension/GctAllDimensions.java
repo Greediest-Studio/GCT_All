@@ -3,6 +3,7 @@ package com.gmm.gctall.common.world.dimension;
 import com.gmm.gctall.client.GctAllModels;
 import com.gmm.gctall.misc.GctAllCreativeTab;
 import com.gmm.gctall.common.items.PortalActivatorItem;
+import com.gmm.gctall.common.world.structure.GctAllStructureTemplates;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -24,21 +25,25 @@ public final class GctAllDimensions {
     };
 
     public static final Item DIM_DARKER_REALM = new PortalActivatorItem("dimdarkerrealm", GctAllCreativeTab.TAB,
-            WorldDarkerRealm.portal, WorldDarkerRealm.portal::portalSpawn);
+            WorldDarkerRealm.portal, () -> WorldDarkerRealm.DIMID,
+            GctAllStructureTemplates.DIM_54_PORTAL_1, GctAllStructureTemplates.DIM_54_PORTAL_2);
     public static final Item WARPED_RUIN = new PortalActivatorItem("warped_ruin", GctAllCreativeTab.TAB,
-            WorldWarpedRuin.portal, WorldWarpedRuin.portal::portalSpawn);
+            WorldWarpedRuin.portal, () -> WorldWarpedRuin.DIMID,
+            GctAllStructureTemplates.DIM_55_PORTAL_1, GctAllStructureTemplates.DIM_55_PORTAL_2);
     public static final Item EVERHEAVEN = new PortalActivatorItem("everheaven", GctAllCreativeTab.TAB,
-            WorldEverheaven.portal, WorldEverheaven.portal::portalSpawn);
+            WorldEverheaven.portal, () -> WorldEverheaven.DIMID,
+            GctAllStructureTemplates.HEAVEN_PORTAL, GctAllStructureTemplates.HEAVEN_PORTAL);
     public static final Item ALFHEIM = new PortalActivatorItem("alfheim", GctAllCreativeTab.TAB,
-            WorldAlfheim.portal, WorldAlfheim.portal::portalSpawn);
+            WorldAlfheim.portal, () -> WorldAlfheim.DIMID);
     public static final Item ATLANTIS = new PortalActivatorItem("atlantis", GctAllCreativeTab.TAB,
-            WorldAtlantis.portal, WorldAtlantis.portal::portalSpawn);
+            WorldAtlantis.portal, () -> WorldAtlantis.DIMID);
     public static final Item THE_VOID = new PortalActivatorItem("the_void", GctAllCreativeTab.TAB,
-            WorldTheVoid.portal, WorldTheVoid.portal::portalSpawn);
+            WorldTheVoid.portal, () -> WorldTheVoid.DIMID);
     public static final Item THE_NOWHERE = new PortalActivatorItem("the_nowhere", GctAllCreativeTab.TAB,
-            WorldTheNowhere.portal, WorldTheNowhere.portal::portalSpawn);
+            WorldTheNowhere.portal, () -> WorldTheNowhere.DIMID);
     public static final Item ORDERLAND = new PortalActivatorItem("orderland", GctAllCreativeTab.TAB,
-            WorldOrderland.portal, WorldOrderland.portal::portalSpawn);
+            WorldOrderland.portal, () -> WorldOrderland.DIMID,
+            GctAllStructureTemplates.ORDER_PORTAL, GctAllStructureTemplates.ORDER_PORTAL_2);
 
     private GctAllDimensions() {
     }

@@ -4,13 +4,15 @@ import com.gmm.gctall.misc.GctAllCreativeTab;
 
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.common.events.BlueFireEntityCollidesInTheBlock;
+import com.gmm.gctall.common.potions.PotionBluefire;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -65,9 +67,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
   public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
     super.onEntityCollision(world, pos, state, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      BlueFireEntityCollidesInTheBlock.run(world, x, y, z);
+    if (!world.isRemote && entity instanceof EntityPlayer) {
+      ((EntityPlayer)entity).addPotionEffect(new PotionEffect(PotionBluefire.potion, 100, 0, false, false));
+    }
   }
 }

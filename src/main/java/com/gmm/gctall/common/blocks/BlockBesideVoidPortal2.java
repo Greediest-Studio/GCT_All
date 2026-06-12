@@ -102,19 +102,23 @@ public BlockBesideVoidPortal2() {
 
   public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
     super.onBlockAdded(world, pos, state);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-    world.scheduleUpdate(new BlockPos(x, y, z), this, tickRate(world));
+    if (!world.isRemote) {
+      world.scheduleUpdate(pos, this, tickRate(world));
+    }
   }
 
   public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
     super.updateTick(world, pos, state, random);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      BesideVoidPortal.run(world, x, y, z);
-    world.scheduleUpdate(new BlockPos(x, y, z), this, tickRate(world));
+    if (!world.isRemote) {
+      BesideVoidPortal.run(world, pos.getX(), pos.getY(), pos.getZ());
+      if (world.getBlockState(pos).getBlock() == this) {
+        world.scheduleUpdate(pos, this, tickRate(world));
+      }
+    }
+  }
+
+  public int tickRate(World worldIn) {
+    return 20;
   }
 
   @SideOnly(Side.CLIENT)

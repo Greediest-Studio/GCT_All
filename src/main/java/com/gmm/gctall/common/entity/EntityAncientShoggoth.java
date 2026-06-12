@@ -3,9 +3,10 @@ package com.gmm.gctall.common.entity;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import com.gmm.gctall.common.events.AbyssPlagueOnEntityTickUpdate;
-import com.gmm.gctall.common.events.AbyssPlaguePlayerCollidesWithThisEntity;
-import com.gmm.gctall.common.events.AncientShoggothEntityDies;
+import com.gmm.gctall.common.blocks.BlockSaniteOre;
+import com.gmm.gctall.common.items.ItemShoggothTancale;
+import com.gmm.gctall.common.potions.PotionAbyssPlague;
+import com.gmm.gctall.misc.registry.GctAllItems;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -26,13 +27,18 @@ import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -131,26 +137,50 @@ public final class EntityAncientShoggoth {
 
     public void onDeath(DamageSource source) {
       super.onDeath(source);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      AncientShoggothEntityDies.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        spawnDrop(new ItemStack(BlockSaniteOre.block, 5 + this.rand.nextInt(8)));
+        spawnDrop(new ItemStack(GctAllItems.ESSENCE_OF_DARKERREALM));
+        spawnDrop(new ItemStack(GctAllItems.SHOGGOTH_TOOTH));
+        spawnDrop(new ItemStack(ItemShoggothTancale.block, 2 + this.rand.nextInt(4)));
+      }
     }
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      AbyssPlagueOnEntityTickUpdate.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        runAbyssPlagueAura();
+      }
     }
 
     public void onCollideWithPlayer(EntityPlayer entity) {
       super.onCollideWithPlayer(entity);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      AbyssPlaguePlayerCollidesWithThisEntity.run(entity);
+      entity.addPotionEffect(new PotionEffect(PotionAbyssPlague.potion, 100, 1));
+      entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 1));
+    }
+
+    private void runAbyssPlagueAura() {
+      if (this.rand.nextDouble() < 0.004D) {
+        EntityPlayer player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 32.0D, false);
+        if (player != null) {
+          player.addPotionEffect(new PotionEffect(PotionAbyssPlague.potion, 200, 0, false, true));
+        }
+      }
+      if (this.rand.nextDouble() < 0.005D) {
+        EntityPlayer player = this.world.getClosestPlayer(this.posX, this.posY, this.posZ, 10.0D, false);
+        if (player != null) {
+          player.sendMessage(new TextComponentString("呜啊啊！"));
+          player.attackEntityFrom(DamageSource.MAGIC, 12.0F);
+        }
+      }
+    }
+
+    private void spawnDrop(ItemStack stack) {
+      if (stack.isEmpty()) {
+        return;
+      }
+      EntityItem item = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
+      item.setPickupDelay(10);
+      this.world.spawnEntity(item);
     }
 
     protected void applyEntityAttributes() {

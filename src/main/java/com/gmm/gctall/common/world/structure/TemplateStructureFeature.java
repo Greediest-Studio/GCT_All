@@ -13,6 +13,8 @@ import net.minecraft.world.gen.IChunkGenerator;
 
 public abstract class TemplateStructureFeature implements StructureFeature {
     protected static final int CHANCE_DENOMINATOR = 1_000_000;
+    private static final int RELOCATION_ATTEMPTS = 8;
+    private static final int RELOCATION_CHUNK_RADIUS = 2;
 
     private final int dimensionId;
     private final int chance;
@@ -73,11 +75,47 @@ public abstract class TemplateStructureFeature implements StructureFeature {
 
         int count = random.nextInt(maxAttempts) + 1;
         for (int i = 0; i < count; i++) {
-            BlockPos origin = findOrigin(random, chunkX, chunkZ, world);
-            if (origin != null && canGenerateAt(world, origin)) {
-                StructureGenerationHelper.placeTemplate(world, templateId, origin, getRotation(random), getMirror(random));
+            tryGenerateNear(random, chunkX, chunkZ, world);
+        }
+    }
+
+    private boolean tryGenerateNear(Random random, int chunkX, int chunkZ, World world) {
+        if (tryGenerateInChunk(random, chunkX, chunkZ, world)) {
+            return true;
+        }
+
+        for (int i = 0; i < RELOCATION_ATTEMPTS; i++) {
+            int offsetX = randomOffset(random);
+            int offsetZ = randomOffset(random);
+            if (offsetX == 0 && offsetZ == 0) {
+                continue;
+            }
+
+            int shiftedChunkX = chunkX + offsetX * 16;
+            int shiftedChunkZ = chunkZ + offsetZ * 16;
+            if (isChunkAreaLoaded(world, shiftedChunkX, shiftedChunkZ)
+                    && tryGenerateInChunk(random, shiftedChunkX, shiftedChunkZ, world)) {
+                return true;
             }
         }
+        return false;
+    }
+
+    private boolean tryGenerateInChunk(Random random, int chunkX, int chunkZ, World world) {
+        BlockPos origin = findOrigin(random, chunkX, chunkZ, world);
+        if (origin == null || !canGenerateAt(world, origin)) {
+            return false;
+        }
+        return StructureGenerationHelper.placeTemplateDuringWorldgen(world, templateId, origin, getRotation(random),
+                getMirror(random));
+    }
+
+    private int randomOffset(Random random) {
+        return random.nextInt(RELOCATION_CHUNK_RADIUS * 2 + 1) - RELOCATION_CHUNK_RADIUS;
+    }
+
+    private boolean isChunkAreaLoaded(World world, int chunkX, int chunkZ) {
+        return world.isAreaLoaded(new BlockPos(chunkX, 0, chunkZ), new BlockPos(chunkX + 15, 255, chunkZ + 15), false);
     }
 
     protected BlockPos findSurfaceOrigin(Random random, int chunkX, int chunkZ, World world, boolean netherStyle) {

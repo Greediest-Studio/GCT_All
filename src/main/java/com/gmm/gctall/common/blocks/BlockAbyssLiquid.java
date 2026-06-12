@@ -1,6 +1,6 @@
 package com.gmm.gctall.common.blocks;
 
-import com.gmm.gctall.common.events.AbyssLiquidMobplayerCollidesBlock;
+import com.gmm.gctall.common.potions.PotionAbyssPlague;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,9 +10,11 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.IStateMapper;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -54,7 +56,9 @@ public class BlockAbyssLiquid extends BlockFluidClassic {
   @Override
   public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
     super.onEntityCollision(world, pos, state, entity);
-      AbyssLiquidMobplayerCollidesBlock.run(entity);
+    if (!world.isRemote && entity instanceof EntityLivingBase) {
+      ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(PotionAbyssPlague.potion, 200, 0, false, false));
+    }
   }
 
   @SideOnly(Side.CLIENT)

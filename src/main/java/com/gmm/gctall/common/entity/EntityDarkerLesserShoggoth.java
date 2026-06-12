@@ -1,8 +1,7 @@
 package com.gmm.gctall.common.entity;
 
 import java.util.Random;
-import com.gmm.gctall.common.events.DarkerLesserShoggothEntityDies;
-import com.gmm.gctall.common.events.DarkerLesserShoggothPlayerCollidesWithThisEntity;
+import com.gmm.gctall.common.items.ItemShoggothTancale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -29,11 +28,14 @@ import net.minecraft.entity.ai.EntityAIPanic;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityTippedArrow;
 import net.minecraft.init.Items;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -130,18 +132,17 @@ public final class EntityDarkerLesserShoggoth {
 
     public void onDeath(DamageSource source) {
       super.onDeath(source);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      DarkerLesserShoggothEntityDies.run(this.world, x, y, z);
+      if (!this.world.isRemote && this.rand.nextDouble() < 0.5D) {
+        EntityItem item = new EntityItem(this.world, this.posX, this.posY, this.posZ,
+            new ItemStack(ItemShoggothTancale.block));
+        item.setPickupDelay(10);
+        this.world.spawnEntity(item);
+      }
     }
 
     public void onCollideWithPlayer(EntityPlayer entity) {
       super.onCollideWithPlayer(entity);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      DarkerLesserShoggothPlayerCollidesWithThisEntity.run(entity);
+      entity.addPotionEffect(new PotionEffect(MobEffects.BLINDNESS, 100, 1, false, false));
     }
 
     protected void applyEntityAttributes() {

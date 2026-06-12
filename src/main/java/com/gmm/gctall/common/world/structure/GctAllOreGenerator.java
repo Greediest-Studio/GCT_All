@@ -70,9 +70,9 @@ final class GctAllOreGenerator {
     }
 
     private static void generateOrderLand(Random random, int chunkX, int chunkZ, World world) {
-        int x = chunkX + random.nextInt(16) + 8;
+        int x = chunkX + random.nextInt(16);
         int y = random.nextInt(256);
-        int z = chunkZ + random.nextInt(16) + 8;
+        int z = chunkZ + random.nextInt(16);
         new WorldGenLakes(BlockOrderLiquid.block).generate(world, random, new BlockPos(x, y, z));
         generateOre(random, chunkX, chunkZ, world, BlockOrderCrystalOre.block, BlockOrderStone.block, 8, 1, 0, 128);
     }
@@ -141,9 +141,9 @@ final class GctAllOreGenerator {
         WorldGenFlowers generator = new WorldGenFlowers((BlockFlower) block, BlockFlower.EnumFlowerType.DANDELION);
         int height = maxY - minY;
         for (int i = 0; i < attempts; i++) {
-            int x = chunkX + random.nextInt(16) + 8;
+            int x = chunkX + random.nextInt(16);
             int y = minY + random.nextInt(height);
-            int z = chunkZ + random.nextInt(16) + 8;
+            int z = chunkZ + random.nextInt(16);
             generator.generate(world, random, new BlockPos(x, y, z));
         }
     }

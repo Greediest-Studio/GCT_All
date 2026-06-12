@@ -2,9 +2,8 @@ package com.gmm.gctall.common.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.gmm.gctall.common.events.ApocalypseCubeHurt;
-import com.gmm.gctall.common.events.ApocalypseCubeSkill;
-import com.gmm.gctall.common.events.ApocalypseDeath;
+import com.gmm.gctall.common.potions.PotionCurseOfTwilight;
+import com.gmm.gctall.misc.registry.GctAllItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
@@ -13,6 +12,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EnumCreatureAttribute;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -23,17 +23,23 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityFlyHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.BossInfo;
 import net.minecraft.world.BossInfoServer;
@@ -127,28 +133,87 @@ public final class EntityApocalypseCube {
 
     public void onDeath(DamageSource source) {
       super.onDeath(source);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ApocalypseCubeEntity entityCustom = this;
-      ApocalypseDeath.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        spawnApocalypsiumScraps();
+      }
     }
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ApocalypseCubeEntity entityCustom = this;
-      ApocalypseCubeSkill.run(entityCustom, this.world, x, y, z);
+      if (!this.world.isRemote) {
+        runApocalypseSkills();
+      }
     }
 
     public void onCollideWithPlayer(EntityPlayer entity) {
       super.onCollideWithPlayer(entity);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ApocalypseCubeHurt.run(entity, this.world, x, y, z);
+      if (!this.world.isRemote && this.rand.nextDouble() < 0.3D) {
+        entity.attackEntityFrom(DamageSource.GENERIC, entity.getMaxHealth() / 15.0F);
+        entity.setPositionAndUpdate(
+            this.posX + this.rand.nextInt(11),
+            this.posY + this.rand.nextInt(11),
+            this.posZ + this.rand.nextInt(11));
+      }
+    }
+
+    private void runApocalypseSkills() {
+      if (this.rand.nextDouble() < 0.001D) {
+        spawnAdherent(this.posX + 6.0D, this.posY + 1.0D, this.posZ);
+        spawnAdherent(this.posX - 6.0D, this.posY + 1.0D, this.posZ);
+      }
+      if (this.rand.nextDouble() < 0.001D) {
+        spawnAdherent(this.posX, this.posY + 1.0D, this.posZ + 6.0D);
+        spawnAdherent(this.posX, this.posY + 1.0D, this.posZ - 6.0D);
+      }
+      if (this.rand.nextDouble() < 0.005D) {
+        sendMessageToNearbyPlayers(32.0D, "你过于靠近天启立方，受到了天启诅咒……");
+        applyEffectToNearbyPlayers(32.0D, MobEffects.BLINDNESS, 100, 0);
+        applyEffectToNearbyPlayers(32.0D, MobEffects.WITHER, 100, 2);
+        applyEffectToNearbyPlayers(32.0D, MobEffects.SLOWNESS, 100, 4);
+        applyEffectToNearbyPlayers(32.0D, PotionCurseOfTwilight.potion, 100, 0);
+      }
+      if (this.rand.nextDouble() < 0.005D && this.getHealth() <= 40.0F) {
+        sendMessageToNearbyPlayers(8.0D, "天启不死……");
+        setHealth(1000.0F);
+      }
+    }
+
+    private void spawnAdherent(double x, double y, double z) {
+      Entity entity = EntityList.createEntityByIDFromName(new ResourceLocation("twilightforest:adherent"), this.world);
+      if (entity != null) {
+        entity.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
+        this.world.spawnEntity(entity);
+      }
+    }
+
+    private void applyEffectToNearbyPlayers(double radius, net.minecraft.potion.Potion potion, int ticks, int amplifier) {
+      if (potion == null) {
+        return;
+      }
+      for (EntityPlayer player : getNearbyPlayers(radius)) {
+        player.addPotionEffect(new PotionEffect(potion, ticks, amplifier, false, true));
+      }
+    }
+
+    private void sendMessageToNearbyPlayers(double radius, String message) {
+      TextComponentString component = new TextComponentString(message);
+      for (EntityPlayer player : getNearbyPlayers(radius)) {
+        player.sendMessage(component);
+      }
+    }
+
+    private java.util.List<EntityPlayer> getNearbyPlayers(double radius) {
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(radius);
+      double maxDistance = radius * radius;
+      return this.world.getEntitiesWithinAABB(EntityPlayer.class, area,
+          player -> player.getDistanceSq(this) <= maxDistance);
+    }
+
+    private void spawnApocalypsiumScraps() {
+      ItemStack stack = new ItemStack(GctAllItems.APOCALYPSIUM_SCRAP, this.rand.nextInt(16) + 10);
+      EntityItem item = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
+      item.setPickupDelay(10);
+      this.world.spawnEntity(item);
     }
 
     protected void applyEntityAttributes() {

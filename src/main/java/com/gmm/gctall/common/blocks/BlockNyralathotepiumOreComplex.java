@@ -4,7 +4,6 @@ import com.gmm.gctall.misc.GctAllCreativeTab;
 
 import com.google.common.base.Predicate;
 import java.util.Random;
-import com.gmm.gctall.common.events.NyralathotepiumOreComplexBlockDestroyedByPlayer;
 import com.gmm.gctall.common.world.biome.BiomeWarped;
 import com.gmm.gctall.common.world.dimension.WorldWarpedRuin;
 import net.minecraft.block.Block;
@@ -61,10 +60,9 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 
   public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer entity, boolean willHarvest) {
     boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      NyralathotepiumOreComplexBlockDestroyedByPlayer.run(entity, x, y, z);
+    if (!world.isRemote && world.rand.nextDouble() < 0.6D) {
+      entity.setSpawnPoint(pos.add(world.rand.nextInt(6) - 3, world.rand.nextInt(6) - 3, world.rand.nextInt(6) - 3), true);
+    }
     return retval;
   }
 }

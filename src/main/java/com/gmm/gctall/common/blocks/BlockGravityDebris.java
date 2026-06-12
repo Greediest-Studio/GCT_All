@@ -6,7 +6,6 @@ import com.gmm.gctall.misc.registry.GctAllItems;
 import com.gmm.gctall.misc.GctAllCreativeTab;
 
 import java.util.Random;
-import com.gmm.gctall.common.events.GravityDebrisTick;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -15,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -43,62 +43,57 @@ import net.minecraft.world.World;
 
   public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
     super.onBlockAdded(world, pos, state);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-    world.scheduleUpdate(new BlockPos(x, y, z), this, tickRate(world));
+    if (!world.isRemote) {
+      world.scheduleUpdate(pos, this, tickRate(world));
+    }
   }
 
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block neighborBlock, BlockPos fromPos) {
     super.neighborChanged(state, world, pos, neighborBlock, fromPos);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-    if (world.getRedstonePowerFromNeighbors(new BlockPos(x, y, z)) > 0) {
-      GravityDebrisTick.run(world, x, y, z);
+    if (world.getRedstonePowerFromNeighbors(pos) > 0) {
+      moveUpIfPossible(world, pos);
     }
   }
 
   public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
     super.updateTick(world, pos, state, random);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      GravityDebrisTick.run(world, x, y, z);
-    world.scheduleUpdate(new BlockPos(x, y, z), this, tickRate(world));
+    if (!world.isRemote) {
+      moveUpIfPossible(world, pos);
+      if (world.getBlockState(pos).getBlock() == this) {
+        world.scheduleUpdate(pos, this, tickRate(world));
+      }
+    }
   }
 
   public void onBlockClicked(World world, BlockPos pos, EntityPlayer entity) {
     super.onBlockClicked(world, pos, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      GravityDebrisTick.run(world, x, y, z);
+    moveUpIfPossible(world, pos);
   }
 
   public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
     super.onEntityCollision(world, pos, state, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      GravityDebrisTick.run(world, x, y, z);
+    moveUpIfPossible(world, pos);
   }
 
   public void onEntityWalk(World world, BlockPos pos, Entity entity) {
     super.onEntityWalk(world, pos, entity);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      GravityDebrisTick.run(world, x, y, z);
+    moveUpIfPossible(world, pos);
   }
 
   public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer entity, EnumHand hand, EnumFacing direction, float hitX, float hitY, float hitZ) {
     super.onBlockActivated(world, pos, state, entity, hand, direction, hitX, hitY, hitZ);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      GravityDebrisTick.run(world, x, y, z);
+    moveUpIfPossible(world, pos);
     return true;
+  }
+
+  private void moveUpIfPossible(World world, BlockPos pos) {
+    if (world.isRemote || world.getBlockState(pos.up()).getBlock() != Blocks.AIR) {
+      return;
+    }
+    world.setBlockToAir(pos);
+    if (pos.getY() < 255) {
+      world.setBlockState(pos.up(), getDefaultState(), 3);
+    }
   }
 }
 

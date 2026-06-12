@@ -2,7 +2,7 @@ package com.gmm.gctall.common.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.gmm.gctall.common.events.ApocalypseHolder;
+import com.gmm.gctall.common.blocks.BlockApocalypseAltar;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelSilverfish;
 import net.minecraft.client.renderer.entity.Render;
@@ -19,6 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -109,11 +110,10 @@ public final class EntityApocalypseHolder {
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ApocalypseHolderEntity entityCustom = this;
-      ApocalypseHolder.run(entityCustom, this.world, x, y, z);
+      if (!this.world.isRemote) {
+        this.world.setBlockState(new BlockPos(this), BlockApocalypseAltar.block.getDefaultState(), 3);
+        setDead();
+      }
     }
 
     protected void applyEntityAttributes() {

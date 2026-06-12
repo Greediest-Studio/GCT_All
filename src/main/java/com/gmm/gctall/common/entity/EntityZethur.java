@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import javax.annotation.Nullable;
-import com.gmm.gctall.common.events.ZethurSkill;
+import com.gmm.gctall.common.potions.PotionChanneling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureAttribute;
@@ -29,13 +30,18 @@ import net.minecraft.entity.ai.EntityMoveHelper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathNavigateFlying;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.BossInfo;
@@ -48,6 +54,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class EntityZethur {
+  private static final float ZETHUR_FALL_DAMAGE_DISTANCE = 13.0F;
+  private static final double RANDOM_TELEPORT_RADIUS = 50.0D;
+  private static final int RANDOM_TELEPORT_ATTEMPTS = 96;
 
 
   private Biome[] allbiomes(RegistryNamespaced<ResourceLocation, Biome> in) {
@@ -182,11 +191,152 @@ public final class EntityZethur {
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ZethurEntity entityCustom = this;
-      ZethurSkill.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        runZethurSkills();
+      }
+    }
+
+    private void runZethurSkills() {
+      keepThunderstormActive();
+      BlockPos center = getPosition();
+      empowerNearbyZephyrs(center);
+
+      if (this.rand.nextDouble() < 0.003D) {
+        teleportPlayersToGroundBelow(center, 16.0D);
+      }
+      if (this.rand.nextDouble() < 0.02D) {
+        teleportPlayersToGroundBelow(center, 4.0D);
+      }
+      if (this.rand.nextDouble() < 0.001D) {
+        applyChannelingToNearbyPlayers(center);
+      }
+      if (this.rand.nextDouble() < 5.0E-4D) {
+        spawnZephyr(this.posX, this.posY - 3.0D, this.posZ);
+        spawnZephyr(this.posX + 5.0D, this.posY, this.posZ);
+        spawnZephyr(this.posX - 5.0D, this.posY, this.posZ);
+      }
+    }
+
+    private void keepThunderstormActive() {
+      if (!this.world.getWorldInfo().isRaining() || !this.world.getWorldInfo().isThundering()) {
+        this.world.getWorldInfo().setRaining(true);
+        this.world.getWorldInfo().setThundering(true);
+        this.world.getWorldInfo().setRainTime(6000);
+        this.world.getWorldInfo().setThunderTime(6000);
+      }
+    }
+
+    private void empowerNearbyZephyrs(BlockPos center) {
+      AxisAlignedBB area = new AxisAlignedBB(center).grow(64.0D);
+      for (Entity nearby : this.world.getEntitiesWithinAABB(Entity.class, area,
+          entity -> entity.getDistanceSq(center) <= 4096.0D)) {
+        ResourceLocation name = EntityList.getKey(nearby);
+        if (name != null && "aether_legacy".equals(name.getNamespace()) && "zephyr".equals(name.getPath())
+            && nearby instanceof EntityLivingBase) {
+          EntityLivingBase living = (EntityLivingBase)nearby;
+          living.addPotionEffect(new PotionEffect(MobEffects.RESISTANCE, 300, 2));
+          living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 300, 0));
+        }
+      }
+    }
+
+    private void applyChannelingToNearbyPlayers(BlockPos center) {
+      for (EntityPlayer player : playersWithin(center, 64.0D)) {
+        player.addPotionEffect(new PotionEffect(PotionChanneling.potion, 200, 0, false, true));
+      }
+    }
+
+    private void spawnZephyr(double x, double y, double z) {
+      Entity entity = EntityList.createEntityByIDFromName(new ResourceLocation("aether_legacy:zephyr"), this.world);
+      if (entity != null) {
+        entity.setLocationAndAngles(x, y, z, this.rotationYaw, this.rotationPitch);
+        this.world.spawnEntity(entity);
+      }
+    }
+
+    private void teleportPlayersToGroundBelow(BlockPos center, double triggerRadius) {
+      for (EntityPlayer player : playersWithin(center, triggerRadius)) {
+        BlockPos destination = findGroundBelow(player);
+        double targetX = player.posX;
+        double targetZ = player.posZ;
+        if (destination == null) {
+          destination = findRandomGround(center, triggerRadius, player.posY);
+          if (destination != null) {
+            targetX = destination.getX() + 0.5D;
+            targetZ = destination.getZ() + 0.5D;
+          }
+        }
+        if (destination != null) {
+          teleportWithFallDamage(player, destination, targetX, targetZ);
+        }
+      }
+    }
+
+    private java.util.List<EntityPlayer> playersWithin(BlockPos center, double radius) {
+      AxisAlignedBB area = new AxisAlignedBB(center).grow(radius);
+      double maxDistance = radius * radius;
+      return this.world.getEntitiesWithinAABB(EntityPlayer.class, area,
+          player -> player.getDistanceSq(center) <= maxDistance);
+    }
+
+    private void teleportWithFallDamage(EntityPlayer player, BlockPos destination, double targetX, double targetZ) {
+      player.setPositionAndUpdate(targetX, destination.getY(), targetZ);
+      player.fall(ZETHUR_FALL_DAMAGE_DISTANCE, 1.0F);
+    }
+
+    private BlockPos findGroundBelow(EntityPlayer player) {
+      int x = MathHelper.floor(player.posX);
+      int z = MathHelper.floor(player.posZ);
+      int startY = Math.min(this.world.getHeight() - 2, MathHelper.floor(player.posY) - 1);
+      for (int groundY = startY; groundY >= 0; groundY--) {
+        BlockPos feet = new BlockPos(x, groundY + 1, z);
+        if (canStandAt(feet)) {
+          return feet;
+        }
+      }
+      return null;
+    }
+
+    private BlockPos findRandomGround(BlockPos center, double triggerRadius, double maxY) {
+      double minDistanceSq = triggerRadius * triggerRadius;
+      double maxDistanceSq = RANDOM_TELEPORT_RADIUS * RANDOM_TELEPORT_RADIUS;
+      int highestY = Math.min(this.world.getHeight() - 2, MathHelper.floor(maxY));
+      for (int attempt = 0; attempt < RANDOM_TELEPORT_ATTEMPTS; attempt++) {
+        double offsetX = (this.rand.nextDouble() * 2.0D - 1.0D) * RANDOM_TELEPORT_RADIUS;
+        double offsetZ = (this.rand.nextDouble() * 2.0D - 1.0D) * RANDOM_TELEPORT_RADIUS;
+        double distanceSq = offsetX * offsetX + offsetZ * offsetZ;
+        if (distanceSq > maxDistanceSq || distanceSq <= minDistanceSq) {
+          continue;
+        }
+        int x = center.getX() + MathHelper.floor(offsetX);
+        int z = center.getZ() + MathHelper.floor(offsetZ);
+        double finalOffsetX = x + 0.5D - (center.getX() + 0.5D);
+        double finalOffsetZ = z + 0.5D - (center.getZ() + 0.5D);
+        double finalDistanceSq = finalOffsetX * finalOffsetX + finalOffsetZ * finalOffsetZ;
+        if (finalDistanceSq > maxDistanceSq || finalDistanceSq <= minDistanceSq) {
+          continue;
+        }
+        for (int groundY = highestY - 1; groundY >= 0; groundY--) {
+          BlockPos feet = new BlockPos(x, groundY + 1, z);
+          if (canStandAt(feet)) {
+            return feet;
+          }
+        }
+      }
+      return null;
+    }
+
+    private boolean canStandAt(BlockPos feet) {
+      BlockPos ground = feet.down();
+      IBlockState groundState = this.world.getBlockState(ground);
+      return isClear(feet)
+          && isClear(feet.up())
+          && groundState.getMaterial().blocksMovement()
+          && groundState.isSideSolid(this.world, ground, EnumFacing.UP);
+    }
+
+    private boolean isClear(BlockPos pos) {
+      return !this.world.getBlockState(pos).getMaterial().blocksMovement();
     }
 
     protected void applyEntityAttributes() {

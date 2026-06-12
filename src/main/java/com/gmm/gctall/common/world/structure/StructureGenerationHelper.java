@@ -15,6 +15,7 @@ import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -22,6 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.gen.structure.StructureBoundingBox;
 import net.minecraft.world.gen.structure.template.BlockRotationProcessor;
 import net.minecraft.world.gen.structure.template.ITemplateProcessor;
 import net.minecraft.world.gen.structure.template.PlacementSettings;
@@ -31,6 +33,7 @@ import net.minecraftforge.fml.common.Loader;
 public final class StructureGenerationHelper {
   private static final Rotation[] ROTATIONS = { Rotation.NONE, Rotation.CLOCKWISE_90, Rotation.CLOCKWISE_180 };
   private static final Mirror[] MIRRORS = { Mirror.NONE, Mirror.LEFT_RIGHT };
+  private static final Set<ResourceLocation> CHECKED_TEMPLATE_PALETTES = new HashSet<>();
   private static final Set<String> LOGGED_MISSING_EXTERNAL_BLOCKS = new HashSet<>();
 
   private StructureGenerationHelper() {}
@@ -71,6 +74,16 @@ public final class StructureGenerationHelper {
 
   public static boolean placeTemplate(World world, ResourceLocation templateId, BlockPos origin, Rotation rotation,
       Mirror mirror) {
+    return placeTemplate(world, templateId, origin, rotation, mirror, false);
+  }
+
+  static boolean placeTemplateDuringWorldgen(World world, StructureTemplateId templateId, BlockPos origin,
+      Rotation rotation, Mirror mirror) {
+    return placeTemplate(world, templateId.getResourceLocation(), origin, rotation, mirror, true);
+  }
+
+  private static boolean placeTemplate(World world, ResourceLocation templateId, BlockPos origin, Rotation rotation,
+      Mirror mirror, boolean requireLoadedArea) {
     if (world.isRemote || !(world instanceof WorldServer) || world.getMinecraftServer() == null) {
       return false;
     }
@@ -88,8 +101,17 @@ public final class StructureGenerationHelper {
         .setReplacedBlock((Block)null)
         .setIgnoreStructureBlock(false)
         .setIgnoreEntities(false);
+    StructureBoundingBox bounds = getTemplateBounds(template, origin, settings);
+    if (requireLoadedArea) {
+      if (!world.isAreaLoaded(bounds, false) || hasGeneratedStructure(world, bounds) || hasLoadedTileEntity(world, bounds)) {
+        return false;
+      }
+    }
     logMissingExternalBlocks(templateId);
     addTemplateBlocks(world, templateId, template, origin, settings);
+    if (requireLoadedArea) {
+      GeneratedStructureData.get(world).add(bounds);
+    }
     return true;
   }
 
@@ -120,12 +142,57 @@ public final class StructureGenerationHelper {
     return !world.isAirBlock(pos) && state.getBlock().getMaterial(state).blocksMovement();
   }
 
+  private static StructureBoundingBox getTemplateBounds(Template template, BlockPos origin, PlacementSettings settings) {
+    BlockPos size = template.getSize();
+    int maxX = Math.max(size.getX() - 1, 0);
+    int maxY = Math.max(size.getY() - 1, 0);
+    int maxZ = Math.max(size.getZ() - 1, 0);
+
+    StructureBoundingBox bounds = null;
+    int[] xs = { 0, maxX };
+    int[] ys = { 0, maxY };
+    int[] zs = { 0, maxZ };
+    for (int x : xs) {
+      for (int y : ys) {
+        for (int z : zs) {
+          BlockPos corner = Template.transformedBlockPos(settings, new BlockPos(x, y, z)).add(origin);
+          if (bounds == null) {
+            bounds = new StructureBoundingBox(corner, corner);
+          } else {
+            bounds.expandTo(new StructureBoundingBox(corner, corner));
+          }
+        }
+      }
+    }
+    return bounds == null ? new StructureBoundingBox(origin, origin) : bounds;
+  }
+
+  private static boolean hasGeneratedStructure(World world, StructureBoundingBox bounds) {
+    return GeneratedStructureData.get(world).intersects(expand(bounds, 8));
+  }
+
+  private static boolean hasLoadedTileEntity(World world, StructureBoundingBox bounds) {
+    StructureBoundingBox checkedBounds = expand(bounds, 2);
+    for (TileEntity tileEntity : world.loadedTileEntityList) {
+      if (tileEntity != null && !tileEntity.isInvalid() && checkedBounds.isVecInside(tileEntity.getPos())) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private static StructureBoundingBox expand(StructureBoundingBox bounds, int distance) {
+    return new StructureBoundingBox(
+        bounds.minX - distance, bounds.minY - distance, bounds.minZ - distance,
+        bounds.maxX + distance, bounds.maxY + distance, bounds.maxZ + distance);
+  }
+
   static int randomChunkX(Random random, int chunkX) {
-    return chunkX + random.nextInt(16) + 8;
+    return chunkX + random.nextInt(16);
   }
 
   static int randomChunkZ(Random random, int chunkZ) {
-    return chunkZ + random.nextInt(16) + 8;
+    return chunkZ + random.nextInt(16);
   }
 
   static Rotation randomRotation(Random random) {
@@ -137,6 +204,10 @@ public final class StructureGenerationHelper {
   }
 
   private static void logMissingExternalBlocks(ResourceLocation templateId) {
+    if (!CHECKED_TEMPLATE_PALETTES.add(templateId)) {
+      return;
+    }
+
     NBTTagCompound templateNbt = readTemplateNbt(templateId);
     if (templateNbt == null || !templateNbt.hasKey("palette", 9)) {
       return;

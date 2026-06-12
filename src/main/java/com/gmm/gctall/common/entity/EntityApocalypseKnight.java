@@ -3,8 +3,7 @@ package com.gmm.gctall.common.entity;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import com.gmm.gctall.common.events.ApocalypseDeath;
-import com.gmm.gctall.common.events.ApocalypseKnightSkill;
+import com.gmm.gctall.misc.registry.GctAllItems;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
@@ -28,6 +27,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.ai.EntityFlyHelper;
 import net.minecraft.entity.ai.EntityMoveHelper;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -41,6 +41,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.RegistryNamespaced;
@@ -189,20 +190,32 @@ public final class EntityApocalypseKnight {
 
     public void onDeath(DamageSource source) {
       super.onDeath(source);
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ApocalypseKnightEntity entityCustom = this;
-      ApocalypseDeath.run(this.world, x, y, z);
+      if (!this.world.isRemote) {
+        spawnApocalypsiumScraps();
+      }
     }
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      ApocalypseKnightEntity entityCustom = this;
-      ApocalypseKnightSkill.run(this.world, x, y, z);
+      if (!this.world.isRemote && this.rand.nextDouble() < 0.01D) {
+        healNearbyApocalypseCubes();
+      }
+    }
+
+    private void healNearbyApocalypseCubes() {
+      AxisAlignedBB area = new AxisAlignedBB(getPosition()).grow(16.0D);
+      for (EntityApocalypseCube.ApocalypseCubeEntity cube : this.world.getEntitiesWithinAABB(
+          EntityApocalypseCube.ApocalypseCubeEntity.class, area,
+          cube -> cube.getDistanceSq(this) <= 256.0D)) {
+        cube.setHealth(Math.min(cube.getMaxHealth(), cube.getHealth() + 32.0F));
+      }
+    }
+
+    private void spawnApocalypsiumScraps() {
+      ItemStack stack = new ItemStack(GctAllItems.APOCALYPSIUM_SCRAP, this.rand.nextInt(16) + 10);
+      EntityItem item = new EntityItem(this.world, this.posX, this.posY, this.posZ, stack);
+      item.setPickupDelay(10);
+      this.world.spawnEntity(item);
     }
 
     protected void applyEntityAttributes() {

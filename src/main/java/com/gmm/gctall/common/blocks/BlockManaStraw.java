@@ -45,9 +45,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
     if (!biomeCriteria)
       return;
     for (int i = 0; i < 20; i++) {
-      int l6 = chunkX + random.nextInt(16) + 8;
+      int l6 = chunkX + random.nextInt(16);
       int i11 = random.nextInt(128);
-      int l14 = chunkZ + random.nextInt(16) + 8;
+      int l14 = chunkZ + random.nextInt(16);
       (new WorldGenFlowers((BlockFlower)block, BlockFlower.EnumFlowerType.DANDELION)).generate(world, random, new BlockPos(l6, i11, l14));
     }
   }

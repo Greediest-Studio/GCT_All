@@ -4,14 +4,16 @@ import com.gmm.gctall.misc.GctAllCreativeTab;
 
 import com.google.common.base.Predicate;
 import java.util.Random;
-import com.gmm.gctall.common.events.AzathothiumOreComplexBlockDestroyedByPlayer;
+import com.gmm.gctall.common.potions.PotionAbyssPlague;
 import com.gmm.gctall.common.world.biome.BiomeWarped;
 import com.gmm.gctall.common.world.dimension.WorldWarpedRuin;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -61,10 +63,9 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 
   public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer entity, boolean willHarvest) {
     boolean retval = super.removedByPlayer(state, world, pos, entity, willHarvest);
-    int x = pos.getX();
-    int y = pos.getY();
-    int z = pos.getZ();
-      AzathothiumOreComplexBlockDestroyedByPlayer.run(entity);
+    if (!world.isRemote && world.rand.nextDouble() < 0.6D && entity instanceof EntityLivingBase) {
+      ((EntityLivingBase)entity).addPotionEffect(new PotionEffect(PotionAbyssPlague.potion, 100, 0, false, false));
+    }
     return retval;
   }
 }

@@ -1,15 +1,16 @@
 package com.gmm.gctall.common.blocks;
 
 import com.gmm.gctall.client.GctAllFluidModels;
-import com.gmm.gctall.common.events.LumixeiumPush;
-import com.gmm.gctall.common.events.LumixeiumTick;
 import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -50,14 +51,37 @@ public class BlockLumixeium extends BlockFluidClassic {
     @Override
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {
         super.updateTick(world, pos, state, random);
-      LumixeiumTick.run(world, pos.getX(), pos.getY(), pos.getZ());
-        world.scheduleUpdate(pos, this, tickRate(world));
+        if (!world.isRemote) {
+            destroyBrightAdjacentBlocks(world, pos);
+        }
     }
 
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
         super.onEntityCollision(world, pos, state, entity);
-      LumixeiumPush.run(entity);
+        if (!world.isRemote && entity instanceof EntityLivingBase) {
+            EntityLivingBase living = (EntityLivingBase)entity;
+            String name = entity.getDisplayName().getUnformattedText();
+            if ("bligtz".equals(name) || "光明人".equals(name)) {
+                living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 1, false, false));
+            } else {
+                living.addPotionEffect(new PotionEffect(MobEffects.GLOWING, 100, 1, false, false));
+            }
+        }
+    }
+
+    private void destroyBrightAdjacentBlocks(World world, BlockPos pos) {
+        destroyIfBright(world, pos.east());
+        destroyIfBright(world, pos.west());
+        destroyIfBright(world, pos.south());
+        destroyIfBright(world, pos.north());
+        destroyIfBright(world, pos.down());
+    }
+
+    private void destroyIfBright(World world, BlockPos pos) {
+        if (world.getBlockState(pos).getLightValue() >= 12) {
+            world.destroyBlock(pos, false);
+        }
     }
 
     @SideOnly(Side.CLIENT)

@@ -2,7 +2,6 @@ package com.gmm.gctall.common.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.gmm.gctall.common.events.WaterRodSkill;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
 import net.minecraft.client.model.ModelRenderer;
@@ -22,10 +21,12 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.RegistryNamespaced;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -123,11 +124,25 @@ public final class EntityWeatherWaterRod {
 
     public void onEntityUpdate() {
       super.onEntityUpdate();
-      int x = (int)this.posX;
-      int y = (int)this.posY;
-      int z = (int)this.posZ;
-      WeatherWaterRodEntity entityCustom = this;
-      WaterRodSkill.run(entityCustom, this.world, x, y, z);
+      if (!this.world.isRemote) {
+        clearColumn();
+        if (this.rand.nextDouble() < 0.001D) {
+          setHealth(0.0F);
+        }
+      }
+    }
+
+    private void clearColumn() {
+      BlockPos center = getPosition();
+      for (int dx = -1; dx <= 1; dx++) {
+        for (int dz = -1; dz <= 1; dz++) {
+          for (int dy = 0; dy <= 16; dy++) {
+            if (this.world.getBlockState(new BlockPos(dx, dy, dz)).getBlockHardness(this.world, new BlockPos(dx, dy, dz)) != -1) {
+              this.world.setBlockToAir(center.add(dx, dy, dz));
+            }
+          }
+        }
+      }
     }
 
     protected void applyEntityAttributes() {

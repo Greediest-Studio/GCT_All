@@ -1,13 +1,15 @@
 package com.gmm.gctall.common.blocks;
 
 import com.gmm.gctall.client.GctAllFluidModels;
-import com.gmm.gctall.common.events.NaturaeumPush;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.MobEffects;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -48,7 +50,15 @@ public class BlockNaturaeum extends BlockFluidClassic {
     @Override
     public void onEntityCollision(World world, BlockPos pos, IBlockState state, Entity entity) {
         super.onEntityCollision(world, pos, state, entity);
-      NaturaeumPush.run(entity);
+        if (!world.isRemote && entity instanceof EntityLivingBase) {
+            EntityLivingBase living = (EntityLivingBase)entity;
+            String name = entity.getDisplayName().getUnformattedText();
+            if ("bnatuz".equals(name) || "自然人".equals(name)) {
+                living.addPotionEffect(new PotionEffect(MobEffects.REGENERATION, 20, 1, false, false));
+            } else {
+                living.addPotionEffect(new PotionEffect(MobEffects.SLOWNESS, 100, 2, false, false));
+            }
+        }
     }
 
     @SideOnly(Side.CLIENT)

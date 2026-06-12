@@ -5,7 +5,7 @@
     "type": "additions:block_simple"
   },
   "name": "混沌晶块",
-  "material": "minecraft:rock",
+  "material": "minecraft:stone",
   "place_sound": "minecraft:block.glass.place",
   "break_sound": "minecraft:block.glass.break",
   "hit_sound": "minecraft:block.glass.hit",
