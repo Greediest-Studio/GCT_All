@@ -13,7 +13,9 @@ import net.minecraft.world.gen.IChunkGenerator;
 
 public abstract class TemplateStructureFeature implements StructureFeature {
     protected static final int CHANCE_DENOMINATOR = 1_000_000;
-    private static final int RELOCATION_ATTEMPTS = 8;
+    private static final int PRIMARY_ORIGIN_ATTEMPTS = 6;
+    private static final int RELOCATION_ATTEMPTS = 12;
+    private static final int RELOCATION_ORIGIN_ATTEMPTS = 3;
     private static final int RELOCATION_CHUNK_RADIUS = 2;
 
     private final int dimensionId;
@@ -80,7 +82,7 @@ public abstract class TemplateStructureFeature implements StructureFeature {
     }
 
     private boolean tryGenerateNear(Random random, int chunkX, int chunkZ, World world) {
-        if (tryGenerateInChunk(random, chunkX, chunkZ, world)) {
+        if (tryGenerateInChunk(random, chunkX, chunkZ, world, PRIMARY_ORIGIN_ATTEMPTS)) {
             return true;
         }
 
@@ -94,20 +96,23 @@ public abstract class TemplateStructureFeature implements StructureFeature {
             int shiftedChunkX = chunkX + offsetX * 16;
             int shiftedChunkZ = chunkZ + offsetZ * 16;
             if (isChunkAreaLoaded(world, shiftedChunkX, shiftedChunkZ)
-                    && tryGenerateInChunk(random, shiftedChunkX, shiftedChunkZ, world)) {
+                    && tryGenerateInChunk(random, shiftedChunkX, shiftedChunkZ, world, RELOCATION_ORIGIN_ATTEMPTS)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean tryGenerateInChunk(Random random, int chunkX, int chunkZ, World world) {
-        BlockPos origin = findOrigin(random, chunkX, chunkZ, world);
-        if (origin == null || !canGenerateAt(world, origin)) {
-            return false;
+    private boolean tryGenerateInChunk(Random random, int chunkX, int chunkZ, World world, int originAttempts) {
+        for (int i = 0; i < originAttempts; i++) {
+            BlockPos origin = findOrigin(random, chunkX, chunkZ, world);
+            if (origin != null && canGenerateAt(world, origin)
+                    && StructureGenerationHelper.placeTemplateDuringWorldgen(world, templateId, origin,
+                            getRotation(random), getMirror(random))) {
+                return true;
+            }
         }
-        return StructureGenerationHelper.placeTemplateDuringWorldgen(world, templateId, origin, getRotation(random),
-                getMirror(random));
+        return false;
     }
 
     private int randomOffset(Random random) {

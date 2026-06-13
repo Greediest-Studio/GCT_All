@@ -2,7 +2,9 @@ package com.gmm.gctall.common.world.structure;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import javax.annotation.Nullable;
@@ -12,10 +14,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTUtil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -35,6 +37,7 @@ public final class StructureGenerationHelper {
   private static final Mirror[] MIRRORS = { Mirror.NONE, Mirror.LEFT_RIGHT };
   private static final Set<ResourceLocation> CHECKED_TEMPLATE_PALETTES = new HashSet<>();
   private static final Set<String> LOGGED_MISSING_EXTERNAL_BLOCKS = new HashSet<>();
+  private static final Map<ResourceLocation, StructureBoundingBox> TEMPLATE_OCCUPANCY_BOUNDS = new HashMap<>();
 
   private StructureGenerationHelper() {}
 
@@ -101,9 +104,9 @@ public final class StructureGenerationHelper {
         .setReplacedBlock((Block)null)
         .setIgnoreStructureBlock(false)
         .setIgnoreEntities(false);
-    StructureBoundingBox bounds = getTemplateBounds(template, origin, settings);
+    StructureBoundingBox bounds = getTemplateBounds(templateId, template, origin, settings);
     if (requireLoadedArea) {
-      if (!world.isAreaLoaded(bounds, false) || hasGeneratedStructure(world, bounds) || hasLoadedTileEntity(world, bounds)) {
+      if (!world.isAreaLoaded(bounds, false) || hasGeneratedStructure(world, bounds)) {
         return false;
       }
     }
@@ -142,16 +145,17 @@ public final class StructureGenerationHelper {
     return !world.isAirBlock(pos) && state.getBlock().getMaterial(state).blocksMovement();
   }
 
-  private static StructureBoundingBox getTemplateBounds(Template template, BlockPos origin, PlacementSettings settings) {
-    BlockPos size = template.getSize();
-    int maxX = Math.max(size.getX() - 1, 0);
-    int maxY = Math.max(size.getY() - 1, 0);
-    int maxZ = Math.max(size.getZ() - 1, 0);
+  private static StructureBoundingBox getTemplateBounds(ResourceLocation templateId, Template template, BlockPos origin,
+      PlacementSettings settings) {
+    StructureBoundingBox localBounds = getTemplateOccupancyBounds(templateId);
+    if (localBounds == null) {
+      localBounds = getFullTemplateBounds(template);
+    }
 
     StructureBoundingBox bounds = null;
-    int[] xs = { 0, maxX };
-    int[] ys = { 0, maxY };
-    int[] zs = { 0, maxZ };
+    int[] xs = { localBounds.minX, localBounds.maxX };
+    int[] ys = { localBounds.minY, localBounds.maxY };
+    int[] zs = { localBounds.minZ, localBounds.maxZ };
     for (int x : xs) {
       for (int y : ys) {
         for (int z : zs) {
@@ -167,18 +171,63 @@ public final class StructureGenerationHelper {
     return bounds == null ? new StructureBoundingBox(origin, origin) : bounds;
   }
 
-  private static boolean hasGeneratedStructure(World world, StructureBoundingBox bounds) {
-    return GeneratedStructureData.get(world).intersects(expand(bounds, 8));
+  private static StructureBoundingBox getFullTemplateBounds(Template template) {
+    BlockPos size = template.getSize();
+    return new StructureBoundingBox(0, 0, 0, Math.max(size.getX() - 1, 0), Math.max(size.getY() - 1, 0),
+        Math.max(size.getZ() - 1, 0));
   }
 
-  private static boolean hasLoadedTileEntity(World world, StructureBoundingBox bounds) {
-    StructureBoundingBox checkedBounds = expand(bounds, 2);
-    for (TileEntity tileEntity : world.loadedTileEntityList) {
-      if (tileEntity != null && !tileEntity.isInvalid() && checkedBounds.isVecInside(tileEntity.getPos())) {
-        return true;
+  @Nullable
+  private static StructureBoundingBox getTemplateOccupancyBounds(ResourceLocation templateId) {
+    if (TEMPLATE_OCCUPANCY_BOUNDS.containsKey(templateId)) {
+      StructureBoundingBox cached = TEMPLATE_OCCUPANCY_BOUNDS.get(templateId);
+      return cached == null ? null : new StructureBoundingBox(cached);
+    }
+
+    StructureBoundingBox bounds = readTemplateOccupancyBounds(templateId);
+    TEMPLATE_OCCUPANCY_BOUNDS.put(templateId, bounds == null ? null : new StructureBoundingBox(bounds));
+    return bounds;
+  }
+
+  @Nullable
+  private static StructureBoundingBox readTemplateOccupancyBounds(ResourceLocation templateId) {
+    NBTTagCompound templateNbt = readTemplateNbt(templateId);
+    if (templateNbt == null || !templateNbt.hasKey("palette", 9) || !templateNbt.hasKey("blocks", 9)) {
+      return null;
+    }
+
+    NBTTagList palette = templateNbt.getTagList("palette", 10);
+    boolean[] airStates = new boolean[palette.tagCount()];
+    for (int i = 0; i < palette.tagCount(); i++) {
+      IBlockState state = NBTUtil.readBlockState(palette.getCompoundTagAt(i));
+      airStates[i] = state.getBlock() == Blocks.AIR;
+    }
+
+    StructureBoundingBox bounds = null;
+    NBTTagList blocks = templateNbt.getTagList("blocks", 10);
+    for (int i = 0; i < blocks.tagCount(); i++) {
+      NBTTagCompound blockTag = blocks.getCompoundTagAt(i);
+      int stateId = blockTag.getInteger("state");
+      if (stateId >= 0 && stateId < airStates.length && airStates[stateId]) {
+        continue;
+      }
+
+      NBTTagList pos = blockTag.getTagList("pos", 3);
+      if (pos.tagCount() < 3) {
+        continue;
+      }
+      BlockPos corner = new BlockPos(pos.getIntAt(0), pos.getIntAt(1), pos.getIntAt(2));
+      if (bounds == null) {
+        bounds = new StructureBoundingBox(corner, corner);
+      } else {
+        bounds.expandTo(new StructureBoundingBox(corner, corner));
       }
     }
-    return false;
+    return bounds;
+  }
+
+  private static boolean hasGeneratedStructure(World world, StructureBoundingBox bounds) {
+    return GeneratedStructureData.get(world).intersects(expand(bounds, 8));
   }
 
   private static StructureBoundingBox expand(StructureBoundingBox bounds, int distance) {

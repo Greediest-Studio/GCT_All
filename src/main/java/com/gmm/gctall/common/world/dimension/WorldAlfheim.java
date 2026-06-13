@@ -438,14 +438,6 @@ public static class WorldProviderMod extends WorldProvider {
     public void updateTick(World world, BlockPos pos, IBlockState state, Random random) {}
 
     public void portalSpawn(World worldIn, BlockPos pos) {
-      Size portalsize = new Size(worldIn, pos, EnumFacing.Axis.X);
-      if (portalsize.isValid() && portalsize.portalBlockCount == 0) {
-        portalsize.placePortalBlocks();
-      } else {
-        portalsize = new Size(worldIn, pos, EnumFacing.Axis.Z);
-        if (portalsize.isValid() && portalsize.portalBlockCount == 0)
-          portalsize.placePortalBlocks();
-      }
     }
 
     public BlockPattern.PatternHelper createPatternHelper(World worldIn, BlockPos p_181089_2_) {
@@ -519,18 +511,6 @@ public static class WorldProviderMod extends WorldProvider {
     }
 
     public void onEntityCollision(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-      if (!worldIn.isRemote && !entityIn.isRiding() && !entityIn.isBeingRidden() && entityIn instanceof EntityPlayerMP) {
-        EntityPlayerMP thePlayer = (EntityPlayerMP)entityIn;
-        if (thePlayer.timeUntilPortal > 0) {
-          thePlayer.timeUntilPortal = thePlayer.getPortalCooldown();
-        } else if (thePlayer.dimension != WorldAlfheim.DIMID) {
-          thePlayer.timeUntilPortal = thePlayer.getPortalCooldown();
-          thePlayer.changeDimension(WorldAlfheim.DIMID, getTeleporterForDimension((Entity)thePlayer, pos, WorldAlfheim.DIMID));
-        } else {
-          thePlayer.timeUntilPortal = thePlayer.getPortalCooldown();
-          thePlayer.changeDimension(0, getTeleporterForDimension((Entity)thePlayer, pos, 0));
-        }
-      }
     }
 
     private WorldAlfheim.TeleporterDimensionMod getTeleporterForDimension(Entity entity, BlockPos pos, int dimid) {

@@ -80,7 +80,7 @@ public class WorldOrderland {
             WorldOrderland.DIMID = DimensionManager.getNextFreeDimId();
             System.err.println("Dimension ID for dimension orderland is already registered. Falling back to ID: " + WorldOrderland.DIMID);
         }
-        WorldOrderland.dtype = DimensionType.register("orderland", "_orderland", WorldOrderland.DIMID, WorldProviderMod.class, true);
+        WorldOrderland.dtype = DimensionType.register("orderland", "_orderland", WorldOrderland.DIMID, WorldProviderMod.class, false);
         DimensionManager.registerDimension(WorldOrderland.DIMID, WorldOrderland.dtype);
     }
 

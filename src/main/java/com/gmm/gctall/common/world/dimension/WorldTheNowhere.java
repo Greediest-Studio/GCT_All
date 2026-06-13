@@ -76,7 +76,7 @@ public class WorldTheNowhere {
             WorldTheNowhere.DIMID = DimensionManager.getNextFreeDimId();
             System.err.println("Dimension ID for dimension the_nowhere is already registered. Falling back to ID: " + WorldTheNowhere.DIMID);
         }
-        WorldTheNowhere.dtype = DimensionType.register("the_nowhere", "_the_nowhere", WorldTheNowhere.DIMID, WorldProviderMod.class, true);
+        WorldTheNowhere.dtype = DimensionType.register("the_nowhere", "_the_nowhere", WorldTheNowhere.DIMID, WorldProviderMod.class, false);
         DimensionManager.registerDimension(WorldTheNowhere.DIMID, WorldTheNowhere.dtype);
     }
 

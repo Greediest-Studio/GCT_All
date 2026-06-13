@@ -74,7 +74,7 @@ public class WorldTheVoid {
             WorldTheVoid.DIMID = DimensionManager.getNextFreeDimId();
             System.err.println("Dimension ID for dimension the_void is already registered. Falling back to ID: " + WorldTheVoid.DIMID);
         }
-        WorldTheVoid.dtype = DimensionType.register("the_void", "_the_void", WorldTheVoid.DIMID, WorldProviderMod.class, true);
+        WorldTheVoid.dtype = DimensionType.register("the_void", "_the_void", WorldTheVoid.DIMID, WorldProviderMod.class, false);
         DimensionManager.registerDimension(WorldTheVoid.DIMID, WorldTheVoid.dtype);
     }
 
