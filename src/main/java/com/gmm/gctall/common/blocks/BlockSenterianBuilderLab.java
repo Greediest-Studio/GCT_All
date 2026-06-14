@@ -44,7 +44,7 @@ public class BlockSenterianBuilderLab extends Block {
     final int x = pos.getX();
     final int y = pos.getY();
     final int z = pos.getZ();
-    SenterianLabBuilderClick.run(world, x, y, z);
+    SenterianLabBuilderClick.run(world, entity, x, y, z);
     return true;
     }
 

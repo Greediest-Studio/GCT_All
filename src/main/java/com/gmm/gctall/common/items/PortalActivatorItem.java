@@ -31,6 +31,11 @@ import com.gmm.gctall.common.world.structure.StructureGenerationHelper;
 import com.gmm.gctall.common.world.structure.StructureTemplateId;
 
 public class PortalActivatorItem extends Item {
+    @FunctionalInterface
+    public interface PortalPlacer {
+        void place(World world, BlockPos origin, EnumFacing widthDir);
+    }
+
     private static final int FALLBACK_PORTAL_WIDTH = 2;
     private static final int FALLBACK_PORTAL_HEIGHT = 3;
     private static final int TELEPORT_SEARCH_RADIUS = 32;
@@ -40,6 +45,8 @@ public class PortalActivatorItem extends Item {
     private final IntSupplier targetDimension;
     private final StructureTemplateId eastWestTemplate;
     private final StructureTemplateId northSouthTemplate;
+    private final int portalHeight;
+    private final PortalPlacer portalPlacer;
 
     public PortalActivatorItem(String name, CreativeTabs tab, Block portalBlock,
             IntSupplier targetDimension) {
@@ -47,11 +54,24 @@ public class PortalActivatorItem extends Item {
     }
 
     public PortalActivatorItem(String name, CreativeTabs tab, Block portalBlock,
+            IntSupplier targetDimension, int portalHeight, PortalPlacer portalPlacer) {
+        this(name, tab, portalBlock, targetDimension, null, null, portalHeight, portalPlacer);
+    }
+
+    public PortalActivatorItem(String name, CreativeTabs tab, Block portalBlock,
             IntSupplier targetDimension, StructureTemplateId eastWestTemplate, StructureTemplateId northSouthTemplate) {
+        this(name, tab, portalBlock, targetDimension, eastWestTemplate, northSouthTemplate, FALLBACK_PORTAL_HEIGHT, null);
+    }
+
+    private PortalActivatorItem(String name, CreativeTabs tab, Block portalBlock,
+            IntSupplier targetDimension, StructureTemplateId eastWestTemplate, StructureTemplateId northSouthTemplate,
+            int portalHeight, PortalPlacer portalPlacer) {
         this.portalBlock = portalBlock;
         this.targetDimension = targetDimension;
         this.eastWestTemplate = eastWestTemplate;
         this.northSouthTemplate = northSouthTemplate;
+        this.portalHeight = portalHeight;
+        this.portalPlacer = portalPlacer;
         setMaxStackSize(1);
         setMaxDamage(64);
         setTranslationKey(name);
@@ -274,7 +294,7 @@ public class PortalActivatorItem extends Item {
             int height = Math.max(template.getSize().getY(), 1);
             return placement.origin.getY() >= 0 && placement.origin.getY() + height - 1 <= 255;
         }
-        return placement.origin.getY() >= 0 && placement.origin.getY() + FALLBACK_PORTAL_HEIGHT - 1 <= 255;
+        return placement.origin.getY() >= 0 && placement.origin.getY() + portalHeight - 1 <= 255;
     }
 
     private EnumFacing getPortalWidthDirection(EntityPlayer player, EnumFacing facing) {
@@ -287,6 +307,10 @@ public class PortalActivatorItem extends Item {
     private void placePortalStructure(World world, PortalPlacement placement) {
         if (placement.template != null) {
             StructureGenerationHelper.placeTemplate(world, placement.template, placement.origin, Rotation.NONE, Mirror.NONE);
+            return;
+        }
+        if (portalPlacer != null) {
+            portalPlacer.place(world, placement.origin, placement.widthDir);
             return;
         }
         placePortalBlocks(world, placement.origin, placement.widthDir);

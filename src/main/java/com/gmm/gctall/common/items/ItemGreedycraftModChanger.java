@@ -38,7 +38,7 @@ public class ItemGreedycraftModChanger extends Item {
     @Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
-        tooltip.add("\u53f3\u952e\u5728\u751f\u5b58\u548c\u521b\u9020\u4e4b\u95f4\u8fdb\u884c\u5207\u6362");
+        tooltip.add("右键在生存和创造之间进行切换");
     }
 
     @Override

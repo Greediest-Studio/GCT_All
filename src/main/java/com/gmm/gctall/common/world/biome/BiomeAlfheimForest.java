@@ -17,7 +17,7 @@ public class BiomeAlfheimForest extends Biome {
     setRegistryName("alfheim_forest");
     this.topBlock = BlockAlfGrass.block.getDefaultState();
     this.fillerBlock = BlockAlfDirt.block.getDefaultState();
-    this.decorator.treesPerChunk = 6;
+    this.decorator.treesPerChunk = 0;
     this.decorator.flowersPerChunk = 4;
     this.decorator.grassPerChunk = 4;
     this.decorator.mushroomsPerChunk = 0;

@@ -1,6 +1,7 @@
 package com.gmm.gctall.common.world.biome;
 
 import java.util.Random;
+import java.util.Arrays;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
@@ -12,24 +13,37 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 
 public class WorldGenAlfheimTree extends WorldGenAbstractTree {
     private final int minTreeHeight;
+    private final int extraTreeHeight;
+    private final boolean positiveExtraHeight;
     private final IBlockState log;
     private final IBlockState leaves;
-    private final Block grass;
-    private final Block dirt;
+    private final Block groundReplacement;
+    private final Block[] baseBlocks;
 
     public WorldGenAlfheimTree(int minTreeHeight, IBlockState log, IBlockState leaves, Block grass, Block dirt) {
+        this(minTreeHeight, 2, false, log, leaves, dirt, grass, dirt);
+    }
+
+    public WorldGenAlfheimTree(int minTreeHeight, int extraTreeHeight, IBlockState log, IBlockState leaves,
+            Block... baseBlocks) {
+        this(minTreeHeight, extraTreeHeight, true, log, leaves, baseBlocks[0], baseBlocks);
+    }
+
+    private WorldGenAlfheimTree(int minTreeHeight, int extraTreeHeight, boolean positiveExtraHeight, IBlockState log,
+            IBlockState leaves, Block groundReplacement, Block... baseBlocks) {
         super(false);
         this.minTreeHeight = minTreeHeight;
+        this.extraTreeHeight = Math.max(0, extraTreeHeight);
+        this.positiveExtraHeight = positiveExtraHeight;
         this.log = log;
-        this.leaves = leaves.withProperty(BlockLeaves.CHECK_DECAY, Boolean.FALSE)
-                .withProperty(BlockLeaves.DECAYABLE, Boolean.FALSE);
-        this.grass = grass;
-        this.dirt = dirt;
+        this.leaves = fixedLeaves(leaves);
+        this.groundReplacement = groundReplacement;
+        this.baseBlocks = Arrays.copyOf(baseBlocks, baseBlocks.length);
     }
 
     @Override
     public boolean generate(World world, Random rand, BlockPos position) {
-        int height = rand.nextInt(3) + this.minTreeHeight;
+        int height = this.minTreeHeight + randomExtraHeight(rand);
 
         if (position.getY() < 1 || position.getY() + height + 1 > world.getHeight()) {
             return false;
@@ -38,7 +52,7 @@ public class WorldGenAlfheimTree extends WorldGenAbstractTree {
             return false;
         }
 
-        world.setBlockState(position.down(), this.dirt.getDefaultState(), 2);
+        world.setBlockState(position.down(), this.groundReplacement.getDefaultState(), 2);
         generateLeaves(world, rand, position, height);
         generateTrunk(world, position, height);
         return true;
@@ -72,7 +86,12 @@ public class WorldGenAlfheimTree extends WorldGenAbstractTree {
 
     private boolean canGrowOn(World world, BlockPos groundPos) {
         Block ground = world.getBlockState(groundPos).getBlock();
-        return ground == this.grass || ground == this.dirt;
+        for (Block baseBlock : this.baseBlocks) {
+            if (ground == baseBlock) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void generateLeaves(World world, Random rand, BlockPos position, int height) {
@@ -117,8 +136,7 @@ public class WorldGenAlfheimTree extends WorldGenAbstractTree {
     protected boolean canGrowInto(Block block) {
         Material material = block.getDefaultState().getMaterial();
         return material == Material.AIR || material == Material.LEAVES || block == Blocks.VINE
-                || block == this.log.getBlock() || block == this.leaves.getBlock()
-                || block == this.grass || block == this.dirt;
+                || block == this.log.getBlock() || block == this.leaves.getBlock() || isBaseBlock(block);
     }
 
     @Override
@@ -129,5 +147,35 @@ public class WorldGenAlfheimTree extends WorldGenAbstractTree {
                 || state.getMaterial() == Material.VINE
                 || canGrowInto(state.getBlock())
                 || state.getBlock().isReplaceable(world, pos);
+    }
+
+    private int randomExtraHeight(Random rand) {
+        if (extraTreeHeight <= 0) {
+            return 0;
+        }
+        if (positiveExtraHeight) {
+            return rand.nextInt(extraTreeHeight) + 1;
+        }
+        return rand.nextInt(extraTreeHeight + 1);
+    }
+
+    private boolean isBaseBlock(Block block) {
+        for (Block baseBlock : this.baseBlocks) {
+            if (block == baseBlock) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static IBlockState fixedLeaves(IBlockState state) {
+        IBlockState fixed = state;
+        if (fixed.getPropertyKeys().contains(BlockLeaves.CHECK_DECAY)) {
+            fixed = fixed.withProperty(BlockLeaves.CHECK_DECAY, Boolean.FALSE);
+        }
+        if (fixed.getPropertyKeys().contains(BlockLeaves.DECAYABLE)) {
+            fixed = fixed.withProperty(BlockLeaves.DECAYABLE, Boolean.FALSE);
+        }
+        return fixed;
     }
 }

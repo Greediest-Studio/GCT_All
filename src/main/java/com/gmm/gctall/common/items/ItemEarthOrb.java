@@ -42,13 +42,13 @@ public class ItemEarthOrb extends Item {
 
     @Override
     public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entity) {
-        stack.damageItem(1, entity);
+        stack.damageItem(0, entity);
         return true;
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        stack.damageItem(2, attacker);
+        stack.damageItem(0, attacker);
         return true;
     }
 

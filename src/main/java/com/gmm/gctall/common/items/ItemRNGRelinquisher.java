@@ -30,8 +30,8 @@ public class ItemRNGRelinquisher extends Item {
     @Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
-        tooltip.add("\u5728\u672b\u5730\u539f\u70b9\u53f3\u952e\u4f20\u9001\u81f3\u65e0\u540d\u4e4b\u5730");
-        tooltip.add("\u5728\u65e0\u540d\u4e4b\u5730\u4efb\u610f\u5730\u70b9\u53f3\u952e\u4f20\u9001\u56de\u672b\u5730");
+        tooltip.add("在末地原点右键传送至无名之地");
+        tooltip.add("在无名之地任意地点右键传送回末地");
     }
 
     @Override

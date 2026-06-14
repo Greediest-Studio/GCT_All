@@ -1,6 +1,10 @@
 package com.gmm.gctall.common.world.dimension;
 
 import com.gmm.gctall.client.GctAllModels;
+import com.gmm.gctall.common.blocks.BlockAstralPortalCore;
+import com.gmm.gctall.common.blocks.BlockBesideVoidPortal1;
+import com.gmm.gctall.common.blocks.BlockBesideVoidPortal2;
+import com.gmm.gctall.common.blocks.BlockBesideVoidPortal3;
 import com.gmm.gctall.misc.GctAllCreativeTab;
 import com.gmm.gctall.common.items.PortalActivatorItem;
 import com.gmm.gctall.common.world.structure.GctAllStructureTemplates;
@@ -30,6 +34,12 @@ public final class GctAllDimensions {
     public static final Item WARPED_RUIN = new PortalActivatorItem("warped_ruin", GctAllCreativeTab.TAB,
             WorldWarpedRuin.portal, () -> WorldWarpedRuin.DIMID,
             GctAllStructureTemplates.DIM_55_PORTAL_1, GctAllStructureTemplates.DIM_55_PORTAL_2);
+    public static final Item BESIDE_VOID = new PortalActivatorItem("beside_void", GctAllCreativeTab.TAB,
+            BlockBesideVoidPortal2.block, () -> WorldBesideVoid.DIMID, 3, (world, origin, widthDir) -> {
+                world.setBlockState(origin, BlockBesideVoidPortal3.block.getDefaultState(), 3);
+                world.setBlockState(origin.up(), BlockBesideVoidPortal2.block.getDefaultState(), 3);
+                world.setBlockState(origin.up(2), BlockBesideVoidPortal1.block.getDefaultState(), 3);
+            });
     public static final Item EVERHEAVEN = new PortalActivatorItem("everheaven", GctAllCreativeTab.TAB,
             WorldEverheaven.portal, () -> WorldEverheaven.DIMID,
             GctAllStructureTemplates.HEAVEN_PORTAL, GctAllStructureTemplates.HEAVEN_PORTAL);
@@ -37,6 +47,9 @@ public final class GctAllDimensions {
             WorldAlfheim.portal, () -> WorldAlfheim.DIMID);
     public static final Item ATLANTIS = new PortalActivatorItem("atlantis", GctAllCreativeTab.TAB,
             WorldAtlantis.portal, () -> WorldAtlantis.DIMID);
+    public static final Item STARLAND = new PortalActivatorItem("starland", GctAllCreativeTab.TAB,
+            BlockAstralPortalCore.block, () -> WorldStarland.DIMID, 1,
+            (world, origin, widthDir) -> world.setBlockState(origin, BlockAstralPortalCore.block.getDefaultState(), 3));
     public static final Item THE_VOID = new PortalActivatorItem("the_void", GctAllCreativeTab.TAB,
             WorldTheVoid.portal, () -> WorldTheVoid.DIMID);
     public static final Item THE_NOWHERE = new PortalActivatorItem("the_nowhere", GctAllCreativeTab.TAB,
@@ -60,9 +73,11 @@ public final class GctAllDimensions {
         event.getRegistry().registerAll(
                 DIM_DARKER_REALM,
                 WARPED_RUIN,
+                BESIDE_VOID,
                 EVERHEAVEN,
                 ALFHEIM,
                 ATLANTIS,
+                STARLAND,
                 THE_VOID,
                 THE_NOWHERE,
                 ORDERLAND
@@ -90,9 +105,11 @@ public final class GctAllDimensions {
 
         GctAllModels.item(DIM_DARKER_REALM, "dimdarkerrealm");
         GctAllModels.item(WARPED_RUIN, "warped_ruin");
+        GctAllModels.item(BESIDE_VOID, "beside_void");
         GctAllModels.item(EVERHEAVEN, "everheaven");
         GctAllModels.item(ALFHEIM, "alfheim");
         GctAllModels.item(ATLANTIS, "atlantis");
+        GctAllModels.item(STARLAND, "starland");
         GctAllModels.item(THE_VOID, "the_void");
         GctAllModels.item(THE_NOWHERE, "the_nowhere");
         GctAllModels.item(ORDERLAND, "orderland");

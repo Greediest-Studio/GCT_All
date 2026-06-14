@@ -59,6 +59,7 @@ public class GctAllStructureGenerator implements IWorldGenerator {
         for (StructureFeature structure : structures) {
             structure.generateWorld(random, blockX, blockZ, world, dimensionId, chunkGenerator, chunkProvider);
         }
+        GctAllTreeGenerator.generate(random, blockX, blockZ, world, dimensionId);
         GctAllOreGenerator.generate(random, blockX, blockZ, world, dimensionId);
     }
 }

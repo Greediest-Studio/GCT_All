@@ -1,6 +1,7 @@
 package com.gmm.gctall.common.entity;
 
 import java.util.Random;
+import com.gmm.gctall.common.events.SanityEvents;
 import com.gmm.gctall.common.items.ItemShoggothTancale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -83,7 +84,8 @@ public final class EntityDarkerLesserShoggoth {
 
     protected void initEntityAI() {
       super.initEntityAI();
-      this.targetTasks.addTask(1, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
+      this.targetTasks.addTask(1, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this,
+          EntityPlayer.class, 10, false, false, player -> SanityEvents.canSanityTargetPlayer((EntityPlayer) player)));
       this.targetTasks.addTask(2, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, true, new Class[0]));
       this.tasks.addTask(3, (EntityAIBase)new EntityAIWander((EntityCreature)this, 1.0D));
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));

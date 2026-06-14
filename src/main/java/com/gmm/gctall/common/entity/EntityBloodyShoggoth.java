@@ -2,6 +2,7 @@ package com.gmm.gctall.common.entity;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import com.gmm.gctall.common.events.SanityEvents;
 import com.gmm.gctall.common.items.ItemShoggothTancale;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBox;
@@ -70,7 +71,8 @@ public final class EntityBloodyShoggoth {
     protected void initEntityAI() {
       super.initEntityAI();
       this.tasks.addTask(1, (EntityAIBase)new EntityAIAttackMelee((EntityCreature)this, 1.2D, false));
-      this.targetTasks.addTask(2, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
+      this.targetTasks.addTask(2, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this,
+          EntityPlayer.class, 10, false, false, player -> SanityEvents.canSanityTargetPlayer((EntityPlayer) player)));
       this.targetTasks.addTask(3, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityCreature.class, false, false));
       this.tasks.addTask(4, (EntityAIBase)new EntityAIWander((EntityCreature)this, 1.0D));
       this.targetTasks.addTask(5, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, false, new Class[0]));

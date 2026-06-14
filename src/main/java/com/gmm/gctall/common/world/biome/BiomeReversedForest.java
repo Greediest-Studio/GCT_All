@@ -20,7 +20,7 @@ public class BiomeReversedForest extends Biome {
     setRegistryName("reversed_forest");
     this.topBlock = BlockReversedAlfGrass.block.getDefaultState();
     this.fillerBlock = BlockReversedAlfDirt.block.getDefaultState();
-    this.decorator.treesPerChunk = 8;
+    this.decorator.treesPerChunk = 0;
     this.decorator.flowersPerChunk = 2;
     this.decorator.grassPerChunk = 16;
     this.decorator.mushroomsPerChunk = 0;

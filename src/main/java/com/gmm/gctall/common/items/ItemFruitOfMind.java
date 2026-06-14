@@ -2,6 +2,7 @@ package com.gmm.gctall.common.items;
 
 import com.gmm.gctall.Tags;
 import com.gmm.gctall.misc.GctAllCreativeTab;
+import net.darkhax.gamestages.GameStageHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
@@ -60,7 +61,7 @@ public class ItemFruitOfMind extends ItemFood {
     @Override
     protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
       super.onFoodEaten(stack, world, player);
-      if (SANITY_CHANGE != 0.0F) {
+      if (GameStageHelper.hasStage(player, "final")) {
         float sanity = player.getEntityData().getFloat("sanityAbyss") + SANITY_CHANGE;
         player.getEntityData().setFloat("sanityAbyss", MathHelper.clamp(sanity, -100.0F, 100.0F));
       }

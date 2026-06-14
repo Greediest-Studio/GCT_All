@@ -1,5 +1,6 @@
 package com.gmm.gctall.common.entity;
 
+import com.gmm.gctall.common.events.SanityEvents;
 import com.gmm.gctall.misc.registry.GctAllItems;
 
 import net.minecraft.client.model.ModelBase;
@@ -60,7 +61,8 @@ public final class EntityRemnantWandering {
       this.targetTasks.addTask(2, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, false, new Class[0]));
       this.tasks.addTask(3, (EntityAIBase)new EntityAIWander((EntityCreature)this, 0.8D));
       this.tasks.addTask(4, (EntityAIBase)new EntityAILookIdle((EntityLiving)this));
-      this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
+      this.targetTasks.addTask(5, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this,
+          EntityPlayer.class, 10, false, false, player -> SanityEvents.canSanityTargetPlayer((EntityPlayer) player)));
     }
 
     public EnumCreatureAttribute getCreatureAttribute() {

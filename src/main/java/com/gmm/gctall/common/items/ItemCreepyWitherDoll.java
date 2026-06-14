@@ -30,9 +30,9 @@ public class ItemCreepyWitherDoll extends Item {
     @Override
     public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
         super.addInformation(stack, world, tooltip, flag);
-        tooltip.add("\u5176\u5b9e\u8fd8\u662f\u86ee\u53ef\u7231\u7684\u561b\u2026\u2026");
-        tooltip.add("\u5728\u672b\u5730\u539f\u70b9\u53f3\u952e\u4f20\u9001\u81f3\u865a\u7a7a\u4e4b\u5730");
-        tooltip.add("\u5728\u865a\u7a7a\u4e4b\u5730\u4efb\u610f\u5730\u70b9\u53f3\u952e\u4f20\u9001\u56de\u672b\u5730");
+        tooltip.add("其实还是蛮可爱的嘛……");
+        tooltip.add("在末地原点右键传送至虚空之地");
+        tooltip.add("在虚空之地任意地点右键传送回末地");
     }
 
     @Override

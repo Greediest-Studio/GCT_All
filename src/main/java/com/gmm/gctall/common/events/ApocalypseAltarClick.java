@@ -2,7 +2,8 @@ package com.gmm.gctall.common.events;
 
 import com.gmm.gctall.misc.registry.GctAllItems;
 
-import com.gmm.gctall.common.util.ServerCommandHelper;
+import com.gmm.gctall.common.entity.EntityApocalypseCube;
+import com.gmm.gctall.common.entity.EntityApocalypseKnight;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,16 @@ public final class ApocalypseAltarClick {
       .getItem() == (new ItemStack(GctAllItems.APOCALYPSE_RUIN, 1)).getItem()) {
       if (entity instanceof EntityPlayer)
         ((EntityPlayer)entity).inventory.clearMatchingItems((new ItemStack(GctAllItems.APOCALYPSE_RUIN, 1)).getItem(), -1, 1, null);
-      ServerCommandHelper.run(world, x, y, z, "summon gct_all:apocalypse_cube ~ ~4 ~ {Passengers:[{id:\"gct_all:apocalypse_knight\"}]}");
+      if (!world.isRemote) {
+        EntityApocalypseCube.ApocalypseCubeEntity cube = new EntityApocalypseCube.ApocalypseCubeEntity(world);
+        cube.setLocationAndAngles(x + 0.5D, y + 4.0D, z + 0.5D, entity.rotationYaw, 0.0F);
+        world.spawnEntity(cube);
+
+        EntityApocalypseKnight.ApocalypseKnightEntity knight = new EntityApocalypseKnight.ApocalypseKnightEntity(world);
+        knight.setLocationAndAngles(x + 0.5D, y + 4.0D, z + 0.5D, entity.rotationYaw, 0.0F);
+        world.spawnEntity(knight);
+        knight.startRiding(cube, true);
+      }
     }
   }
 }

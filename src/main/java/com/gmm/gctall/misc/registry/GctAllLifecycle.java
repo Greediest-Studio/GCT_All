@@ -5,6 +5,8 @@ import com.gmm.gctall.GctAllMod;
 import com.gmm.gctall.common.commands.GctAllCommands;
 import com.gmm.gctall.common.data.GctAllVariableEvents;
 import com.gmm.gctall.common.entity.GctAllEntities;
+import com.gmm.gctall.common.events.SanityEvents;
+import com.gmm.gctall.common.events.StarlandDaylightKick;
 import com.gmm.gctall.client.gui.GctAllGuiNetwork;
 import com.gmm.gctall.common.items.crafting.GctAllRecipes;
 import com.gmm.gctall.common.network.GctAllMessages;
@@ -32,6 +34,8 @@ public final class GctAllLifecycle {
         GctAllMessages.register();
         GctAllGuiNetwork.registerMessages();
         MinecraftForge.EVENT_BUS.register(new GctAllVariableEvents());
+        MinecraftForge.EVENT_BUS.register(new SanityEvents());
+        MinecraftForge.EVENT_BUS.register(new StarlandDaylightKick());
     }
 
     public static void init(FMLInitializationEvent event) {

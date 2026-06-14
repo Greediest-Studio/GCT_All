@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import com.gmm.gctall.common.blocks.BlockSaniteOre;
+import com.gmm.gctall.common.events.SanityEvents;
 import com.gmm.gctall.common.items.ItemShoggothTancale;
 import com.gmm.gctall.common.potions.PotionAbyssPlague;
 import com.gmm.gctall.misc.registry.GctAllItems;
@@ -90,7 +91,8 @@ public final class EntityAncientShoggoth {
       this.tasks.addTask(4, (EntityAIBase)new EntityAILeapAtTarget((EntityLiving)this, 0.8F));
       this.tasks.addTask(5, (EntityAIBase)new EntityAIPanic((EntityCreature)this, 1.2D));
       this.targetTasks.addTask(6, (EntityAIBase)new EntityAIHurtByTarget((EntityCreature)this, true, new Class[0]));
-      this.targetTasks.addTask(7, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this, EntityPlayer.class, false, false));
+      this.targetTasks.addTask(7, (EntityAIBase)new EntityAINearestAttackableTarget((EntityCreature)this,
+          EntityPlayer.class, 10, false, false, player -> SanityEvents.canSanityTargetPlayer((EntityPlayer) player)));
     }
 
     public EnumCreatureAttribute getCreatureAttribute() {

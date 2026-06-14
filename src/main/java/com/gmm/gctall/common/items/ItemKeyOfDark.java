@@ -26,7 +26,7 @@ public class ItemKeyOfDark extends Item {
     }
 public void addInformation(ItemStack itemstack, World world, List<String> list, ITooltipFlag flag) {
       super.addInformation(itemstack, world, list, flag);
-      list.add("\u6765\u81EA\u9ED1\u6697\u7684\u5815\u843D");
+      list.add("来自黑暗的堕落");
     }
 
     public EnumActionResult onItemUseFirst(EntityPlayer entity, World world, BlockPos pos, EnumFacing direction,

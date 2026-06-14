@@ -2,9 +2,9 @@ package com.gmm.gctall.common.events;
 
 import com.gmm.gctall.common.blocks.BlockEarthboundCore;
 import com.gmm.gctall.common.blocks.BlockEarthboundReceiver;
+import com.gmm.gctall.common.compat.NaturesAuraCompat;
 import com.gmm.gctall.misc.registry.GctAllItems;
 import com.gmm.gctall.common.items.ItemEarthOrb;
-import com.gmm.gctall.common.util.ServerCommandHelper;
 import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -90,7 +90,7 @@ public final class EarthboundAltarClick {
       damageOrb(world, altarPos.add(offset[0], offset[1], offset[2]), random);
     }
 
-    ServerCommandHelper.run(world, x, y, z, "naaura drain 100000 1");
+    NaturesAuraCompat.drainAura(world, altarPos, 100000);
     playSound(world, x, y, z, "block.metal.break");
   }
 

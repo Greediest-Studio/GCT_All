@@ -13,10 +13,11 @@ import net.minecraft.util.ResourceLocation;
 
 public final class GctAllCreativeTab {
     private static final String[] FIRST_ITEMS = {
-            "dimdarkerrealm", "warped_ruin", "everheaven", "alfheim", "atlantis", "the_void", "the_nowhere",
-            "orderland",
+            "dimdarkerrealm", "warped_ruin", "beside_void", "everheaven", "alfheim", "atlantis", "starland",
+            "the_void", "the_nowhere", "orderland",
             "dimdarkerrealm_portal", "warped_ruin_portal", "everheaven_portal", "alfheim_portal",
-            "atlantis_portal", "the_void_portal", "the_nowhere_portal", "orderland_portal",
+            "atlantis_portal", "beside_void_portal_1", "beside_void_portal_2", "beside_void_portal_3",
+            "astral_portal_core", "the_void_portal", "the_nowhere_portal", "orderland_portal",
             "model_atomic_viberator", "model_atomic_decayer", "model_atomic_acidor", "model_ender_forge"
     };
     private static final Map<String, Integer> FIRST_ITEM_ORDER = new HashMap<>();
